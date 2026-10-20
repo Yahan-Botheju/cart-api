@@ -7,17 +7,17 @@ public class Product {
     private final UUID productId;
     private String productName;
     private String productDescription;
-    private BigDecimal productPrice;
+    private Money productPrice;
     private boolean isProductAvailable;
 
     /* __CONSTRUCTOR__ */
 
-    public Product( String productName, String productDescription, BigDecimal productPrice) {
+    public Product( String productName, String productDescription, Money productPrice) {
         this.productId = UUID.randomUUID();
         if(productName == null || productName.trim().isEmpty()){
             throw new IllegalArgumentException("Product name cannot be null or empty");
         }
-        if (productPrice == null || productPrice.compareTo(BigDecimal.ZERO) <= 0) {
+        if (productPrice == null || productPrice.amount().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Product price cannot be negative");
         }
         this.productName = productName;
@@ -31,7 +31,7 @@ public class Product {
     public UUID getProductId() { return productId; }
     public String getProductName() { return productName; }
     public String getProductDescription() { return productDescription; }
-    public BigDecimal getProductPrice() { return productPrice; }
+    public Money getProductPrice() { return productPrice; }
     public boolean isProductAvailable() { return isProductAvailable; }
 
 
