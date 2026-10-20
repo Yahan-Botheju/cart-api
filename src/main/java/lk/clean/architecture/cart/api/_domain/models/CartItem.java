@@ -3,8 +3,8 @@ package lk.clean.architecture.cart.api._domain.models;
 public class CartItem {
     private Product product;
     private int quantity;
-    private Money unitPrice;
-    private Money totalPrice;
+//    private Money unitPrice;
+//    private Money totalPrice;
 
     /*__CONSTRUCTOR__ */
 
@@ -23,5 +23,16 @@ public class CartItem {
 
     public Product getProduct() { return product; }
     public int getQuantity() { return quantity; }
+
+
+    /* __DOMAIN_LOGIC__ */
+
+    //replace quantity
+    public void replaceQuantity(int newQuantity) {
+        if(newQuantity <= 0 ){
+            throw new IllegalArgumentException("Invalid quantity!");
+        }
+        this.quantity = newQuantity;
+    }
 
 }
