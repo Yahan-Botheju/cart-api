@@ -9,6 +9,12 @@ public class CartItem {
     /*__CONSTRUCTOR__ */
 
     public CartItem(Product product, int quantity) {
+        if(product == null){
+            throw new IllegalArgumentException("Product cannot be empty!");
+        }
+        if(quantity <= 0){
+            throw new IllegalArgumentException("Quantity cannot be empty!");
+        }
         this.product = product;
         this.quantity = quantity;
     }
