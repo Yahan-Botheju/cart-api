@@ -14,6 +14,12 @@ public class Product {
 
     public Product( String productName, String productDescription, BigDecimal productPrice) {
         this.productId = UUID.randomUUID();
+        if(productName == null || productName.trim().isEmpty()){
+            throw new IllegalArgumentException("Product name cannot be null or empty");
+        }
+        if (productPrice == null || productPrice.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Product price cannot be negative");
+        }
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
