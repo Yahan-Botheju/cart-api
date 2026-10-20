@@ -1,10 +1,10 @@
 package lk.clean.architecture.cart.api._domain.models;
 
+import java.math.BigDecimal;
+
 public class CartItem {
     private Product product;
     private int quantity;
-//    private Money unitPrice;
-//    private Money totalPrice;
 
     /*__CONSTRUCTOR__ */
 
@@ -35,4 +35,8 @@ public class CartItem {
         this.quantity = newQuantity;
     }
 
+    //calculate subtotal
+    public Money calculateSubtotal(){
+        return new Money(product.getProductPrice().amount().multiply(new BigDecimal(quantity)), product.getProductPrice().currency());
+    }
 }
