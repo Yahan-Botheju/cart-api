@@ -24,4 +24,14 @@ public class Cart {
         return Collections.unmodifiableList(cartItems);
     }
 
+    /* __DOMAIN_LOGIC__ */
+
+    //add item
+    public void addItem(CartItem newItem) {
+        if(newItem == null){
+            throw new IllegalArgumentException("Items cannot be empty!");
+        }
+        this.cartItems.add(newItem);
+    }
+
 }
