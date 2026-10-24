@@ -1,6 +1,9 @@
 package lk.clean.architecture.cart.api._domain.models;
 
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Cart {
     private final UUID cartId;
@@ -21,7 +24,9 @@ public class Cart {
         return Collections.unmodifiableList(cartItems);
     }
 
+
     /* __DOMAIN_LOGIC__ */
+
 
     //add item
     public void addItem(CartItem newItem) {
@@ -50,18 +55,35 @@ public class Cart {
         }
     }
 
+    /* --HELPER_METHOD-- */
+
+    private CartItem checkItem(UUID productId){
+        return cartItems.stream()
+                .filter(item -> item.getProduct().getProductId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("There is no item to be removed!"));
+    }
+
     //remove an item
     public void removeItem(UUID productId) {
         if(productId == null){
             throw new IllegalArgumentException("There is no item to be removed!");
         }
         //check item existence
-        CartItem existingItem = cartItems.stream()
-                .filter(item -> item.getProduct().getProductId().equals(productId))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("There is no item to be removed!"));
+        CartItem existingItem = checkItem(productId);
+
         //remove item from the list
         cartItems.remove(existingItem);
+    }
+
+    //replace quantity
+    public void replaceExistingQuantity(UUID productId, int newQuantity) {
+        if(productId == null || newQuantity <= 0){
+            throw new IllegalArgumentException("Required fields cannot be empty!");
+        }
+
+
+        existingItem.replaceQuantity(newQuantity);
     }
 
 }
