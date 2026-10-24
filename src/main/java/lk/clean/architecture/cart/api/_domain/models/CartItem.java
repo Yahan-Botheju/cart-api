@@ -35,6 +35,14 @@ public class CartItem {
         this.quantity = newQuantity;
     }
 
+    //increase cartItem quantity
+    public void incrementQuantity(int newQuantity){
+        if(newQuantity <= 0){
+            throw new IllegalArgumentException("There is no quantity to add!");
+        }
+        this.quantity += newQuantity;
+    }
+
     //calculate subtotal
     public Money calculateSubtotal(){
         return new Money(product.getProductPrice().amount().multiply(new BigDecimal(quantity)), product.getProductPrice().currency());
