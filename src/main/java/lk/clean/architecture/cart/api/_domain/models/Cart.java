@@ -1,9 +1,6 @@
 package lk.clean.architecture.cart.api._domain.models;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Cart {
     private final UUID cartId;
@@ -32,6 +29,25 @@ public class Cart {
             throw new IllegalArgumentException("Items cannot be empty!");
         }
         this.cartItems.add(newItem);
+    }
+
+
+    //add items without duplicates
+    public void addItemWithoutDuplicates(CartItem newItem) {
+        if(newItem == null){
+            throw new IllegalArgumentException("Items cannot be empty!");
+        }
+        //check product existence
+        CartItem existingItem = cartItems.stream()
+                .filter(item -> item.getProduct().getProductId().equals(newItem.getProduct().getProductId()))
+                .findFirst().orElse(null);
+
+        //call and cartItem quantity mutate method else add new item to array
+        if (existingItem != null) {
+           existingItem.incrementQuantity(newItem.getQuantity());
+        }else{
+            addItem(newItem);
+        }
     }
 
 }
