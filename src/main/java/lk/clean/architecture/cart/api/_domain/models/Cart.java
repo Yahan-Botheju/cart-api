@@ -69,7 +69,7 @@ public class Cart {
         if(productId == null){
             throw new IllegalArgumentException("There is no item to be removed!");
         }
-        //check item existence
+        //check item existence through helper method
         CartItem existingItem = checkItem(productId);
 
         //remove item from the list
@@ -82,7 +82,9 @@ public class Cart {
             throw new IllegalArgumentException("Required fields cannot be empty!");
         }
 
-
+        //check item existence through helper method
+        CartItem existingItem = checkItem(productId);
+        //call cartItem method to replace quantity
         existingItem.replaceQuantity(newQuantity);
     }
 
