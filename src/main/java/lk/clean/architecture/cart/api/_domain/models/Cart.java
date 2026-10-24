@@ -50,4 +50,18 @@ public class Cart {
         }
     }
 
+    //remove an item
+    public void removeItem(UUID productId) {
+        if(productId == null){
+            throw new IllegalArgumentException("There is no item to be removed!");
+        }
+        //check item existence
+        CartItem existingItem = cartItems.stream()
+                .filter(item -> item.getProduct().getProductId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("There is no item to be removed!"));
+        //remove item from the list
+        cartItems.remove(existingItem);
+    }
+
 }
