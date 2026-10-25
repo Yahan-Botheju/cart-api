@@ -46,30 +46,30 @@ public class Cart {
          return cartItem.getProduct().getProductPrice().currency().equals(this.currency);
     }
 
-
-
-    /* __PUBLIC_METHODS__ */
-
     //add item
-    public void addItem(CartItem newItem) {
+    private void addNewItem(CartItem newItem) {
         if(newItem == null){
             throw new IllegalArgumentException("Items cannot be empty!");
         }
         //check currency
-        if(!currencyCheck()){
+        if(!currencyCheck(newItem)){
             throw new IllegalStateException("Invalid currency!");
         }
 
         this.cartItems.add(newItem);
     }
 
+
+    /* __PUBLIC_METHODS__ */
+
+
     //add items without duplicates
-    public void addItemWithoutDuplicates(CartItem newItem) {
+    public void addItem(CartItem newItem) {
         if(newItem == null){
             throw new IllegalArgumentException("Items cannot be empty!");
         }
         //check currency
-        if(!currencyCheck()){
+        if(!currencyCheck(newItem)){
             throw new IllegalStateException("Invalid currency!");
         }
 
@@ -82,7 +82,7 @@ public class Cart {
         if (existingItem != null) {
            existingItem.incrementQuantity(newItem.getQuantity());
         }else{
-            addItem(newItem);
+            addNewItem(newItem);
         }
     }
 
@@ -112,10 +112,6 @@ public class Cart {
 
     //calculate total
     public Money calculateTotal(){
-        //check currency
-        if(!currencyCheck()){
-            throw new IllegalStateException("Invalid currency!");
-        }
         //total calculation
         BigDecimal totalAmount = cartItems.stream()
                 .map(item -> item.getProduct().getProductPrice().amount().multiply(BigDecimal.valueOf(item.getQuantity())))
