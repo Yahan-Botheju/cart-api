@@ -33,12 +33,20 @@ public class Cart {
 
     /* __HELPER_METHODS__ */
 
+    //item checking
     private CartItem checkItem(UUID productId){
         return cartItems.stream()
                 .filter(item -> item.getProduct().getProductId().equals(productId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("There is no item to be removed!"));
     }
+
+    //check currency
+    private boolean currencyCheck(){
+        return cartItems.stream()
+                .allMatch(item -> item.getProduct().getProductPrice().currency().equals(this.currency));
+    }
+
 
 
     /* __PUBLIC_METHODS__ */
@@ -95,9 +103,9 @@ public class Cart {
 
     //calculate total
     public Money calculateTotal(){
-        //check each cart items are in correct currency
-        boolean checkCurrencyMatch = cartItems.stream()
-                .allMatch(item -> item.getProduct().getProductPrice().currency().equals(this.currency));
+        //use helper method
+        boolean checkCurrencyMatch = currencyCheck();
+
         //currency validation
         if(!checkCurrencyMatch){
             throw new IllegalStateException("Invalid currency!");
