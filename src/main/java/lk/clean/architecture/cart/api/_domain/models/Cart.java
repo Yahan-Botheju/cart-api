@@ -56,6 +56,11 @@ public class Cart {
         if(newItem == null){
             throw new IllegalArgumentException("Items cannot be empty!");
         }
+        //check currency
+        if(!currencyCheck()){
+            throw new IllegalStateException("Invalid currency!");
+        }
+
         this.cartItems.add(newItem);
     }
 
@@ -64,6 +69,11 @@ public class Cart {
         if(newItem == null){
             throw new IllegalArgumentException("Items cannot be empty!");
         }
+        //check currency
+        if(!currencyCheck()){
+            throw new IllegalStateException("Invalid currency!");
+        }
+
         //check product existence
         CartItem existingItem = cartItems.stream()
                 .filter(item -> item.getProduct().getProductId().equals(newItem.getProduct().getProductId()))
@@ -103,11 +113,8 @@ public class Cart {
 
     //calculate total
     public Money calculateTotal(){
-        //use helper method
-        boolean checkCurrencyMatch = currencyCheck();
-
-        //currency validation
-        if(!checkCurrencyMatch){
+        //check currency
+        if(!currencyCheck()){
             throw new IllegalStateException("Invalid currency!");
         }
         //total calculation
