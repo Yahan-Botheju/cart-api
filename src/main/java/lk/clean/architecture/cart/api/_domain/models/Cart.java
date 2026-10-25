@@ -2,31 +2,49 @@ package lk.clean.architecture.cart.api._domain.models;
 
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Cart {
     private final UUID cartId;
+    private final String currency;
     private List<CartItem> cartItems;
 
     /* __CONSTRUCTOR__ */
 
-    public Cart() {
+    public Cart(String currency) {
         this.cartId = UUID.randomUUID();
+        if(currency == null || currency.isBlank()) {
+            throw new IllegalArgumentException("Current currency cannot empty");
+        }
+        this.currency = currency.trim();
         this.cartItems = new ArrayList<CartItem>();
     }
 
     /* __GETTERS__ */
 
     public UUID getCartId() { return cartId; }
-
+    public String getCurrency() { return currency; }
     public List<CartItem> getCartItems() {
         return Collections.unmodifiableList(cartItems);
     }
 
 
-    /* __DOMAIN_LOGIC__ */
+    /* ------------------------------DOMAIN_LOGICS---------------------------------------*/
 
+
+    /* __HELPER_METHODS__ */
+
+    private CartItem checkItem(UUID productId){
+        return cartItems.stream()
+                .filter(item -> item.getProduct().getProductId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("There is no item to be removed!"));
+    }
+
+
+    /* __PUBLIC_METHODS__ */
 
     //add item
     public void addItem(CartItem newItem) {
@@ -35,7 +53,6 @@ public class Cart {
         }
         this.cartItems.add(newItem);
     }
-
 
     //add items without duplicates
     public void addItemWithoutDuplicates(CartItem newItem) {
@@ -53,15 +70,6 @@ public class Cart {
         }else{
             addItem(newItem);
         }
-    }
-
-    /* --HELPER_METHOD-- */
-
-    private CartItem checkItem(UUID productId){
-        return cartItems.stream()
-                .filter(item -> item.getProduct().getProductId().equals(productId))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("There is no item to be removed!"));
     }
 
     //remove an item
@@ -88,4 +96,39 @@ public class Cart {
         existingItem.replaceQuantity(newQuantity);
     }
 
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
