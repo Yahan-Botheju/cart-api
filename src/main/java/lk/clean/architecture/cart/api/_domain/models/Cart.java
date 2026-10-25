@@ -126,6 +126,11 @@ public class Cart {
         return new Money(totalAmount, this.currency);
     }
 
+    //clear cart
+    public void clearCart() {
+        cartItems.clear();
+    }
+
 }
 
 
