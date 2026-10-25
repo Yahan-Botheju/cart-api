@@ -100,7 +100,7 @@ public class Cart {
 
     //replace quantity
     public void replaceExistingQuantity(UUID productId, int newQuantity) {
-        if(productId == null || newQuantity <= 0){
+        if(productId == null){
             throw new IllegalArgumentException("Required fields cannot be empty!");
         }
 
