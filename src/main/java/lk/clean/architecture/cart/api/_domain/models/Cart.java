@@ -1,10 +1,7 @@
 package lk.clean.architecture.cart.api._domain.models;
 
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Cart {
     private final UUID cartId;
@@ -96,6 +93,23 @@ public class Cart {
         existingItem.replaceQuantity(newQuantity);
     }
 
+    //calculate total
+    public Money calculateTotal(){
+        //check each cart items are in correct currency
+        boolean checkCurrencyMatch = cartItems.stream()
+                .allMatch(item -> item.getProduct().getProductPrice().currency().equals(this.currency));
+        //currency validation
+        if(!checkCurrencyMatch){
+            throw new IllegalStateException("Invalid currency!");
+        }
+        //total calculation
+        BigDecimal totalAmount = cartItems.stream()
+                .map(item -> item.getProduct().getProductPrice().amount().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal::add)
+                .orElse(BigDecimal.ZERO);
+
+        return new Money(totalAmount, this.currency);
+    }
 
 }
 
