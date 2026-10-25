@@ -35,7 +35,7 @@ public class CartItem {
 
     //replace quantity
     public void replaceQuantity(int newQuantity) {
-        if (newQuantity <= 0) {
+        if (newQuantity <= 0 || newQuantity > MAX_ALLOWED_QUANTITY) {
             throw new IllegalArgumentException("Invalid quantity!");
         }
         this.quantity = newQuantity;
