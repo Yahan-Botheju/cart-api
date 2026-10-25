@@ -42,9 +42,8 @@ public class Cart {
     }
 
     //check currency
-    private boolean currencyCheck(){
-        return cartItems.stream()
-                .allMatch(item -> item.getProduct().getProductPrice().currency().equals(this.currency));
+    private boolean currencyCheck(CartItem cartItem){
+         return cartItem.getProduct().getProductPrice().currency().equals(this.currency);
     }
 
 
