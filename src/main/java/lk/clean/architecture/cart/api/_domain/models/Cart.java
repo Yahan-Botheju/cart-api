@@ -131,6 +131,10 @@ public class Cart {
         cartItems.clear();
     }
 
+    //check cart it empty
+    public boolean isCartEmpty(){
+        return cartItems.isEmpty();
+    }
 }
 
 
