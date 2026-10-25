@@ -3,7 +3,7 @@ package lk.clean.architecture.cart.api._domain.models;
 import java.math.BigDecimal;
 
 public class CartItem {
-    private final int MAX_ALLOWED_QUANTITY = 100;
+    private  static final int MAX_ALLOWED_QUANTITY = 100;
     private Product product;
     private int quantity;
 
