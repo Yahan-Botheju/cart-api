@@ -23,9 +23,17 @@ public class Cart {
 
     public UUID getCartId() { return cartId; }
     public String getCurrency() { return currency; }
-    public List<CartItem> getCartItems() {
-        return Collections.unmodifiableList(cartItems);
+    public List<CartItemSnapshot> getCartItems() {
+        return cartItems.stream()
+                .map(items -> new CartItemSnapshot(
+                        items.getProduct().getProductId(),
+                        items.getProduct().getProductName(),
+                        items.getQuantity(),
+                        items.getProduct().getProductPrice(),
+                        items.calculateSubtotal()
+                )).toList();
     }
+
 
 
     /* ------------------------------DOMAIN_LOGICS---------------------------------------*/
