@@ -131,4 +131,24 @@ class CartItemTest {
 
         assertEquals(20, testCartItem.getQuantity(), "Product Quantity");
     }
+
+    //replace quantity with invalid quantity
+    @Test
+    void shouldReplaceQuantityFailed() {
+        int currentQuantity = 10;
+        int replaceQuantity = 200;
+
+        CartItem testCartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(100), "LKR")),
+                currentQuantity
+        );
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            testCartItem.replaceQuantity(replaceQuantity);
+        });
+
+        assertEquals("Invalid quantity!", exception.getMessage());
+    }
 }
