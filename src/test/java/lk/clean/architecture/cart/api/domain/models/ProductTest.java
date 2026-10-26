@@ -47,9 +47,12 @@ class ProductTest {
         assertEquals(productDescription1, product1.getProductDescription(), "Product description");
         assertEquals(productPrice1, product1.getProductPrice(), "Product price");
 
+        assertNotNull(product2.getProductId(), "Product ID generated");
         assertEquals(productName2, product2.getProductName(), "Product name");
         assertEquals(productDescription2, product2.getProductDescription(), "Product description");
         assertEquals(productPrice2, product2.getProductPrice(), "Product price");
+
+        assertNotEquals(product1.getProductId(), product2.getProductId(), "Product ID are unique");
     }
 
     //Product name is Null
