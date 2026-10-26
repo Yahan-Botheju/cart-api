@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-public class ProductTest {
+class ProductTest {
 
     @Test
     void ProductCreateSuccessfully() {
@@ -37,5 +37,20 @@ public class ProductTest {
         assertThrows(IllegalArgumentException.class, () ->
                 new Product(" ", productDescription, productPrice)
         );
+    }
+
+    @Test
+    void shouldThrowExceptionWhenProductPriceIsNullOrNegative() {
+
+        String productName = "Test-Product-01";
+        String productDescription = "Test-Description-01";
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Product(productName, productDescription, null);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Product(productName, productDescription, new Money(new BigDecimal(-100), "LKR"));
+        });
     }
 }
