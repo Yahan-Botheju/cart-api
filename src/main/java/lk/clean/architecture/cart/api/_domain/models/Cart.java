@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Cart {
-    private  static final int MAXIMUM_ALLOWED_QUANTITY = 100;
+    private static final int MAXIMUM_ALLOWED_QUANTITY = 100;
     private final UUID cartId;
     private final String currency;
     private List<CartItem> cartItems;
@@ -24,8 +24,14 @@ public class Cart {
 
     /* __GETTERS__ */
 
-    public UUID getCartId() { return cartId; }
-    public String getCurrency() { return currency; }
+    public UUID getCartId() {
+        return cartId;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
     public List<CartItemSnapshot> getCartItems() {
         return cartItems.stream()
                 .map(items -> new CartItemSnapshot(
@@ -61,7 +67,7 @@ public class Cart {
     private boolean isCartQuantityExceeded(int newQuantity) {
         return cartItems.stream()
                 .map(item -> item.getQuantity())
-                .reduce(0, (Q1, Q2) -> Q1 + Q2 ) + newQuantity > MAXIMUM_ALLOWED_QUANTITY;
+                .reduce(0, (Q1, Q2) -> Q1 + Q2) + newQuantity > MAXIMUM_ALLOWED_QUANTITY;
 
     }
 
@@ -88,19 +94,22 @@ public class Cart {
             throw new IllegalArgumentException("Items cannot be empty!");
         }
         //check product availability
-        if(!newItem.getProduct().isProductAvailable()){
+        if (!newItem.getProduct().isProductAvailable()) {
             throw new IllegalArgumentException("Product is not available!");
         }
         //check currency
         if (!currencyCheck(newItem)) {
             throw new IllegalStateException("Invalid currency!");
         }
+        //check cart quantity is exceeded
+        if (isCartQuantityExceeded(newItem.getQuantity())) {
+            throw new IllegalStateException("Quantity exceeded!");
+        }
 
         //check product existence
         CartItem existingItem = cartItems.stream()
                 .filter(item -> item.getProduct().getProductId().equals(newItem.getProduct().getProductId()))
                 .findFirst().orElse(null);
-
 
         //call and cartItem quantity mutate method else add new item to array
         if (existingItem != null) {
@@ -109,8 +118,6 @@ public class Cart {
             if (!checkPriceChanges) {
                 throw new IllegalStateException("Invalid product price!");
             }
-
-
 
             existingItem.incrementQuantity(newItem.getQuantity());
         } else {
