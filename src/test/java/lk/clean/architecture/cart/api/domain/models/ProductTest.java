@@ -25,7 +25,7 @@ class ProductTest {
         assertEquals(productName, product.getProductName(), "Product name");
         assertEquals(productDescription, product.getProductDescription(), "Product description");
         assertEquals(productPrice, product.getProductPrice(), "Product price");
-
+        assertTrue(product.isProductAvailable(), "Product availability");
     }
 
     //test multiple instance
@@ -88,6 +88,7 @@ class ProductTest {
         assertEquals("Product price cannot be negative", exception.getMessage());
     }
 
+    //product price is negative
     @Test
     void ShouldThrowExceptionWhenProductPriceIsNegative() {
         String productName = "Test-Product-01";
@@ -97,4 +98,5 @@ class ProductTest {
         });
         assertEquals("Product price cannot be negative", exception.getMessage());
     }
+
 }
