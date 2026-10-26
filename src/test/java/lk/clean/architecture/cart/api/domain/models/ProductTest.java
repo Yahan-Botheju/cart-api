@@ -57,7 +57,7 @@ class ProductTest {
 
     //Product name is Null
     @Test
-    void ShouldThrowExceptionWhenProductNameIsNull() {
+    void shouldThrowExceptionWhenProductNameIsNull() {
         String productDescription = "Test-Description-01";
         Money productPrice = new Money(new BigDecimal(100), "LKR");
 
@@ -69,7 +69,7 @@ class ProductTest {
 
     //product name is empty
     @Test
-    void ShouldThrowExceptionWhenProductNameIsEmpty() {
+    void shouldThrowExceptionWhenProductNameIsEmpty() {
         String productDescription = "Test-Description-01";
         Money productPrice = new Money(new BigDecimal(100), "LKR");
 
@@ -81,7 +81,7 @@ class ProductTest {
 
     //product name is white space
     @Test
-    void ShouldThrowExceptionWhenProductNameIsWhiteSpace() {
+    void shouldThrowExceptionWhenProductNameIsWhiteSpace() {
         String productDescription = "Test-Description-01";
         Money productPrice = new Money(new BigDecimal(100), "LKR");
 
@@ -93,7 +93,7 @@ class ProductTest {
 
     //product price is null
     @Test
-    void ShouldThrowExceptionWhenProductPriceIsNull() {
+    void shouldThrowExceptionWhenProductPriceIsNull() {
         String productName = "Test-Product-01";
         String productDescription = "Test-Description-01";
 
