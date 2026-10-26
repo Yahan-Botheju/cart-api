@@ -3,7 +3,9 @@ package lk.clean.architecture.cart.api.domain.models;
 import lk.clean.architecture.cart.api._domain.models.CartItem;
 import lk.clean.architecture.cart.api._domain.models.Money;
 import lk.clean.architecture.cart.api._domain.models.Product;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -21,7 +23,7 @@ class CartItemTest {
 
         Product testProduct = new Product(productName, productDescription, productPrice);
 
-        CartItem testCartItem = new CartItem(testProduct,  quantity);
+        CartItem testCartItem = new CartItem(testProduct, quantity);
 
         assertNotNull(testCartItem.getProduct().getProductId(), "Product Id is auto generated");
         assertEquals(productName, testCartItem.getProduct().getProductName(), "Product Name");
@@ -37,7 +39,7 @@ class CartItemTest {
         int quantity = 5;
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new CartItem(null,  quantity);
+            new CartItem(null, quantity);
         });
 
         assertEquals("Product cannot be empty!", exception.getMessage());
@@ -55,7 +57,7 @@ class CartItemTest {
         );
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new CartItem(product,  quantity);
+            new CartItem(product, quantity);
         });
 
         assertEquals("Quantity cannot be empty!", exception.getMessage());
@@ -71,7 +73,7 @@ class CartItemTest {
                 new Money(new BigDecimal(100), "LKR")
         );
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new CartItem(product,  quantity);
+            new CartItem(product, quantity);
         });
         assertEquals("Quantity cannot be empty!", exception.getMessage());
     }
@@ -85,7 +87,7 @@ class CartItemTest {
         int quantity = 100;
 
         Product product = new Product(productName, productDescription, productPrice);
-        CartItem testCartItem = new CartItem(product,  quantity);
+        CartItem testCartItem = new CartItem(product, quantity);
 
         assertNotNull(testCartItem.getProduct().getProductId(), "Product Id is auto generated");
         assertEquals(productName, testCartItem.getProduct().getProductName());
@@ -107,8 +109,26 @@ class CartItemTest {
         );
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new CartItem(product,  quantity);
+            new CartItem(product, quantity);
         });
         assertEquals("Quantity exceeded!", exception.getMessage());
+    }
+
+    //replace quantity method check with valid quantity
+    @Test
+    void shouldReplaceQuantitySuccessful() {
+
+        int currentQuantity = 10;
+        int replaceQuantity = 20;
+
+        CartItem testCartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(100), "LKR")),
+                currentQuantity
+        );
+        testCartItem.replaceQuantity(replaceQuantity);
+
+        assertEquals(20, testCartItem.getQuantity(), "Product Quantity");
     }
 }
