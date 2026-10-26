@@ -75,4 +75,23 @@ class CartItemTest {
         });
         assertEquals("Quantity cannot be empty!", exception.getMessage());
     }
+
+    //check when quantity is in MAX_ALLOWED boundary
+    @Test
+    void shouldSuccessWhenQuantityIsHundred() {
+        String productName = "Test-Product-01";
+        String productDescription = "Test-Description-01";
+        Money productPrice = new Money(new BigDecimal(100), "LKR");
+        int quantity = 100;
+
+        Product product = new Product(productName, productDescription, productPrice);
+        CartItem testCartItem = new CartItem(product,  quantity);
+
+        assertNotNull(testCartItem.getProduct().getProductId(), "Product Id is auto generated");
+        assertEquals(productName, testCartItem.getProduct().getProductName());
+        assertEquals(productDescription, testCartItem.getProduct().getProductDescription());
+        assertEquals(productPrice, testCartItem.getProduct().getProductPrice());
+
+        assertEquals(quantity, testCartItem.getQuantity(), "Product Quantity");
+    }
 }
