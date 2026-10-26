@@ -21,14 +21,8 @@ public class Cart {
 
     /* __GETTERS__ */
 
-    public UUID getCartId() {
-        return cartId;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
+    public UUID getCartId() { return cartId; }
+    public String getCurrency() { return currency; }
     public List<CartItemSnapshot> getCartItems() {
         return cartItems.stream()
                 .map(items -> new CartItemSnapshot(
@@ -59,6 +53,12 @@ public class Cart {
     private boolean currencyCheck(CartItem cartItem) {
         return cartItem.getProduct().getProductPrice().currency().equals(this.currency);
     }
+    //get total quantity of cart
+    private int cartItemQuantityTotal() {
+        return cartItems.stream()
+                .map(CartItem::getQuantity)
+                .reduce(0, (qty1, qty2) -> qty1 + qty2);
+    }
 
     //add item
     private void addNewItem(CartItem newItem) {
@@ -81,6 +81,10 @@ public class Cart {
     public void addItem(CartItem newItem) {
         if (newItem == null) {
             throw new IllegalArgumentException("Items cannot be empty!");
+        }
+        //check product availability
+        if(!newItem.getProduct().isProductAvailable()){
+            throw new IllegalArgumentException("Product is not available!");
         }
         //check currency
         if (!currencyCheck(newItem)) {
