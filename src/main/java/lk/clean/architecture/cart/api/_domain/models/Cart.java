@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class Cart {
+    private  static final int MAXIMUM_ALLOWED_QUANTITY = 100;
     private final UUID cartId;
     private final String currency;
     private List<CartItem> cartItems;
