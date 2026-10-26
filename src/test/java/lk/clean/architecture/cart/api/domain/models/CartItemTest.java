@@ -31,5 +31,15 @@ class CartItemTest {
         assertEquals(quantity, testCartItem.getQuantity(), "Product Quantity");
     }
 
+    //check product null when instance create
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenProductIsNull() {
+        int quantity = 5;
 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new CartItem(null,  quantity);
+        });
+
+        assertEquals("Product cannot be empty!", exception.getMessage());
+    }
 }
