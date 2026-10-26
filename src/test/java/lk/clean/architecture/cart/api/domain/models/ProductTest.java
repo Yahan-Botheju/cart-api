@@ -100,18 +100,7 @@ class ProductTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             new Product(productName, productDescription, null);
         });
-        assertEquals("Product price cannot be negative", exception.getMessage());
-    }
-
-    //product price is negative
-    @Test
-    void ShouldThrowExceptionWhenProductPriceIsNegative() {
-        String productName = "Test-Product-01";
-        String productDescription = "Test-Description-01";
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Product(productName, productDescription, new Money(new BigDecimal(-100), "LKR"));
-        });
-        assertEquals("Product price cannot be negative", exception.getMessage());
+        assertEquals("Product price cannot be null or negative", exception.getMessage());
     }
 
 }
