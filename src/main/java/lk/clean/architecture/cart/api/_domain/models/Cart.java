@@ -12,7 +12,7 @@ public class Cart {
 
     public Cart(String currency) {
         this.cartId = UUID.randomUUID();
-        if(currency == null || currency.isBlank()) {
+        if (currency == null || currency.isBlank()) {
             throw new IllegalArgumentException("Current currency cannot empty");
         }
         this.currency = currency.trim();
@@ -21,8 +21,14 @@ public class Cart {
 
     /* __GETTERS__ */
 
-    public UUID getCartId() { return cartId; }
-    public String getCurrency() { return currency; }
+    public UUID getCartId() {
+        return cartId;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
     public List<CartItemSnapshot> getCartItems() {
         return cartItems.stream()
                 .map(items -> new CartItemSnapshot(
@@ -42,7 +48,7 @@ public class Cart {
     /* __HELPER_METHODS__ */
 
     //item checking
-    private CartItem checkItem(UUID productId){
+    private CartItem checkItem(UUID productId) {
         return cartItems.stream()
                 .filter(item -> item.getProduct().getProductId().equals(productId))
                 .findFirst()
@@ -50,17 +56,17 @@ public class Cart {
     }
 
     //check currency
-    private boolean currencyCheck(CartItem cartItem){
-         return cartItem.getProduct().getProductPrice().currency().equals(this.currency);
+    private boolean currencyCheck(CartItem cartItem) {
+        return cartItem.getProduct().getProductPrice().currency().equals(this.currency);
     }
 
     //add item
     private void addNewItem(CartItem newItem) {
-        if(newItem == null){
+        if (newItem == null) {
             throw new IllegalArgumentException("Items cannot be empty!");
         }
         //check currency
-        if(!currencyCheck(newItem)){
+        if (!currencyCheck(newItem)) {
             throw new IllegalStateException("Invalid currency!");
         }
 
@@ -73,11 +79,11 @@ public class Cart {
 
     //add items without duplicates
     public void addItem(CartItem newItem) {
-        if(newItem == null){
+        if (newItem == null) {
             throw new IllegalArgumentException("Items cannot be empty!");
         }
         //check currency
-        if(!currencyCheck(newItem)){
+        if (!currencyCheck(newItem)) {
             throw new IllegalStateException("Invalid currency!");
         }
 
@@ -86,17 +92,23 @@ public class Cart {
                 .filter(item -> item.getProduct().getProductId().equals(newItem.getProduct().getProductId()))
                 .findFirst().orElse(null);
 
+
         //call and cartItem quantity mutate method else add new item to array
         if (existingItem != null) {
-           existingItem.incrementQuantity(newItem.getQuantity());
-        }else{
+            //check existing item price == current item price
+            boolean checkPriceChanges = existingItem.getProduct().getProductPrice().equals(newItem.getProduct().getProductPrice());
+            if (!checkPriceChanges) {
+                throw new IllegalStateException("Invalid product price!");
+            }
+            existingItem.incrementQuantity(newItem.getQuantity());
+        } else {
             addNewItem(newItem);
         }
     }
 
     //remove an item
     public void removeItem(UUID productId) {
-        if(productId == null){
+        if (productId == null) {
             throw new IllegalArgumentException("There is no item to be removed!");
         }
         //check item existence through helper method
@@ -108,7 +120,7 @@ public class Cart {
 
     //replace quantity
     public void replaceExistingQuantity(UUID productId, int newQuantity) {
-        if(productId == null){
+        if (productId == null) {
             throw new IllegalArgumentException("Required fields cannot be empty!");
         }
 
@@ -119,7 +131,7 @@ public class Cart {
     }
 
     //calculate total
-    public Money calculateTotal(){
+    public Money calculateTotal() {
         //total calculation
         BigDecimal totalAmount = cartItems.stream()
                 .map(item -> item.getProduct().getProductPrice().amount().multiply(BigDecimal.valueOf(item.getQuantity())))
@@ -135,7 +147,7 @@ public class Cart {
     }
 
     //check cart it empty
-    public boolean isCartEmpty(){
+    public boolean isCartEmpty() {
         return cartItems.isEmpty();
     }
 }
