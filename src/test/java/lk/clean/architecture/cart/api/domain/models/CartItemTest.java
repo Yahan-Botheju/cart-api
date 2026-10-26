@@ -94,4 +94,21 @@ class CartItemTest {
 
         assertEquals(quantity, testCartItem.getQuantity(), "Product Quantity");
     }
+
+    //check when quantity is exceeded 100 when cartItem instance is created
+    @Test
+    void shouldThrowIllegalExceptionWhenQuantityIsExceedHundred() {
+        int quantity = 101;
+
+        Product product = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(100), "LKR")
+        );
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new CartItem(product,  quantity);
+        });
+        assertEquals("Quantity exceeded!", exception.getMessage());
+    }
 }
