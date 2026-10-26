@@ -16,6 +16,9 @@ public class CartItem {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity cannot be empty!");
         }
+        if(quantity > MAX_ALLOWED_QUANTITY) {
+            throw new IllegalArgumentException("Quantity exceeded!");
+        }
         this.product = product;
         this.quantity = quantity;
     }
