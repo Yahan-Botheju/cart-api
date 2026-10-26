@@ -18,7 +18,7 @@ public class Product {
             throw new IllegalArgumentException("Product name cannot be null or empty");
         }
         if (productPrice == null || productPrice.amount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Product price cannot be negative");
+            throw new IllegalArgumentException("Product price cannot be null or negative");
         }
         this.productName = productName;
         this.productDescription = productDescription;
