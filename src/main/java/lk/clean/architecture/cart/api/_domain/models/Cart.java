@@ -1,7 +1,9 @@
 package lk.clean.architecture.cart.api._domain.models;
 
+import javax.management.Query;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Cart {
     private  static final int MAXIMUM_ALLOWED_QUANTITY = 100;
@@ -54,11 +56,13 @@ public class Cart {
     private boolean currencyCheck(CartItem cartItem) {
         return cartItem.getProduct().getProductPrice().currency().equals(this.currency);
     }
+
     //get total quantity of cart
-    private int cartItemQuantityTotal() {
+    private boolean isCartQuantityExceeded(int newQuantity) {
         return cartItems.stream()
-                .map(CartItem::getQuantity)
-                .reduce(0, (qty1, qty2) -> qty1 + qty2);
+                .map(item -> item.getQuantity())
+                .reduce(0, (Q1, Q2) -> Q1 + Q2 ) + newQuantity > MAXIMUM_ALLOWED_QUANTITY;
+
     }
 
     //add item
@@ -105,6 +109,9 @@ public class Cart {
             if (!checkPriceChanges) {
                 throw new IllegalStateException("Invalid product price!");
             }
+
+
+
             existingItem.incrementQuantity(newItem.getQuantity());
         } else {
             addNewItem(newItem);
