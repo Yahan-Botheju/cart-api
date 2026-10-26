@@ -42,4 +42,22 @@ class CartItemTest {
 
         assertEquals("Product cannot be empty!", exception.getMessage());
     }
+
+    //check quantity is zero
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenQuantityIsZero() {
+        int quantity = 0;
+
+        Product product = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(100), "LKR")
+        );
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new CartItem(product,  quantity);
+        });
+
+        assertEquals("Quantity cannot be empty!", exception.getMessage());
+    }
 }
