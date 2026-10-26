@@ -60,4 +60,19 @@ class CartItemTest {
 
         assertEquals("Quantity cannot be empty!", exception.getMessage());
     }
+
+    //check when quantity is negative
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenQuantityIsNegative() {
+        int quantity = -1;
+        Product product = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(100), "LKR")
+        );
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new CartItem(product,  quantity);
+        });
+        assertEquals("Quantity cannot be empty!", exception.getMessage());
+    }
 }
