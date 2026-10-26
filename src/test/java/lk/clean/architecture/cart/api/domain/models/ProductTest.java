@@ -23,4 +23,19 @@ public class ProductTest {
         assertEquals(productDescription, product.getProductDescription());
         assertEquals(productPrice, product.getProductPrice());
     }
+
+    @Test
+    void shouldThrowExceptionWhenProductNameIsNullOrEmpty() {
+
+        String productDescription = "Test-Description-01";
+        Money productPrice =  new Money(new BigDecimal(100), "LKR");
+
+        assertThrows(IllegalArgumentException.class, () ->
+                new Product(null, productDescription, productPrice)
+        );
+
+        assertThrows(IllegalArgumentException.class, () ->
+                new Product(" ", productDescription, productPrice)
+        );
+    }
 }
