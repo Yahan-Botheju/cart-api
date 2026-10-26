@@ -79,6 +79,18 @@ class ProductTest {
         assertEquals("Product name cannot be null or empty", exception.getMessage());
     }
 
+    //product name is white space
+    @Test
+    void ShouldThrowExceptionWhenProductNameIsWhiteSpace() {
+        String productDescription = "Test-Description-01";
+        Money productPrice = new Money(new BigDecimal(100), "LKR");
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Product("  ", productDescription, productPrice);
+        });
+        assertEquals("Product name cannot be null or empty", exception.getMessage());
+    }
+
     //product price is null
     @Test
     void ShouldThrowExceptionWhenProductPriceIsNull() {
