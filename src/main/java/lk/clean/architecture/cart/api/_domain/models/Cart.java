@@ -142,7 +142,10 @@ public class Cart {
         if (productId == null) {
             throw new IllegalArgumentException("Required fields cannot be empty!");
         }
-
+        //check cart quantity is exceeded
+        if (isCartQuantityExceeded(newQuantity)) {
+            throw new IllegalStateException("Quantity exceeded!");
+        }
         //check item existence through helper method
         CartItem existingItem = checkItem(productId);
         //call cartItem method to replace quantity
