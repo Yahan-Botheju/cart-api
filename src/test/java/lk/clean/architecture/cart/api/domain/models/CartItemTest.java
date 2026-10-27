@@ -134,7 +134,7 @@ class CartItemTest {
 
     //replace quantity with invalid quantity
     @Test
-    void shouldReplaceQuantityFailedWithBoundaryValue() {
+    void shouldReplaceQuantityFailedWithBoundaryValueExceed() {
         int currentQuantity = 10;
         int replaceQuantity = 101;
 
@@ -153,7 +153,25 @@ class CartItemTest {
         assertEquals(10, testCartItem.getQuantity(), "Existing quantity should not be changed!");
     }
 
-    //increment quantity successfully
+    //replace quantity with invalid quantity
+    @Test
+    void shouldReplaceQuantitySuccessWithBoundaryValue() {
+        int currentQuantity = 10;
+        int replaceQuantity = 100;
+
+        CartItem testCartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(100), "LKR")),
+                currentQuantity
+        );
+
+        testCartItem.replaceQuantity(replaceQuantity);
+
+        assertEquals(100, testCartItem.getQuantity(), "Existing quantity should not be changed!");
+    }
+
+    //increment quantity successfully with boundary value
     @Test
     void shouldIncrementQuantitySuccessful() {
         int currentQuantity = 10;
@@ -167,7 +185,6 @@ class CartItemTest {
         );
 
         testCartItem.incrementQuantity(increaseQuantity);
-
         assertEquals(30, testCartItem.getQuantity(), "Product Quantity");
     }
 
