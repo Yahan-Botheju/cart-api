@@ -68,4 +68,21 @@ class CartTest {
         assertEquals("Product is not available!", exception.getMessage());
     }
 
+    //check cart product currency compatible with cart currency
+    @Test
+    void shouldThrowIllegalStateExceptionWhenCurrencyIsNotMatching(){
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(20), "EU")), 3);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            cart.addItem(cartItem);
+        });
+
+        assertEquals("Invalid currency!", exception.getMessage());
+    }
+
 }
