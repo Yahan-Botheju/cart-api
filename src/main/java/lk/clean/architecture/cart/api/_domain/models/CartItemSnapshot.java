@@ -5,6 +5,7 @@ import java.util.UUID;
 public record CartItemSnapshot(
         UUID productId,
         String productName,
+        String productDescription,
         int quantity,
         Money unitPrice,
         Money subTotal

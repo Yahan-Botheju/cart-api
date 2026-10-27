@@ -37,6 +37,7 @@ public class Cart {
                 .map(items -> new CartItemSnapshot(
                         items.getProduct().getProductId(),
                         items.getProduct().getProductName(),
+                        items.getProduct().getProductDescription(),
                         items.getQuantity(),
                         items.getProduct().getProductPrice(),
                         items.calculateSubtotal()
