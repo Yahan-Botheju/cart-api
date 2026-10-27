@@ -37,5 +37,18 @@ class CartTest {
 
     }
 
+    //add null item to cart
+    @Test
+    void shouldThrowIllegalArgumentException(){
+
+        Cart cart = new Cart("LKR");
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+             cart.addItem(null);
+        });
+
+        assertEquals("Items cannot be empty!", exception.getMessage());
+    }
+
 
 }
