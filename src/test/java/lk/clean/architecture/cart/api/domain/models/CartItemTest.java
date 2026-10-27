@@ -150,6 +150,7 @@ class CartItemTest {
         });
 
         assertEquals("Invalid quantity!", exception.getMessage());
+        assertEquals(10, testCartItem.getQuantity(), "Existing quantity should not be changed!");
     }
 
     //increment quantity successfully
@@ -187,6 +188,7 @@ class CartItemTest {
             testCartItem.incrementQuantity(increaseQuantity);
         });
         assertEquals("Invalid quantity!", exception.getMessage());
+        assertEquals(10, testCartItem.getQuantity(), "Existing quantity should not be changed!");
     }
 
     //calculate subtotal correctly
@@ -196,13 +198,13 @@ class CartItemTest {
         CartItem testCartItem = new CartItem(new Product(
                 "Test-Product-01",
                 "Test-Description-01",
-                new Money(new BigDecimal(100), "LKR")),
+                new Money(new BigDecimal("100"), "LKR")),
                 5
         );
 
         Money subtotal = testCartItem.calculateSubtotal();
 
-        assertEquals(new BigDecimal(500), subtotal.amount(), "subtotal should be correct!");
+        assertEquals(new BigDecimal("500"), subtotal.amount(), "subtotal should be correct!");
         assertEquals("LKR", subtotal.currency(), "currency should be correct!");
     }
 }
