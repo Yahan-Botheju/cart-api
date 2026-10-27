@@ -113,4 +113,27 @@ class CartTest {
         assertEquals("Quantity exceeded!", exception.getMessage());
         assertEquals(10, availableItems.quantity(), "Existing Quantity state not be changed");
     }
+
+    //check quantity increasing when same product adding but quantity change
+    @Test
+    void shouldIncrementQuantityWhenAddSameProduct() {
+        Cart cart = new Cart("LKR");
+
+        Product product = new Product(
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal(20), "LKR")
+        );
+
+        CartItem firstAdd = new CartItem(product, 2);
+        CartItem secondAdd = new CartItem(product, 3);
+
+        cart.addItem(firstAdd);
+        cart.addItem(secondAdd);
+
+        CartItemSnapshot addedItems = cart.getCartItems().get(0);
+
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(5, addedItems.quantity(), "Added quantity should be 5 by incrementing");
+    }
 }
