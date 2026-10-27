@@ -240,4 +240,27 @@ class CartTest {
 
         assertEquals("There is no item to be removed!", exception.getMessage());
     }
+
+    /* __CART_REPLACE_QUANTITY__ */
+
+    //replace new quantity
+    @Test
+    void shouldReplaceQuantitySuccessful() {
+        //new quantity
+        int newQuantity = 5;
+
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("20"), "LKR")), 2);
+
+        cart.addItem(cartItem);
+        //replace with new quantity
+        cart.replaceExistingQuantity(cartItem.getProduct().getProductId(), newQuantity);
+
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(5, cartItem.getQuantity(), "CartItem Quantity should be 1");
+    }
 }
