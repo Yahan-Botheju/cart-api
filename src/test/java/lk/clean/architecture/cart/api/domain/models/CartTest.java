@@ -11,9 +11,9 @@ class CartTest {
 
     //add valid Item to cart
     @Test
-    void shouldCartItemAddSuccessful(){
+    void shouldCartItemAddSuccessful() {
 
-        CartItem cartItem  = new CartItem(new Product("Test-Product-01","Test-Description-01", new Money(new BigDecimal(20), "LKR")), 2);
+        CartItem cartItem = new CartItem(new Product("Test-Product-01", "Test-Description-01", new Money(new BigDecimal(20), "LKR")), 2);
         Cart cart = new Cart("LKR");
 
         cart.addItem(cartItem);
@@ -29,27 +29,26 @@ class CartTest {
         //check Product
         assertNotNull(checkAddItemDetails.productId(), "ProductId is not null");
         assertEquals("Test-Product-01", checkAddItemDetails.productName(), "Product name should be match");
-        assertEquals("Test-Description-01",  checkAddItemDetails.productDescription(), "Product description should be match");
+        assertEquals("Test-Description-01", checkAddItemDetails.productDescription(), "Product description should be match");
         assertEquals(new BigDecimal("20"), checkAddItemDetails.unitPrice().amount(), "Unit price should be match");
         assertEquals("LKR", checkAddItemDetails.unitPrice().currency(), "Currency should be match");
 
         assertEquals(2, checkAddItemDetails.quantity(), "Quantity should be match");
-
     }
 
     //add null item to cart
     @Test
-    void shouldThrowIllegalArgumentException(){
+    void shouldThrowIllegalArgumentException() {
         Cart cart = new Cart("LKR");
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-             cart.addItem(null);
+            cart.addItem(null);
         });
         assertEquals("Items cannot be empty!", exception.getMessage());
     }
 
     //check unavailable product
     @Test
-    void shouldThrowIllegalArgumentExceptionWhenProductIsNotAvailable(){
+    void shouldThrowIllegalArgumentExceptionWhenProductIsNotAvailable() {
         Cart cart = new Cart("LKR");
 
         Product unavailableProduct = new Product(
@@ -65,12 +64,14 @@ class CartTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             cart.addItem(cartItem);
         });
+
         assertEquals("Product is not available!", exception.getMessage());
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
     }
 
     //check cart product currency compatible with cart currency
     @Test
-    void shouldThrowIllegalStateExceptionWhenCurrencyIsNotMatching(){
+    void shouldThrowIllegalStateExceptionWhenCurrencyIsNotMatching() {
         Cart cart = new Cart("LKR");
 
         CartItem cartItem = new CartItem(new Product(
@@ -83,11 +84,12 @@ class CartTest {
         });
 
         assertEquals("Invalid currency!", exception.getMessage());
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
     }
 
     //check cart quantity exceed validation
     @Test
-    void shouldThrowIllegalStateExceptionWhenQuantityIsExceedAllowedQuantity(){
+    void shouldThrowIllegalStateExceptionWhenQuantityIsExceedAllowedQuantity() {
         Cart cart = new Cart("LKR");
 
         CartItem itemA = new CartItem(new Product(
@@ -96,9 +98,9 @@ class CartTest {
                 new Money(new BigDecimal(20), "LKR")), 10);
 
         CartItem itemB = new CartItem(new Product(
-                "Test-Product-01",
-                "Test-Description-01",
-                new Money(new BigDecimal(20), "LKR")), 91);
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal(30), "LKR")), 91);
 
         cart.addItem(itemA);
 
@@ -111,5 +113,4 @@ class CartTest {
         assertEquals("Quantity exceeded!", exception.getMessage());
         assertEquals(10, availableItems.quantity(), "Existing Quantity state not be changed");
     }
-
 }
