@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 class CartTest {
 
@@ -199,7 +200,7 @@ class CartTest {
                 "Test-Description-01",
                 new Money(new BigDecimal("20"), "LKR")), 2);
 
-        CartItem cartItemB = new CartItem (new Product(
+        CartItem cartItemB = new CartItem(new Product(
                 "Test-Product-01",
                 "Test-Description-01",
                 new Money(new BigDecimal("20"), "LKR")), 5);
@@ -210,6 +211,23 @@ class CartTest {
         //remove item from cart
         cart.removeItem(cartItemA.getProduct().getProductId());
 
+        CartItemSnapshot removedItems = cart.getCartItems().get(0);
+
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(5, removedItems.quantity(), "Available quantity should be 5");
+        System.out.println(removedItems.productId());
     }
+
+    //check unavailable product can be removed
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenRemoveItemIsNotAvailable() {
+        Cart cart = new Cart("LKR");
+        UUID mockProductId = UUID.randomUUID();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cart.removeItem(mockProductId);
+        });
+        assertEquals("There is no item to be removed!", exception.getMessage());
+    }
+
 }
