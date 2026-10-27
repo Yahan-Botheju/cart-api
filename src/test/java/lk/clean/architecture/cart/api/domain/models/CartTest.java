@@ -1,4 +1,41 @@
 package lk.clean.architecture.cart.api.domain.models;
 
-public class CartTest {
+import lk.clean.architecture.cart.api._domain.models.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.math.BigDecimal;
+
+class CartTest {
+
+    //add valid Item to cart
+    @Test
+    void shouldCartItemAddSuccessful(){
+
+        CartItem cartItem  = new CartItem(new Product("Test-Product-01","Test-Description-01",new Money(new BigDecimal(20), "LKR")), 2);
+        Cart cart = new Cart("LKR");
+
+        cart.addItem(cartItem);
+
+        //check cart
+        assertNotNull(cart.getCartId(), "CartId cannot be null");
+        assertEquals("LKR", cart.getCurrency(), "Currency is not correct");
+        assertEquals(1, cart.getCartItems().size(), "CartItems contain 1 item");
+
+        //get return values through record class
+        CartItemSnapshot checkAddItemDetails = cart.getCartItems().get(0);
+
+        //check Product
+        assertNotNull(checkAddItemDetails.productId(), "ProductId is not null");
+        assertEquals("Test-Product-01", checkAddItemDetails.productName(), "Product name should be match");
+        assertEquals("Test-Description-01",  checkAddItemDetails.productDescription(), "Product description should be match");
+        assertEquals(new BigDecimal("20"), checkAddItemDetails.unitPrice().amount(), "Unit price should be match");
+        assertEquals("LKR", checkAddItemDetails.unitPrice().currency(), "Currency should be match");
+
+        assertEquals(2, checkAddItemDetails.quantity(), "Quantity should be match");
+
+    }
+
+
 }
