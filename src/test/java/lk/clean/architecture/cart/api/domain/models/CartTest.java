@@ -215,7 +215,6 @@ class CartTest {
 
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
         assertEquals(5, removedItems.quantity(), "Available quantity should be 5");
-        System.out.println(removedItems.productId());
     }
 
     //check unavailable product can be removed
@@ -232,7 +231,7 @@ class CartTest {
 
     //check null product ID
     @Test
-    void shouldThrowIllegalStateExceptionWhenNullProductId() {
+    void shouldThrowIllegalArgumentExceptionWhenNullProductId() {
         Cart cart = new Cart("LKR");
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
