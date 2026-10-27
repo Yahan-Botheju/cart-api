@@ -114,7 +114,7 @@ class CartTest {
         assertEquals(10, availableItems.quantity(), "Existing Quantity state not be changed");
     }
 
-    //check quantity increasing when same product adding but quantity change
+    //check quantity increasing when same product adding but quantity should change
     @Test
     void shouldIncrementQuantityWhenAddSameProduct() {
         Cart cart = new Cart("LKR");
@@ -135,5 +135,28 @@ class CartTest {
 
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
         assertEquals(5, addedItems.quantity(), "Added quantity should be 5 by incrementing");
+    }
+
+    //add different products
+    @Test
+    void shouldSuccessfullyAddProducts() {
+        Cart cart = new Cart("LKR");
+
+        CartItem itemA = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(20), "LKR")), 2);
+
+        CartItem itemB = new CartItem(new Product(
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal(30), "LKR")), 4);
+
+        cart.addItem(itemA);
+        cart.addItem(itemB);
+
+        assertEquals(2,cart.getCartItems().size(), "Cart items count should be 2");
+        assertEquals(2,itemA.getQuantity(), "Second Added quantity should be 2");
+        assertEquals(4,itemB.getQuantity(), "Added quantity should be 4");
     }
 }
