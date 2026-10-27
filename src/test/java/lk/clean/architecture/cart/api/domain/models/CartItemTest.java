@@ -188,4 +188,22 @@ class CartItemTest {
         });
         assertEquals("Invalid quantity!", exception.getMessage());
     }
+
+    //calculate subtotal correctly
+    @Test
+    void calculateSubTotalSuccessful() {
+
+        CartItem testCartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(100), "LKR")),
+                5
+        );
+
+        Money subtotal = testCartItem.calculateSubtotal();
+
+        assertEquals(new BigDecimal(500), subtotal.amount(), "subtotal should be correct!");
+        assertEquals("LKR", subtotal.currency(), "currency should be correct!");
+    }
 }
+
