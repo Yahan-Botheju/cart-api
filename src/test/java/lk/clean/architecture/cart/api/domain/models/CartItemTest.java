@@ -134,9 +134,9 @@ class CartItemTest {
 
     //replace quantity with invalid quantity
     @Test
-    void shouldReplaceQuantityFailed() {
+    void shouldReplaceQuantityFailedWithBoundaryValue() {
         int currentQuantity = 10;
-        int replaceQuantity = 200;
+        int replaceQuantity = 101;
 
         CartItem testCartItem = new CartItem(new Product(
                 "Test-Product-01",
@@ -190,6 +190,28 @@ class CartItemTest {
         assertEquals("Invalid quantity!", exception.getMessage());
         assertEquals(10, testCartItem.getQuantity(), "Existing quantity should not be changed!");
     }
+
+    //increment quantity check with boundary value exceeded
+    @Test
+    void shouldIncrementQuantityFailedWithBoundaryValue() {
+        int currentQuantity = 10;
+        int increaseQuantity = 91;
+
+        CartItem testCartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")),
+                currentQuantity
+        );
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            testCartItem.incrementQuantity(increaseQuantity);
+        });
+
+        assertEquals("Invalid quantity!", exception.getMessage());
+        assertEquals(10, testCartItem.getQuantity(), "Existing quantity should not be changed!");
+    }
+
+
 
     //calculate subtotal correctly
     @Test
