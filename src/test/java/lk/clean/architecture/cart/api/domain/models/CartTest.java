@@ -13,7 +13,7 @@ class CartTest {
     @Test
     void shouldCartItemAddSuccessful(){
 
-        CartItem cartItem  = new CartItem(new Product("Test-Product-01","Test-Description-01",new Money(new BigDecimal(20), "LKR")), 2);
+        CartItem cartItem  = new CartItem(new Product("Test-Product-01","Test-Description-01", new Money(new BigDecimal(20), "LKR")), 2);
         Cart cart = new Cart("LKR");
 
         cart.addItem(cartItem);
@@ -40,15 +40,32 @@ class CartTest {
     //add null item to cart
     @Test
     void shouldThrowIllegalArgumentException(){
-
         Cart cart = new Cart("LKR");
-
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
              cart.addItem(null);
         });
-
         assertEquals("Items cannot be empty!", exception.getMessage());
     }
 
+    //check unavailable product
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenProductIsNotAvailable(){
+        Cart cart = new Cart("LKR");
+
+        Product unavailableProduct = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(20), "LKR"));
+
+        //make product deactivate
+        unavailableProduct.setProductUnavailable();
+
+        CartItem cartItem = new CartItem(unavailableProduct, 2);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cart.addItem(cartItem);
+        });
+        assertEquals("Product is not available!", exception.getMessage());
+    }
 
 }
