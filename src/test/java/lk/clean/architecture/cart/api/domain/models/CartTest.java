@@ -285,4 +285,25 @@ class CartTest {
         });
         assertEquals("There is no item to be removed!", exception.getMessage());
     }
+
+    //check with invalid quantity replace
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenQuantityInvalid() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("20"), "LKR")), 2);
+
+        cart.addItem(cartItem);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cart.replaceExistingQuantity(cartItem.getProduct().getProductId(), -1);
+        });
+
+        assertEquals("Invalid quantity!", exception.getMessage());
+        assertEquals(1,  cart.getCartItems().size(), "Cart items count should be 1" );
+        assertEquals(2, cartItem.getQuantity(), "CartItem Quantity should be 2");
+    }
 }
