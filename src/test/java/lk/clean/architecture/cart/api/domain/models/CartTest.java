@@ -54,7 +54,7 @@ class CartTest {
         Product unavailableProduct = new Product(
                 "Test-Product-01",
                 "Test-Description-01",
-                new Money(new BigDecimal(20), "LKR"));
+                new Money(new BigDecimal("20"), "LKR"));
 
         //make product deactivate
         unavailableProduct.setProductUnavailable();
@@ -77,7 +77,7 @@ class CartTest {
         CartItem cartItem = new CartItem(new Product(
                 "Test-Product-01",
                 "Test-Description-01",
-                new Money(new BigDecimal(20), "EU")), 3);
+                new Money(new BigDecimal("20"), "EU")), 3);
 
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
             cart.addItem(cartItem);
@@ -95,12 +95,12 @@ class CartTest {
         CartItem itemA = new CartItem(new Product(
                 "Test-Product-01",
                 "Test-Description-01",
-                new Money(new BigDecimal(20), "LKR")), 10);
+                new Money(new BigDecimal("20"), "LKR")), 10);
 
         CartItem itemB = new CartItem(new Product(
                 "Test-Product-02",
                 "Test-Description-02",
-                new Money(new BigDecimal(30), "LKR")), 91);
+                new Money(new BigDecimal("30"), "LKR")), 91);
 
         cart.addItem(itemA);
 
@@ -122,7 +122,7 @@ class CartTest {
         Product product = new Product(
                 "Test-Product-02",
                 "Test-Description-02",
-                new Money(new BigDecimal(20), "LKR")
+                new Money(new BigDecimal("20"), "LKR")
         );
 
         CartItem firstAdd = new CartItem(product, 2);
@@ -145,18 +145,44 @@ class CartTest {
         CartItem itemA = new CartItem(new Product(
                 "Test-Product-01",
                 "Test-Description-01",
-                new Money(new BigDecimal(20), "LKR")), 2);
+                new Money(new BigDecimal("20"), "LKR")), 2);
 
         CartItem itemB = new CartItem(new Product(
                 "Test-Product-02",
                 "Test-Description-02",
-                new Money(new BigDecimal(30), "LKR")), 4);
+                new Money(new BigDecimal("30"), "LKR")), 4);
 
         cart.addItem(itemA);
         cart.addItem(itemB);
 
-        assertEquals(2,cart.getCartItems().size(), "Cart items count should be 2");
-        assertEquals(2,itemA.getQuantity(), "Second Added quantity should be 2");
-        assertEquals(4,itemB.getQuantity(), "Added quantity should be 4");
+        CartItemSnapshot addedItems1 = cart.getCartItems().get(0);
+        CartItemSnapshot addedItems2 = cart.getCartItems().get(1);
+
+        assertEquals(2, cart.getCartItems().size(), "Cart items count should be 2");
+        assertEquals(2, addedItems1.quantity(), "Product quantity should be 2");
+        assertEquals(4, addedItems2.quantity(), "Product quantity should be 4");
+    }
+
+    @Test
+    void shouldThrowIllegalStateExceptionWhenExceedAllowedQuantityInSameProduct() {
+        Cart cart = new Cart("LKR");
+
+        Product product = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("20"), "LKR"));
+
+        CartItem firstAdd = new CartItem(product, 60);
+        CartItem secondAdd = new CartItem(product, 41);
+
+        cart.addItem(firstAdd);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            cart.addItem(secondAdd);
+        });
+
+        assertEquals("Quantity exceeded!", exception.getMessage());
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(60, firstAdd.getQuantity(), "First Added quantity should not be changed");
     }
 }
