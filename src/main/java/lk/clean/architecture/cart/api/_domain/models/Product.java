@@ -35,4 +35,17 @@ public class Product {
     public boolean isProductAvailable() { return isProductAvailable; }
 
 
+    /* __DOMAIN_LOGICS__ */
+
+    //make product available
+    public void setProductAvailable() {
+        this.isProductAvailable = true;
+    }
+
+    //make product unavailable
+    public void setProductUnavailable() {
+        this.isProductAvailable = false;
+    }
+
+
 }
