@@ -151,4 +151,22 @@ class CartItemTest {
 
         assertEquals("Invalid quantity!", exception.getMessage());
     }
+
+    //increment quantity successfully
+    @Test
+    void shouldIncrementQuantitySuccessful() {
+        int currentQuantity = 10;
+        int increaseQuantity = 20;
+
+        CartItem testCartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(100), "LKR")),
+                currentQuantity
+        );
+
+        testCartItem.incrementQuantity(increaseQuantity);
+
+        assertEquals(30, testCartItem.getQuantity(), "Product Quantity");
+    }
 }
