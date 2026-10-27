@@ -246,5 +246,62 @@ class CartItemTest {
         assertEquals(new BigDecimal("500"), subtotal.amount(), "subtotal should be correct!");
         assertEquals("LKR", subtotal.currency(), "currency should be correct!");
     }
+
+    /* __MORE_SCENARIOS_FOR_SUBTOTAL_TEST__ */
+
+
+    //quantity = 1, unitePrice = 1 ==> subtotal = 1
+    @Test
+    void calculateSubTotalScenario1() {
+        int quantity = 1;
+
+        CartItem testCartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("1"), "LKR")),
+                quantity
+        );
+
+        Money subtotal = testCartItem.calculateSubtotal();
+
+        assertEquals(new BigDecimal("1"), subtotal.amount(), "subtotal should be correct!");
+        assertEquals("LKR", subtotal.currency(), "currency should be correct!");
+    }
+
+    //quantity = 3, unitePrice = 100 ==> subtotal = 300,
+    @Test
+    void calculateSubTotalScenario2() {
+        int quantity = 3;
+
+        CartItem testCartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")),
+                quantity
+        );
+
+        Money subtotal = testCartItem.calculateSubtotal();
+
+        assertEquals(new BigDecimal("300"), subtotal.amount(), "subtotal should be correct!");
+        assertEquals("LKR", subtotal.currency(), "currency should be correct!");
+    }
+
+    //quantity = 2, unitePrice = 125.50 ==> subtotal = 251,
+    @Test
+    void calculateSubTotalScenario3() {
+        int  quantity = 2;
+
+        CartItem testCartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("125.50"), "LKR")),
+                quantity
+        );
+
+        Money subtotal = testCartItem.calculateSubtotal();
+
+        assertEquals(new BigDecimal("251.00"), subtotal.amount(), "subtotal should be correct!");
+        assertEquals("LKR", subtotal.currency(), "currency should be correct!");
+    }
 }
 
