@@ -230,4 +230,15 @@ class CartTest {
         assertEquals("There is no item to be removed!", exception.getMessage());
     }
 
+    //check null product ID
+    @Test
+    void shouldThrowIllegalStateExceptionWhenNullProductId() {
+        Cart cart = new Cart("LKR");
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cart.removeItem(null);
+        });
+
+        assertEquals("There is no item to be removed!", exception.getMessage());
+    }
 }
