@@ -85,4 +85,31 @@ class CartTest {
         assertEquals("Invalid currency!", exception.getMessage());
     }
 
+    //check cart quantity exceed validation
+    @Test
+    void shouldThrowIllegalStateExceptionWhenQuantityIsExceedAllowedQuantity(){
+        Cart cart = new Cart("LKR");
+
+        CartItem itemA = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(20), "LKR")), 10);
+
+        CartItem itemB = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal(20), "LKR")), 91);
+
+        cart.addItem(itemA);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            cart.addItem(itemB);
+        });
+
+        CartItemSnapshot availableItems = cart.getCartItems().get(0);
+
+        assertEquals("Quantity exceeded!", exception.getMessage());
+        assertEquals(10, availableItems.quantity(), "Existing Quantity state not be changed");
+    }
+
 }
