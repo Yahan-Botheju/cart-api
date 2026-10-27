@@ -264,7 +264,7 @@ class CartTest {
         assertEquals(5, cartItem.getQuantity(), "CartItem Quantity should be 1");
     }
 
-    //check null product ID
+    //check none exists product ID
     @Test
     void shouldThrowIllegalArgumentExceptionWhenInvalidProductId() {
         Cart cart = new Cart("LKR");
@@ -272,6 +272,16 @@ class CartTest {
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             cart.replaceExistingQuantity(mockProductId, 5);
+        });
+        assertEquals("There is no item to be removed!", exception.getMessage());
+    }
+
+    //check null product ID
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenProductIdIsNull() {
+        Cart cart = new Cart("LKR");
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cart.removeItem(null);
         });
         assertEquals("There is no item to be removed!", exception.getMessage());
     }
