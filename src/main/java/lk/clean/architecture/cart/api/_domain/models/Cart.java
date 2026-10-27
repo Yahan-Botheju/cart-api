@@ -1,9 +1,7 @@
 package lk.clean.architecture.cart.api._domain.models;
 
-import javax.management.Query;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Cart {
     private static final int MAXIMUM_ALLOWED_QUANTITY = 100;
@@ -37,6 +35,7 @@ public class Cart {
                 .map(items -> new CartItemSnapshot(
                         items.getProduct().getProductId(),
                         items.getProduct().getProductName(),
+                        items.getProduct().getProductDescription(),
                         items.getQuantity(),
                         items.getProduct().getProductPrice(),
                         items.calculateSubtotal()
@@ -173,37 +172,3 @@ public class Cart {
         return cartItems.isEmpty();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
