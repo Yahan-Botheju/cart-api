@@ -163,6 +163,7 @@ class CartTest {
         assertEquals(4, addedItems2.quantity(), "Product quantity should be 4");
     }
 
+    // check allowed boundary exceed exception is thrown
     @Test
     void shouldThrowIllegalStateExceptionWhenExceedAllowedQuantityInSameProduct() {
         Cart cart = new Cart("LKR");
@@ -184,5 +185,31 @@ class CartTest {
         assertEquals("Quantity exceeded!", exception.getMessage());
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
         assertEquals(60, firstAdd.getQuantity(), "First Added quantity should not be changed");
+    }
+
+    /* __REMOVE_ITEM_FROM_CART__ */
+
+    //remove item from cart
+    @Test
+    void shouldItemSuccessfullyRemovedFromCart() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItemA = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("20"), "LKR")), 2);
+
+        CartItem cartItemB = new CartItem (new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("20"), "LKR")), 5);
+
+        cart.addItem(cartItemA);
+        cart.addItem(cartItemB);
+
+        //remove item from cart
+        cart.removeItem(cartItemA.getProduct().getProductId());
+
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
     }
 }
