@@ -564,4 +564,23 @@ class CartTest {
         assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
     }
 
+    /* __CART_MAXIMUM_QUANTITY_BOUNDARY__ */
+
+    //add item exactly to maximum allowed quantity boundary
+    @Test
+    void shouldAbleTOAddItemsQuantityUntilAllowedBoundary() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 100);
+
+        cart.addItem(cartItem);
+
+        CartItemSnapshot addedItem = cart.getCartItems().get(0);
+
+        assertEquals(100, addedItem.quantity(), "Item quantity should be 100");
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+    }
 }
