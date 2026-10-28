@@ -375,4 +375,15 @@ class CartTest {
         assertEquals(new Money(new BigDecimal(200), "LKR"), addedItemA.subTotal(), "Expected total price of ItemA should be 200 LKR");
         assertEquals(new Money(new BigDecimal(150), "LKR"), addedItemB.subTotal(), "Expected total price of ItemB should be 150 LKR");
     }
+
+    //check on empty cart total
+    @Test
+    void shouldReturnZeroValueWhenCartIsEmpty() {
+        Cart cart = new Cart("LKR");
+
+        cart.calculateTotal();
+
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
+        assertEquals(new Money(new BigDecimal(0), "LKR"), cart.calculateTotal(), "Expected total price should be 0");
+    }
 }
