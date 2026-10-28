@@ -519,4 +519,25 @@ class CartTest {
         assertFalse(cart.isCartEmpty(), "Cart should not be empty");
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
     }
+
+    @Test
+    void shouldCartEmptyWhenItemIsAddAndItemIsRemoved() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        //add item to cart
+        cart.addItem(cartItem);
+        //expect cart is not empty
+        assertFalse(cart.isCartEmpty(), "Cart should not be empty");
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        //remove item from cart
+        cart.removeItem(cartItem.getProduct().getProductId());
+        //expect cart is empty
+        assertTrue(cart.isCartEmpty(), "Cart should be empty");
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
+    }
 }
