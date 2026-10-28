@@ -583,4 +583,32 @@ class CartTest {
         assertEquals(100, addedItem.quantity(), "Item quantity should be 100");
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
     }
+
+    //add item over maximum allowed quantity boundary
+    @Test
+    void shouldThrowIllegalStateExceptionWhenQuantityAllowedBoundaryExceeded() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItemA = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 100);
+
+        CartItem cartItemB = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 1);
+
+        cart.addItem(cartItemA);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            cart.addItem(cartItemB);
+        });
+
+        CartItemSnapshot existingItems = cart.getCartItems().get(0);
+
+        assertEquals("Quantity exceeded!", exception.getMessage());
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(100, existingItems.quantity(), "Item quantity should be 100");
+    }
 }
