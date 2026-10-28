@@ -261,7 +261,7 @@ class CartTest {
         cart.replaceExistingQuantity(cartItem.getProduct().getProductId(), newQuantity);
 
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
-        assertEquals(5, cartItem.getQuantity(), "CartItem Quantity should be 1");
+        assertEquals(5, cartItem.getQuantity(), "CartItem Quantity should be 5");
     }
 
     //check none exists product ID
@@ -273,7 +273,7 @@ class CartTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             cart.replaceExistingQuantity(mockProductId, 5);
         });
-        assertEquals("There is no item to be removed!", exception.getMessage());
+        assertEquals("There is no item to be found!", exception.getMessage());
     }
 
     //check null product ID
@@ -281,9 +281,9 @@ class CartTest {
     void shouldThrowIllegalArgumentExceptionWhenProductIdIsNull() {
         Cart cart = new Cart("LKR");
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            cart.removeItem(null);
+            cart.replaceExistingQuantity(null, 5);
         });
-        assertEquals("There is no item to be removed!", exception.getMessage());
+        assertEquals("Required fields cannot be empty!", exception.getMessage());
     }
 
     //check with invalid quantity replace
