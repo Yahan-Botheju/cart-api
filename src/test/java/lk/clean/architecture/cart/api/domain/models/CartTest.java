@@ -456,4 +456,39 @@ class CartTest {
             cart.clearCart();
         }, "Clear on empty cart should throw an error");
     }
+
+    //add items after clearing items
+    @Test
+    void shouldSuccessfullyAddItemWhenCartClear() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItemBeforeClear = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        CartItem cartItemAfterClear = new CartItem(new Product(
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal("50"), "LKR")), 3);
+
+        //add item
+        cart.addItem(cartItemBeforeClear);
+        //get added item details
+        CartItemSnapshot addedItemBeforeClear = cart.getCartItems().get(0);
+        //expected result on added item
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals("Test-Product-01", addedItemBeforeClear.productName(), "Product name should be Test-Product-01");
+        //clear cart
+        cart.clearCart();
+        //expected result after cart cleared
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
+        //add new item
+        cart.addItem(cartItemAfterClear);
+        //get added item details after cart cleared
+        CartItemSnapshot addedItemAfterClear = cart.getCartItems().get(0);
+        //expected results after new item added
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals("Test-Product-02", addedItemAfterClear.productName(), "Product name should be Test-Product-02");
+    }
 }
