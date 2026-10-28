@@ -636,4 +636,27 @@ class CartTest {
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
         assertEquals(40, existingItems.quantity(), "Item quantity should be 40");
     }
+
+    /* __PRODUCT_AVAILABILITY__ */
+
+    //check available product can be added to cart
+    @Test
+    void shouldAbleToAddAvailableProduct(){
+
+        Product product = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR"));
+
+        CartItem cartItem = new CartItem(product, 2);
+
+        Cart cart  = new Cart("LKR");
+        cart.addItem(cartItem);
+
+        CartItemSnapshot addedItem = cart.getCartItems().get(0);
+
+        assertTrue(addedItem.isAvailable(), "Cart item should be available");
+        assertEquals(1, cart.getCartItems().size(), "Item quantity should be 2");
+
+    }
 }
