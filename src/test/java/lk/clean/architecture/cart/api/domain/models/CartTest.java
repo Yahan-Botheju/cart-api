@@ -491,4 +491,16 @@ class CartTest {
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
         assertEquals("Test-Product-02", addedItemAfterClear.productName(), "Product name should be Test-Product-02");
     }
+
+
+    /* __IS_CART_EMPTY__ */
+
+    //check created cart is empty
+    @Test
+    void shouldReturnTrueOnNewCartCreated() {
+        Cart cart = new Cart("LKR");
+
+        assertTrue(cart.isCartEmpty(), "Cart should be empty");
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
+    }
 }
