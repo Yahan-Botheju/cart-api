@@ -38,6 +38,7 @@ public class Cart {
                         items.getProduct().getProductDescription(),
                         items.getQuantity(),
                         items.getProduct().getProductPrice(),
+                        items.getProduct().isProductAvailable(),
                         items.calculateSubtotal()
                 )).toList();
     }

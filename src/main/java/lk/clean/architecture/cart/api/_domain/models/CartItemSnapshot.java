@@ -8,5 +8,6 @@ public record CartItemSnapshot(
         String productDescription,
         int quantity,
         Money unitPrice,
+        boolean isAvailable,
         Money subTotal
 ) {}
