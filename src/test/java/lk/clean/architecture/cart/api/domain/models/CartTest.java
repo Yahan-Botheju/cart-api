@@ -341,7 +341,6 @@ class CartTest {
                 new Money(new BigDecimal("100"), "LKR")), 2);
 
         cart.addItem(cartItem);
-        cart.calculateTotal();
 
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
         assertEquals(new Money(new BigDecimal(200), "LKR"), cart.calculateTotal(), "Expected total price should be 200 LKR");
@@ -365,8 +364,6 @@ class CartTest {
         cart.addItem(itemA);
         cart.addItem(itemB);
 
-        cart.calculateTotal();
-
         CartItemSnapshot addedItemA = cart.getCartItems().get(0);
         CartItemSnapshot addedItemB = cart.getCartItems().get(1);
 
@@ -380,8 +377,6 @@ class CartTest {
     @Test
     void shouldReturnZeroValueWhenCartIsEmpty() {
         Cart cart = new Cart("LKR");
-
-        cart.calculateTotal();
 
         assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
         assertEquals(new Money(new BigDecimal("0"), "LKR"), cart.calculateTotal(), "Expected total price should be 0");
@@ -404,8 +399,6 @@ class CartTest {
 
         cart.addItem(itemA);
         cart.addItem(itemB);
-
-        cart.calculateTotal();
 
         CartItemSnapshot addedItemA = cart.getCartItems().get(0);
         CartItemSnapshot addedItemB = cart.getCartItems().get(1);
