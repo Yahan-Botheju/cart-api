@@ -446,4 +446,14 @@ class CartTest {
 
         assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
     }
+
+    //check clearCart on empty cart
+    @Test
+    void shouldNotReturnErrorWhenClearCartOnEmptyCart() {
+        Cart cart = new Cart("LKR");
+
+        assertDoesNotThrow(() -> {
+            cart.clearCart();
+        }, "Clear on empty cart should throw an error");
+    }
 }
