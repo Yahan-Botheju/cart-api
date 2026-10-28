@@ -226,7 +226,7 @@ class CartTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             cart.removeItem(mockProductId);
         });
-        assertEquals("There is no item to be removed!", exception.getMessage());
+        assertEquals("There is no item to be found!", exception.getMessage());
     }
 
     //check null product ID
@@ -326,5 +326,24 @@ class CartTest {
         assertEquals("Quantity exceeded!", exception.getMessage());
         assertEquals(1,  cart.getCartItems().size(), "Cart items count should be 1" );
         assertEquals(2, cartItem.getQuantity(), "CartItem Quantity should be 2");
+    }
+
+    /* __CALUCALTE_CART_TOTAL__ */
+
+    //check single item total
+    @Test
+    void shouldCalculateTotalPriceOfItem() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        cart.addItem(cartItem);
+        cart.calculateTotal();
+
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(new Money(new BigDecimal(200), "LKR"), cart.calculateTotal(), "Expected total price should be 200 LKR");
     }
 }
