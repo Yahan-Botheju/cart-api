@@ -409,5 +409,41 @@ class CartTest {
         assertEquals(new Money(new BigDecimal("30.75"), "LKR"), addedItemB.subTotal(), "Expected total price of ItemB should be 30.75 LKR");
     }
 
+    /* __CLEAR_CART__ */
 
+    //clear cart items
+    @Test
+    void shouldCartItemsClearSuccessfully() {
+        Cart cart = new Cart("LKR");
+
+        CartItem itemA = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        CartItem itemB = new CartItem(new Product(
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal("50"), "LKR")), 3);
+
+        CartItem itemC = new CartItem(new Product(
+                "Test-Product-03",
+                "Test-Description-03",
+                new Money(new BigDecimal("180"), "LKR")), 2);
+
+        CartItem itemD = new CartItem(new Product(
+                "Test-Product-04",
+                "Test-Description-04",
+                new Money(new BigDecimal("50"), "LKR")), 3);
+
+
+        cart.addItem(itemA);
+        cart.addItem(itemB);
+        cart.addItem(itemC);
+        cart.addItem(itemD);
+
+        cart.clearCart();
+
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
+    }
 }
