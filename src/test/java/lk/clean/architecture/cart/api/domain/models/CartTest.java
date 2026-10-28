@@ -346,4 +346,33 @@ class CartTest {
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
         assertEquals(new Money(new BigDecimal(200), "LKR"), cart.calculateTotal(), "Expected total price should be 200 LKR");
     }
+
+    //check multiple items total
+    @Test
+    void shouldCalculateTotalPriceOfItems() {
+        Cart cart = new Cart("LKR");
+
+        CartItem itemA = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        CartItem itemB = new CartItem(new Product(
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal("50"), "LKR")), 3);
+
+        cart.addItem(itemA);
+        cart.addItem(itemB);
+
+        cart.calculateTotal();
+
+        CartItemSnapshot addedItemA = cart.getCartItems().get(0);
+        CartItemSnapshot addedItemB = cart.getCartItems().get(1);
+
+        assertEquals(2, cart.getCartItems().size(), "Cart items count should be 1" );
+        assertEquals(new Money(new BigDecimal(350), "LKR"),  cart.calculateTotal(), "Expected total price should be 350 LKR");
+        assertEquals(new Money(new BigDecimal(200), "LKR"), addedItemA.subTotal(), "Expected total price of ItemA should be 200 LKR");
+        assertEquals(new Money(new BigDecimal(150), "LKR"), addedItemB.subTotal(), "Expected total price of ItemB should be 150 LKR");
+    }
 }
