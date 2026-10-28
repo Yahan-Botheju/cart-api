@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 class CartTest {
 
@@ -199,7 +200,7 @@ class CartTest {
                 "Test-Description-01",
                 new Money(new BigDecimal("20"), "LKR")), 2);
 
-        CartItem cartItemB = new CartItem (new Product(
+        CartItem cartItemB = new CartItem(new Product(
                 "Test-Product-01",
                 "Test-Description-01",
                 new Money(new BigDecimal("20"), "LKR")), 5);
@@ -210,6 +211,452 @@ class CartTest {
         //remove item from cart
         cart.removeItem(cartItemA.getProduct().getProductId());
 
+        CartItemSnapshot removedItems = cart.getCartItems().get(0);
+
         assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(5, removedItems.quantity(), "Available quantity should be 5");
+    }
+
+    //check unavailable product can be removed
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenRemoveItemIsNotAvailable() {
+        Cart cart = new Cart("LKR");
+        UUID mockProductId = UUID.randomUUID();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cart.removeItem(mockProductId);
+        });
+        assertEquals("There is no item to be found!", exception.getMessage());
+    }
+
+    //check null product ID
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenNullProductId() {
+        Cart cart = new Cart("LKR");
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cart.removeItem(null);
+        });
+
+        assertEquals("There is no item to be removed!", exception.getMessage());
+    }
+
+    /* __CART_REPLACE_QUANTITY__ */
+
+    //replace new quantity
+    @Test
+    void shouldReplaceQuantitySuccessful() {
+        //new quantity
+        int newQuantity = 5;
+
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("20"), "LKR")), 2);
+
+        cart.addItem(cartItem);
+        //replace with new quantity
+        cart.replaceExistingQuantity(cartItem.getProduct().getProductId(), newQuantity);
+
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(5, cartItem.getQuantity(), "CartItem Quantity should be 5");
+    }
+
+    //check none exists product ID
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenInvalidProductId() {
+        Cart cart = new Cart("LKR");
+        UUID mockProductId = UUID.randomUUID();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cart.replaceExistingQuantity(mockProductId, 5);
+        });
+        assertEquals("There is no item to be found!", exception.getMessage());
+    }
+
+    //check null product ID
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenProductIdIsNull() {
+        Cart cart = new Cart("LKR");
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cart.replaceExistingQuantity(null, 5);
+        });
+        assertEquals("Required fields cannot be empty!", exception.getMessage());
+    }
+
+    //check with invalid quantity replace
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenQuantityInvalid() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("20"), "LKR")), 2);
+
+        cart.addItem(cartItem);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cart.replaceExistingQuantity(cartItem.getProduct().getProductId(), -1);
+        });
+
+        assertEquals("Invalid quantity!", exception.getMessage());
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(2, cartItem.getQuantity(), "CartItem Quantity should be 2");
+    }
+
+    //check maximum quantity boundary exceed
+    @Test
+    void shouldThrowIllegalStateExceptionWhenReplaceQuantityExceedMaximumQuantityBondary() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("20"), "LKR")), 2);
+
+        cart.addItem(cartItem);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            cart.replaceExistingQuantity(cartItem.getProduct().getProductId(), 101);
+        });
+
+        assertEquals("Quantity exceeded!", exception.getMessage());
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(2, cartItem.getQuantity(), "CartItem Quantity should be 2");
+    }
+
+    /* __CALUCALTE_CART_TOTAL__ */
+
+    //check single item total
+    @Test
+    void shouldCalculateTotalPriceOfItem() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        cart.addItem(cartItem);
+
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(new Money(new BigDecimal(200), "LKR"), cart.calculateTotal(), "Expected total price should be 200 LKR");
+    }
+
+    //check multiple items total
+    @Test
+    void shouldCalculateTotalPriceOfItems() {
+        Cart cart = new Cart("LKR");
+
+        CartItem itemA = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        CartItem itemB = new CartItem(new Product(
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal("50"), "LKR")), 3);
+
+        cart.addItem(itemA);
+        cart.addItem(itemB);
+
+        CartItemSnapshot addedItemA = cart.getCartItems().get(0);
+        CartItemSnapshot addedItemB = cart.getCartItems().get(1);
+
+        assertEquals(2, cart.getCartItems().size(), "Cart items count should be 2");
+        assertEquals(new Money(new BigDecimal("350"), "LKR"), cart.calculateTotal(), "Expected total price should be 350 LKR");
+        assertEquals(new Money(new BigDecimal("200"), "LKR"), addedItemA.subTotal(), "Expected total price of ItemA should be 200 LKR");
+        assertEquals(new Money(new BigDecimal("150"), "LKR"), addedItemB.subTotal(), "Expected total price of ItemB should be 150 LKR");
+    }
+
+    //check on empty cart total
+    @Test
+    void shouldReturnZeroValueWhenCartIsEmpty() {
+        Cart cart = new Cart("LKR");
+
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
+        assertEquals(new Money(new BigDecimal("0"), "LKR"), cart.calculateTotal(), "Expected total price should be 0");
+    }
+
+    //check on decimal prices
+    @Test
+    void shouldSuccessfulWhenDecimalPriceTotal() {
+        Cart cart = new Cart("LKR");
+
+        CartItem itemA = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("125.50"), "LKR")), 2);
+
+        CartItem itemB = new CartItem(new Product(
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal("10.25"), "LKR")), 3);
+
+        cart.addItem(itemA);
+        cart.addItem(itemB);
+
+        CartItemSnapshot addedItemA = cart.getCartItems().get(0);
+        CartItemSnapshot addedItemB = cart.getCartItems().get(1);
+
+        assertEquals(2, cart.getCartItems().size(), "Cart items count should be 2");
+        assertEquals(new Money(new BigDecimal("281.75"), "LKR"), cart.calculateTotal(), "Expected total price should be 281.75 LKR");
+        assertEquals(new Money(new BigDecimal("251.00"), "LKR"), addedItemA.subTotal(), "Expected total price of ItemA should be 251.00 LKR");
+        assertEquals(new Money(new BigDecimal("30.75"), "LKR"), addedItemB.subTotal(), "Expected total price of ItemB should be 30.75 LKR");
+    }
+
+    /* __CLEAR_CART__ */
+
+    //clear cart items
+    @Test
+    void shouldCartItemsClearSuccessfully() {
+        Cart cart = new Cart("LKR");
+
+        CartItem itemA = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        CartItem itemB = new CartItem(new Product(
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal("50"), "LKR")), 3);
+
+        CartItem itemC = new CartItem(new Product(
+                "Test-Product-03",
+                "Test-Description-03",
+                new Money(new BigDecimal("180"), "LKR")), 2);
+
+        CartItem itemD = new CartItem(new Product(
+                "Test-Product-04",
+                "Test-Description-04",
+                new Money(new BigDecimal("50"), "LKR")), 3);
+
+
+        cart.addItem(itemA);
+        cart.addItem(itemB);
+        cart.addItem(itemC);
+        cart.addItem(itemD);
+
+        cart.clearCart();
+
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
+    }
+
+    //check clearCart on empty cart
+    @Test
+    void shouldNotReturnErrorWhenClearCartOnEmptyCart() {
+        Cart cart = new Cart("LKR");
+
+        assertDoesNotThrow(() -> {
+            cart.clearCart();
+        }, "Clear on empty cart should throw an error");
+    }
+
+    //add items after clearing items
+    @Test
+    void shouldSuccessfullyAddItemWhenCartClear() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItemBeforeClear = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        CartItem cartItemAfterClear = new CartItem(new Product(
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal("50"), "LKR")), 3);
+
+        //add item
+        cart.addItem(cartItemBeforeClear);
+        //get added item details
+        CartItemSnapshot addedItemBeforeClear = cart.getCartItems().get(0);
+        //expected result on added item
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals("Test-Product-01", addedItemBeforeClear.productName(), "Product name should be Test-Product-01");
+        //clear cart
+        cart.clearCart();
+        //expected result after cart cleared
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
+        //add new item
+        cart.addItem(cartItemAfterClear);
+        //get added item details after cart cleared
+        CartItemSnapshot addedItemAfterClear = cart.getCartItems().get(0);
+        //expected results after new item added
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals("Test-Product-02", addedItemAfterClear.productName(), "Product name should be Test-Product-02");
+    }
+
+
+    /* __IS_CART_EMPTY__ */
+
+    //check created cart is empty
+    @Test
+    void shouldReturnTrueOnNewCartCreated() {
+        Cart cart = new Cart("LKR");
+
+        assertTrue(cart.isCartEmpty(), "Cart should be empty");
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
+    }
+
+    //check cart is not empty
+    @Test
+    void shouldCartNotEmptyWhenItemIsAdded() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        cart.addItem(cartItem);
+
+        assertFalse(cart.isCartEmpty(), "Cart should not be empty");
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+    }
+
+    //check cart is still empty when item add and remove item
+    @Test
+    void shouldCartEmptyWhenItemIsAddAndItemIsRemoved() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        //add item to cart
+        cart.addItem(cartItem);
+        //expect cart is not empty
+        assertFalse(cart.isCartEmpty(), "Cart should not be empty");
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        //remove item from cart
+        cart.removeItem(cartItem.getProduct().getProductId());
+        //expect cart is empty
+        assertTrue(cart.isCartEmpty(), "Cart should be empty");
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
+    }
+
+    //check cart is empty when item is added  and clear
+    @Test
+    void shouldCartEmptyWhenItemIsAddedAndCleared() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2);
+
+        //add item to cart
+        cart.addItem(cartItem);
+        //expect cart is not empty
+        assertFalse(cart.isCartEmpty(), "Cart should not be empty");
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        //clear cart
+        cart.clearCart();
+        //expect cart is empty
+        assertTrue(cart.isCartEmpty(), "Cart should be empty");
+        assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
+    }
+
+    /* __CART_MAXIMUM_QUANTITY_BOUNDARY__ */
+
+    //add item exactly to maximum allowed quantity boundary
+    @Test
+    void shouldAbleTOAddItemsQuantityUntilAllowedBoundary() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 100);
+
+        cart.addItem(cartItem);
+
+        CartItemSnapshot addedItem = cart.getCartItems().get(0);
+
+        assertEquals(100, addedItem.quantity(), "Item quantity should be 100");
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+    }
+
+    //add item over maximum allowed quantity boundary
+    @Test
+    void shouldThrowIllegalStateExceptionWhenQuantityAllowedBoundaryExceeded() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItemA = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 100);
+
+        CartItem cartItemB = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 1);
+
+        cart.addItem(cartItemA);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            cart.addItem(cartItemB);
+        });
+
+        CartItemSnapshot existingItems = cart.getCartItems().get(0);
+
+        assertEquals("Quantity exceeded!", exception.getMessage());
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(100, existingItems.quantity(), "Item quantity should be 100");
+    }
+
+    @Test
+    void shouldThrowIllegalStateExceptionWhenQuantityExceededAllowedBoundary() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItemA = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 40);
+
+        cart.addItem(cartItemA);
+
+        CartItemSnapshot existingItems = cart.getCartItems().get(0);
+        //excepted result before item quantity replaced
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(40, existingItems.quantity(), "Item quantity should be 40");
+        //expected exception when quantity replaced over the boundary
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            cart.replaceExistingQuantity(cartItemA.getProduct().getProductId(), 101);
+        });
+        //check existence quantity after exception throws
+        assertEquals("Quantity exceeded!", exception.getMessage());
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(40, existingItems.quantity(), "Item quantity should be 40");
+    }
+
+    /* __PRODUCT_AVAILABILITY__ */
+
+    //check available product can be added to cart
+    @Test
+    void shouldAbleToAddAvailableProduct(){
+
+        Product product = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR"));
+
+        CartItem cartItem = new CartItem(product, 2);
+
+        Cart cart  = new Cart("LKR");
+        cart.addItem(cartItem);
+
+        CartItemSnapshot addedItem = cart.getCartItems().get(0);
+
+        assertTrue(addedItem.isAvailable(), "Cart item should be available");
+        assertEquals(1, cart.getCartItems().size(), "Item quantity should be 2");
+
     }
 }
