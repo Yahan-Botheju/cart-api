@@ -54,7 +54,7 @@ public class Cart {
         return cartItems.stream()
                 .filter(item -> item.getProduct().getProductId().equals(productId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("There is no item to be removed!"));
+                .orElseThrow(() -> new IllegalArgumentException("There is no item to be found!"));
     }
 
     //check currency
