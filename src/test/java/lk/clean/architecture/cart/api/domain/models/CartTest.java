@@ -680,4 +680,40 @@ class CartTest {
         assertEquals("Product is not available!", exception.getMessage());
         assertEquals(0, cart.getCartItems().size(), "Cart items count should be 0");
     }
+
+    //check unavailable item add to cart when existing item is in the cart
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenQuantityIsNegative() {
+        Cart cart = new Cart("LKR");
+
+        CartItem cartItem = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")),3);
+
+        //add item to cart
+        cart.addItem(cartItem);
+        //expect cart has added product
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+
+        //create new product
+        Product unavailableProduct = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR"));
+        //make product unavailable
+        unavailableProduct.setProductUnavailable();
+
+        CartItem addUnavailableItem = new CartItem(unavailableProduct, 2);
+        //add item to cart
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            cart.addItem(addUnavailableItem);
+        });
+
+        CartItemSnapshot existingItems = cart.getCartItems().get(0);
+        //expectations when unavailable item added to cart
+        assertEquals("Product is not available!", exception.getMessage());
+        assertEquals(1, cart.getCartItems().size(), "Cart items count should be 1");
+        assertEquals(3, existingItems.quantity(), "Item quantity should be 3");
+    }
 }
