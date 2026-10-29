@@ -5,5 +5,5 @@ import lk.clean.architecture.cart.api._domain.models.Cart;
 public interface CreateCartUseCase {
 
     //create new cart
-    Cart cart(String currency);
+    Cart createCart(String currency);
 }

@@ -14,7 +14,7 @@ public class CreateCartUseCaseImpl implements CreateCartUseCase {
 
     //create new cart
     @Override
-    public Cart cart(String currency){
+    public Cart createCart(String currency){
         //create cart model
         Cart createNewCart = new Cart(currency);
         //save and return
