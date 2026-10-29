@@ -656,7 +656,7 @@ class CartTest {
         CartItemSnapshot addedItem = cart.getCartItems().get(0);
 
         assertTrue(addedItem.isAvailable(), "Cart item should be available");
-        assertEquals(1, cart.getCartItems().size(), "Item quantity should be 2");
+        assertEquals(1, cart.getCartItems().size(), "Item quantity should be 1");
     }
 
     // check adding unavailable products
@@ -683,7 +683,7 @@ class CartTest {
 
     //check unavailable item add to cart when existing item is in the cart
     @Test
-    void shouldThrowIllegalArgumentExceptionWhenQuantityIsNegative() {
+    void shouldThrowIllegalArgumentExceptionWhenUnavailableProductIsAdded() {
         Cart cart = new Cart("LKR");
 
         CartItem cartItem = new CartItem(new Product(
