@@ -1,7 +1,7 @@
 package lk.clean.architecture.cart.api.application.usecase;
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
-import lk.clean.architecture.cart.api.application.port.CartRepository;
+import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 
 public class CreateCartUseCaseImpl{
 

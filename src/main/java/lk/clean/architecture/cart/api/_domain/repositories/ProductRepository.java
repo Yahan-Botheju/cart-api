@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.application.port;
+package lk.clean.architecture.cart.api._domain.repositories;
 
 import lk.clean.architecture.cart.api._domain.models.Product;
 
