@@ -2,8 +2,9 @@ package lk.clean.architecture.cart.api.application.usecase;
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
+import lk.clean.architecture.cart.api.application.records.commands.RemoveItemFromCartCommand;
+import lk.clean.architecture.cart.api.application.records.results.RemoveItemFromCartResult;
 
-import java.util.UUID;
 
 public class RemoveItemFromCartUseCaseImpl implements RemoveItemFromCartUseCase {
 
@@ -15,14 +16,20 @@ public class RemoveItemFromCartUseCaseImpl implements RemoveItemFromCartUseCase 
     }
 
     @Override
-    public Cart removeItemFromCart(UUID cartId, UUID productId) {
+    public RemoveItemFromCartResult removeItemFromCart(RemoveItemFromCartCommand removeItemFromCartCommand) {
 
-        Cart cart = cartRepository.findCartById(cartId)
+        Cart cart = cartRepository.findCartById(removeItemFromCartCommand.cartId())
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
         //remove item using domain model method
-        cart.removeItem(productId);
+        cart.removeItem(removeItemFromCartCommand.productId());
 
-        return cartRepository.save(cart);
+        Cart savedCart = cartRepository.save(cart);
+
+        return new RemoveItemFromCartResult(
+                savedCart.getCartId(),
+                removeItemFromCartCommand.productId(),
+                savedCart.isCartEmpty()
+        );
     }
 }
