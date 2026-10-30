@@ -1,10 +1,10 @@
 package lk.clean.architecture.cart.api.application.usecase;
 
-import lk.clean.architecture.cart.api._domain.models.Cart;
+import lk.clean.architecture.cart.api.application.records.commands.UpdateCartItemQuantityCommand;
+import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
 
-import java.util.UUID;
 
 public interface UpdateCartItemQuantityUseCase {
     //update cart item quantity
-    Cart updateCartItemQuantity(UUID cartId, UUID productId, int quantity);
+    UpdateCartItemQuantityResult updateCartItemQuantity(UpdateCartItemQuantityCommand updateCartItemQuantityCommand);
 }

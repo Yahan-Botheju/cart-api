@@ -1,9 +1,13 @@
 package lk.clean.architecture.cart.api.application.usecase;
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
+import lk.clean.architecture.cart.api._domain.models.Money;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
+import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
+import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
-import java.util.UUID;
+import java.math.BigDecimal;
 
 public class GetCartUseCaseImpl implements GetCartUseCase {
 
@@ -15,8 +19,16 @@ public class GetCartUseCaseImpl implements GetCartUseCase {
     }
 
     @Override
-    public Cart getCart(UUID cartId) {
-        return cartRepository.findCartById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+    public GetCartResult getCart(GetCartCommand getCartCommand) {
+        Cart cart =  cartRepository.findCartById(getCartCommand.cartId())
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
+
+        return new GetCartResult(
+                cart.getCartId(),
+                cart.getCurrency(),
+                cart.getCartItems(),
+                new Money(new BigDecimal(String.valueOf(cart.calculateTotal())), cart.getCurrency()),
+                cart.isCartEmpty()
+        );
     }
 }

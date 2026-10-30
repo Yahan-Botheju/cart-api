@@ -2,6 +2,8 @@ package lk.clean.architecture.cart.api.application.usecase;
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
+import lk.clean.architecture.cart.api.application.records.commands.CreateCartCommand;
+import lk.clean.architecture.cart.api.application.records.results.CreateCartResult;
 
 public class CreateCartUseCaseImpl implements CreateCartUseCase {
 
@@ -14,10 +16,16 @@ public class CreateCartUseCaseImpl implements CreateCartUseCase {
 
     //create new cart
     @Override
-    public Cart createCart(String currency){
+    public CreateCartResult createCart(CreateCartCommand createCartCommand) {
         //create cart model
-        Cart createNewCart = new Cart(currency);
-        //save and return
-        return cartRepository.save(createNewCart);
+        Cart createNewCart = new Cart(createCartCommand.currency());
+        //save
+        Cart savedCart = cartRepository.save(createNewCart);
+
+        return new CreateCartResult(
+                savedCart.getCartId(),
+                savedCart.getCurrency(),
+                savedCart.isCartEmpty()
+        );
     }
 }

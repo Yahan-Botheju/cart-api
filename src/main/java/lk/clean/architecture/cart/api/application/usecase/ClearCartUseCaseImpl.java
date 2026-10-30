@@ -2,8 +2,8 @@ package lk.clean.architecture.cart.api.application.usecase;
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
-
-import java.util.UUID;
+import lk.clean.architecture.cart.api.application.records.commands.ClearCartCommand;
+import lk.clean.architecture.cart.api.application.records.results.ClearCartResult;
 
 public class ClearCartUseCaseImpl implements ClearCartUseCase {
 
@@ -15,13 +15,18 @@ public class ClearCartUseCaseImpl implements ClearCartUseCase {
     }
 
     @Override
-    public Cart clearCart(UUID cartId) {
+    public ClearCartResult clearCart(ClearCartCommand clearCartCommand) {
 
-        Cart cart = cartRepository.findCartById(cartId)
+        Cart cart = cartRepository.findCartById(clearCartCommand.cartId())
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
         //clear cart items through domain method
         cart.clearCart();
 
-        return cartRepository.save(cart);
+        Cart savedCart = cartRepository.save(cart);
+
+        return new ClearCartResult(
+                savedCart.getCartId(),
+                savedCart.isCartEmpty()
+        );
     }
 }
