@@ -5,6 +5,7 @@ import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api._domain.repositories.ProductRepository;
 import lk.clean.architecture.cart.api.application.records.commands.AddItemToCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.AddItemToCartResult;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 import java.util.Optional;
 
@@ -36,15 +37,16 @@ public class AddItemToCartUseCaseImpl implements AddItemToCartUseCase {
         Cart savedCart = cartRepository.save(cart);
 
         //get subtotal and quantity
-        Optional<CartItemSnapshot> results = savedCart.getCartItems().stream()
+        CartItemSnapshot results = savedCart.getCartItems().stream()
                 .filter(item -> item.productId().equals(addItemToCartCommand.productId()))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found!!"));
 
         return new AddItemToCartResult(
                 savedCart.getCartId(),
-                product.getProductId(),
-                results.get().quantity(),
-                results.get().subTotal()
+                results.productId(),
+                results.quantity(),
+                results.subTotal()
         );
     }
 }
