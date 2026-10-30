@@ -5,7 +5,6 @@ import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api.application.records.commands.ClearCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.ClearCartResult;
 
-
 public class ClearCartUseCaseImpl implements ClearCartUseCase {
 
     //inject required dependencies
@@ -22,8 +21,6 @@ public class ClearCartUseCaseImpl implements ClearCartUseCase {
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
         //clear cart items through domain method
         cart.clearCart();
-        //check cart isEmpty through domain method
-        cart.isCartEmpty();
 
         Cart savedCart = cartRepository.save(cart);
 
