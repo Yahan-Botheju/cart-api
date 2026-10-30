@@ -1,10 +1,10 @@
 package lk.clean.architecture.cart.api.application.usecase;
 
-import lk.clean.architecture.cart.api._domain.models.Cart;
+import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
+import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
 
-import java.util.UUID;
 
 public interface GetCartUseCase {
     //get cart
-    Cart getCart(UUID cartId);
+    GetCartResult getCart(GetCartCommand getCartCommand);
 }
