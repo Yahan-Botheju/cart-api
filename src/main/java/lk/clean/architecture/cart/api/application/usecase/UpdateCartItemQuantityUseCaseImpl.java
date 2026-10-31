@@ -3,6 +3,8 @@ package lk.clean.architecture.cart.api.application.usecase;
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.models.CartItemSnapshot;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
+import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
+import lk.clean.architecture.cart.api.application.exception.ProductNotFoundException;
 import lk.clean.architecture.cart.api.application.records.commands.UpdateCartItemQuantityCommand;
 import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -23,7 +25,7 @@ public class UpdateCartItemQuantityUseCaseImpl implements UpdateCartItemQuantity
     public UpdateCartItemQuantityResult updateCartItemQuantity(UpdateCartItemQuantityCommand updateCartItemQuantityCommand) {
 
         Cart cart = cartRepository.findCartById(updateCartItemQuantityCommand.cartId())
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+                .orElseThrow(() -> new CartNotFoundException("Cart not found"));
         //replace existing quantity with new quantity through domain model
         cart.replaceExistingQuantity(updateCartItemQuantityCommand.productId(), updateCartItemQuantityCommand.quantity());
 
@@ -33,7 +35,7 @@ public class UpdateCartItemQuantityUseCaseImpl implements UpdateCartItemQuantity
         CartItemSnapshot results = savedCart.getCartItems().stream()
                 .filter(item -> item.productId().equals(updateCartItemQuantityCommand.productId()))
                 .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found!!"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found!!"));
 
         return new UpdateCartItemQuantityResult(
                 savedCart.getCartId(),
