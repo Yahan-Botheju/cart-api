@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-class CartRepositoryTest implements CartRepository {
+public class CartRepositoryTest implements CartRepository {
 
     Map<UUID, Cart> carts = new HashMap<>();
 
