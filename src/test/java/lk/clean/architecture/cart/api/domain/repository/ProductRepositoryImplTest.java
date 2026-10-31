@@ -27,4 +27,14 @@ public class ProductRepositoryImplTest {
 
         assertTrue(findProduct.isPresent(), "Product should exist");
     }
+
+    //test product not exists when find by its id
+    @Test
+    void shouldReturnEmptyWhenProductNotFound() {
+
+        ProductRepositoryTest cartRepositoryTest = new ProductRepositoryTest();
+        Optional<Product> findProduct = cartRepositoryTest.findById(null);
+
+        assertFalse(findProduct.isPresent(), "Product should not exist");
+    }
 }
