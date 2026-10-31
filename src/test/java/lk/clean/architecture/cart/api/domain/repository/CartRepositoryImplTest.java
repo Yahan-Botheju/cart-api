@@ -22,4 +22,16 @@ public class CartRepositoryImplTest {
         assertEquals(cart.getCartId(),savedCart.getCartId(), "Cart Id and returned cart Id should be same" );
     }
 
+    //cart find by Id successfully
+    @Test
+    void shouldCartFindByIdSuccessfully() {
+
+        CartRepositoryTest cartRepositoryTest = new CartRepositoryTest();
+        Cart cart = new Cart("LKR");
+
+        cartRepositoryTest.save(cart);
+        Optional<Cart> getCartById = cartRepositoryTest.findCartById(cart.getCartId());
+
+        assertTrue(getCartById.isPresent(), "Should cart can found");
+    }
 }
