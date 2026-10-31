@@ -1,13 +1,11 @@
 package lk.clean.architecture.cart.api.application.usecase;
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
-import lk.clean.architecture.cart.api._domain.models.Money;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
 import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
 
-import java.math.BigDecimal;
 
 public class GetCartUseCaseImpl implements GetCartUseCase {
 
@@ -27,7 +25,7 @@ public class GetCartUseCaseImpl implements GetCartUseCase {
                 cart.getCartId(),
                 cart.getCurrency(),
                 cart.getCartItems(),
-                new Money(new BigDecimal(String.valueOf(cart.calculateTotal())), cart.getCurrency()),
+                cart.calculateTotal(),
                 cart.isCartEmpty()
         );
     }
