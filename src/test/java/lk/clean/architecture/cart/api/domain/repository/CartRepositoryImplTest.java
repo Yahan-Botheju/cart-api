@@ -19,7 +19,7 @@ public class CartRepositoryImplTest {
         Cart savedCart = cartRepositoryTest.save(cart);
 
         assertNotNull(savedCart, "Cart should not be null");
-        assertEquals(cart.getCartId(),savedCart.getCartId(), "Cart Id and returned cart Id should be same" );
+        assertEquals(cart.getCartId(), savedCart.getCartId(), "Cart Id and returned cart Id should be same");
     }
 
     //cart find by Id successfully
@@ -33,5 +33,17 @@ public class CartRepositoryImplTest {
         Optional<Cart> getCartById = cartRepositoryTest.findCartById(cart.getCartId());
 
         assertTrue(getCartById.isPresent(), "Should cart can found");
+    }
+
+    //test return an empty cart when cart is not found
+    @Test
+    void shouldReturnEmptyCartWhenCartNotFound() {
+
+        CartRepositoryTest cartRepositoryTest = new CartRepositoryTest();
+        Cart cart = new Cart("LKR");
+
+        Optional<Cart> getCartById = cartRepositoryTest.findCartById(cart.getCartId());
+
+        assertTrue(getCartById.isEmpty(), "Should return empty cart when cart not found");
     }
 }
