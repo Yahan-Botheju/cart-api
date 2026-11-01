@@ -5,6 +5,7 @@ import lk.clean.architecture.cart.api._domain.models.CartItem;
 import lk.clean.architecture.cart.api._domain.models.Money;
 import lk.clean.architecture.cart.api._domain.models.Product;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
+import lk.clean.architecture.cart.api.application.exception.ProductNotFoundException;
 import lk.clean.architecture.cart.api.application.records.commands.AddItemToCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.AddItemToCartResult;
 import lk.clean.architecture.cart.api.application.usecase.AddItemToCartUseCaseImpl;
@@ -84,5 +85,28 @@ public class AddItemToCartUseCaseImplTest {
         });
         //expectation
         assertEquals("Cart not found!", expectedException.getMessage());
+    }
+
+    //test product not available throws an error
+    @Test
+    void shouldThrowProductNotFoundException() {
+        //create mock repos and inject to usecase
+        CartRepositoryTest cartRepositoryTest = new CartRepositoryTest();
+        ProductRepositoryTest productRepositoryTest = new ProductRepositoryTest();
+        AddItemToCartUseCaseImpl addItemToCartUseCase = new AddItemToCartUseCaseImpl(cartRepositoryTest, productRepositoryTest);
+
+        Cart cart = new Cart("LKR");
+
+        cartRepositoryTest.save(cart);
+        //create mock productId
+        UUID mockProductId = UUID.randomUUID();
+        //test usecase
+        AddItemToCartCommand addItemToCartCommand = new AddItemToCartCommand(cart.getCartId(), mockProductId, 2);
+        //expectations
+        ProductNotFoundException expectedException = assertThrows(ProductNotFoundException.class, () -> {
+            addItemToCartUseCase.addItemToCart(addItemToCartCommand);
+        });
+        assertEquals("Product not found!", expectedException.getMessage());
+        assertEquals(cart.getCartId(), addItemToCartCommand.cartId(), "Cart id should available");
     }
 }
