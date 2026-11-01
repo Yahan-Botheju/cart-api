@@ -20,7 +20,7 @@ public class RemoveItemFromCartUseCaseImpl implements RemoveItemFromCartUseCase 
     public RemoveItemFromCartResult removeItemFromCart(RemoveItemFromCartCommand removeItemFromCartCommand) {
 
         Cart cart = cartRepository.findCartById(removeItemFromCartCommand.cartId())
-                .orElseThrow(() -> new CartNotFoundException("Cart not found"));
+                .orElseThrow(() -> new CartNotFoundException("Cart not found!"));
 
         //remove item using domain model method
         cart.removeItem(removeItemFromCartCommand.productId());
