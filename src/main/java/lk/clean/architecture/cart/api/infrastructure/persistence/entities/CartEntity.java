@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +29,7 @@ public class CartEntity {
             mappedBy = "cart",
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             orphanRemoval = true)
-    private List<CartItemEntity> cartItems;
+    private List<CartItemEntity> cartItems =  new ArrayList<>();
 
     void addCartItem(CartItemEntity cartItem) {
         this.cartItems.add(cartItem);
