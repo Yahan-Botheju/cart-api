@@ -54,15 +54,15 @@ public class RemoveItemFromCartUseCaseImplTest {
     //test throw an error when cart is not found
     @Test
     void shouldThrowCartNotFoundException() {
-
+        //initiate mock repos and inject to actual usecase
         CartRepositoryTest cartRepositoryTest = new CartRepositoryTest();
         RemoveItemFromCartUseCaseImpl removeItemFromCartUseCase = new RemoveItemFromCartUseCaseImpl(cartRepositoryTest);
-
+        //create random Ids represent as mock components
         UUID mockCartId = UUID.randomUUID();
         UUID mockProductId = UUID.randomUUID();
-
+        //set to actual usecase
         RemoveItemFromCartCommand removeItemFromCartCommand = new RemoveItemFromCartCommand(mockCartId, mockProductId);
-
+        //expectations
         CartNotFoundException cartNotFoundException = assertThrows(CartNotFoundException.class, () -> {
             removeItemFromCartUseCase.removeItemFromCart(removeItemFromCartCommand);
         });
