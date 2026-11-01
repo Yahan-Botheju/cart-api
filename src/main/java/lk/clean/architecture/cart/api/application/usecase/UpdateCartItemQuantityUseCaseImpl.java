@@ -25,7 +25,7 @@ public class UpdateCartItemQuantityUseCaseImpl implements UpdateCartItemQuantity
     public UpdateCartItemQuantityResult updateCartItemQuantity(UpdateCartItemQuantityCommand updateCartItemQuantityCommand) {
 
         Cart cart = cartRepository.findCartById(updateCartItemQuantityCommand.cartId())
-                .orElseThrow(() -> new CartNotFoundException("Cart not found"));
+                .orElseThrow(() -> new CartNotFoundException("Cart not found!"));
         //replace existing quantity with new quantity through domain model
         cart.replaceExistingQuantity(updateCartItemQuantityCommand.productId(), updateCartItemQuantityCommand.quantity());
 
@@ -35,7 +35,7 @@ public class UpdateCartItemQuantityUseCaseImpl implements UpdateCartItemQuantity
         CartItemSnapshot results = savedCart.getCartItems().stream()
                 .filter(item -> item.productId().equals(updateCartItemQuantityCommand.productId()))
                 .findFirst()
-                .orElseThrow(() -> new ProductNotFoundException("Product not found!!"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found!"));
 
         return new UpdateCartItemQuantityResult(
                 savedCart.getCartId(),

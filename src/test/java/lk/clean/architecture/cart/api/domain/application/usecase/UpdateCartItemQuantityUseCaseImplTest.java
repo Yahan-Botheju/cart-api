@@ -4,6 +4,7 @@ import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.models.CartItem;
 import lk.clean.architecture.cart.api._domain.models.Money;
 import lk.clean.architecture.cart.api._domain.models.Product;
+import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
 import lk.clean.architecture.cart.api.application.records.commands.UpdateCartItemQuantityCommand;
 import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
 import lk.clean.architecture.cart.api.application.usecase.UpdateCartItemQuantityUseCaseImpl;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UUID;
 
 public class UpdateCartItemQuantityUseCaseImplTest {
 
@@ -52,5 +54,23 @@ public class UpdateCartItemQuantityUseCaseImplTest {
         assertTrue(result.isPresent(), "Cart Items should be present");
         assertEquals(1, result.get().getCartItems().size(), "CartItems count should be 1");
         assertFalse(false, "CartItems should not be empty");
+    }
+
+    //test cart not found exception thrown
+    @Test
+    void shouldThrowExceptionWhenCartNotFound() {
+        //create mock cart and inject
+        CartRepositoryTest cartRepositoryTest = new CartRepositoryTest();
+        UpdateCartItemQuantityUseCaseImpl updateCartItemQuantityUseCase = new UpdateCartItemQuantityUseCaseImpl(cartRepositoryTest);
+        //create mock ids
+        UUID mockProductId = UUID.randomUUID();
+        UUID mockCartId = UUID.randomUUID();
+        //initiate actual usecase
+        UpdateCartItemQuantityCommand updateCartItemQuantityCommand = new UpdateCartItemQuantityCommand(mockCartId, mockProductId, 5);
+        //expectations
+        CartNotFoundException exception = assertThrows(CartNotFoundException.class, () -> {
+            updateCartItemQuantityUseCase.updateCartItemQuantity(updateCartItemQuantityCommand);
+        });
+        assertEquals("Cart not found!", exception.getMessage());
     }
 }
