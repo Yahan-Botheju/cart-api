@@ -4,6 +4,7 @@ import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.models.CartItem;
 import lk.clean.architecture.cart.api._domain.models.Money;
 import lk.clean.architecture.cart.api._domain.models.Product;
+import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
 import lk.clean.architecture.cart.api.application.records.commands.RemoveItemFromCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.RemoveItemFromCartResult;
 import lk.clean.architecture.cart.api.application.usecase.RemoveItemFromCartUseCaseImpl;
@@ -14,14 +15,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UUID;
 
 public class RemoveItemFromCartUseCaseImplTest {
 
     //test remove-item-from-cart
     @Test
-    void shouldSuccessfullyRemoveItemFromCart(){
+    void shouldSuccessfullyRemoveItemFromCart() {
         //create mock repo
-        CartRepositoryTest  cartRepositoryTest = new CartRepositoryTest();
+        CartRepositoryTest cartRepositoryTest = new CartRepositoryTest();
         //inject to actual UseCaseImpl
         RemoveItemFromCartUseCaseImpl removeItemFromCartUseCase = new RemoveItemFromCartUseCaseImpl(cartRepositoryTest);
 
@@ -32,7 +34,7 @@ public class RemoveItemFromCartUseCaseImplTest {
                 "Test-Description-01",
                 new Money(new BigDecimal("100"), "LKR"));
 
-        cart.addItem(new CartItem(product,2 ));
+        cart.addItem(new CartItem(product, 2));
         Cart savedCart = cartRepositoryTest.save(cart);
 
         //create actual command and result record classes
@@ -47,5 +49,23 @@ public class RemoveItemFromCartUseCaseImplTest {
         assertTrue(savedCart.isCartEmpty(), "Cart should be empty");
         assertTrue(cartLength.isPresent(), "Cart should be present");
         assertEquals(0, cartLength.get().getCartItems().size(), "Cart item count should be 0");
+    }
+
+    //test throw an error when cart is not found
+    @Test
+    void shouldThrowCartNotFoundException() {
+
+        CartRepositoryTest cartRepositoryTest = new CartRepositoryTest();
+        RemoveItemFromCartUseCaseImpl removeItemFromCartUseCase = new RemoveItemFromCartUseCaseImpl(cartRepositoryTest);
+
+        UUID mockCartId = UUID.randomUUID();
+        UUID mockProductId = UUID.randomUUID();
+
+        RemoveItemFromCartCommand removeItemFromCartCommand = new RemoveItemFromCartCommand(mockCartId, mockProductId);
+
+        CartNotFoundException cartNotFoundException = assertThrows(CartNotFoundException.class, () -> {
+            removeItemFromCartUseCase.removeItemFromCart(removeItemFromCartCommand);
+        });
+        assertEquals("Cart not found!", cartNotFoundException.getMessage());
     }
 }
