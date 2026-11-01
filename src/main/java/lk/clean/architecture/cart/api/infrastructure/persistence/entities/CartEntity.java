@@ -29,4 +29,13 @@ public class CartEntity {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             orphanRemoval = true)
     private List<CartItemEntity> cartItems;
+
+    void addCartItem(CartItemEntity cartItem) {
+        this.cartItems.add(cartItem);
+        cartItem.setCart(this);
+    }
+    void removeCartItem(CartItemEntity cartItem) {
+        this.cartItems.remove(cartItem);
+        cartItem.setCart(null);
+    }
 }
