@@ -19,7 +19,7 @@ public class ClearCartUseCaseImpl implements ClearCartUseCase {
     public ClearCartResult clearCart(ClearCartCommand clearCartCommand) {
 
         Cart cart = cartRepository.findCartById(clearCartCommand.cartId())
-                .orElseThrow(() -> new CartNotFoundException("Cart not found"));
+                .orElseThrow(() -> new CartNotFoundException("Cart not found!"));
         //clear cart items through domain method
         cart.clearCart();
 
