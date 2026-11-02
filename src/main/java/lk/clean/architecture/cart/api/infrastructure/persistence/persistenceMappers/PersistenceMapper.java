@@ -2,6 +2,7 @@ package lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMap
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.models.CartItem;
+import lk.clean.architecture.cart.api._domain.models.Money;
 import lk.clean.architecture.cart.api._domain.models.Product;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartItemEntity;
@@ -40,7 +41,22 @@ public interface PersistenceMapper {
     ProductEntity toProductEntity(Product product);
 
     //entity to domain model
-    Product toDomainModel(ProductEntity productEntity);
+    default Product toDomainModel(ProductEntity productEntity){
+        if(productEntity == null){
+            return null;
+        }
+        Money money = new Money(
+                productEntity.getPriceAmount(),
+                productEntity.getPriceCurrency()
+        );
+        return Product.reconstruct(
+                productEntity.getProductId(),
+                productEntity.getProductName(),
+                productEntity.getProductDescription(),
+                money,
+                productEntity.isAvailable()
+        );
+    }
 
 
 }
