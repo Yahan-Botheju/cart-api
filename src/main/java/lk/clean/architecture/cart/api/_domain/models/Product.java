@@ -67,6 +67,11 @@ public class Product {
         this.isProductAvailable = isProductAvailable;
     }
 
+    /* __FACTORY_METHOD__ */
+
+    public static Product reconstruct(UUID productId, String productName, String productDescription, Money productPrice, boolean isProductAvailable){
+         return new Product(productId, productName, productDescription, productPrice,  isProductAvailable);
+    }
 
     /* __DOMAIN_LOGICS__ */
 
