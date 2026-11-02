@@ -2,8 +2,10 @@ package lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMap
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.models.CartItem;
+import lk.clean.architecture.cart.api._domain.models.Product;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartItemEntity;
+import lk.clean.architecture.cart.api.infrastructure.persistence.entities.ProductEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
@@ -24,4 +26,14 @@ public interface PersistenceMapper {
 
     //entity to domain model
     CartItem toDomainModel(CartItemEntity cartItemEntity);
+
+    /* __PRODUCT__ */
+
+    //domain to entity
+    ProductEntity toProductEntity(Product product);
+
+    //entity to domain model
+    Product toDomainModel(ProductEntity productEntity);
+
+
 }
