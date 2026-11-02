@@ -16,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CartItemEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cartItem_id", nullable = false, unique = true)
     private UUID cartItemId;
     @Column(name = "product_id", nullable = false)
