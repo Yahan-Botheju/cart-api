@@ -24,6 +24,10 @@ public interface PersistenceMapper {
     /* __CART_ITEM__ */
 
     //domain to entity
+    @Mapping(target = "cartItemId", ignore = true)
+    @Mapping(source = "cartItem.product.productId", target = "productId")
+    @Mapping(source = "cartItem.quantity", target = "quantity")
+    @Mapping(target = "cart", ignore = true)
     CartItemEntity toCartItemEntity(CartItem cartItem);
 
     //entity to domain model
