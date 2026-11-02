@@ -61,6 +61,12 @@ public class Cart {
         this.cartItems = new ArrayList<>(cartItems);
     }
 
+    /* __FACTORY_METHOD__ */
+
+    public static Cart reconstruct(UUID cartId, String currency, List<CartItem> cartItems) {
+        return new Cart(cartId, currency, cartItems);
+    }
+
 
     /* ------------------------------DOMAIN_LOGICS---------------------------------------*/
 
