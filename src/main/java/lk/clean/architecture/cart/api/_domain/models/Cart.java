@@ -1,6 +1,7 @@
 package lk.clean.architecture.cart.api._domain.models;
 
 import java.math.BigDecimal;
+import java.text.Collator;
 import java.util.*;
 
 public class Cart {
@@ -43,6 +44,22 @@ public class Cart {
                 )).toList();
     }
 
+    /* __PRIVATE_CONSTRUCTOR__ */
+
+    private Cart(UUID cartId, String currency, List<CartItem> cartItems) {
+        if(cartId == null) {
+            throw new IllegalArgumentException("CartId cannot be null");
+        }
+        if (currency == null || currency.isBlank()) {
+            throw new IllegalArgumentException("Current currency cannot empty");
+        }
+        if (cartItems == null) {
+            throw new IllegalArgumentException("CartItems cannot be null");
+        }
+        this.cartId = cartId;
+        this.currency = currency.trim();
+        this.cartItems = new ArrayList<>(cartItems);
+    }
 
 
     /* ------------------------------DOMAIN_LOGICS---------------------------------------*/
