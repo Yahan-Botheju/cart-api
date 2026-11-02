@@ -7,6 +7,7 @@ import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartEn
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartItemEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.ProductEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PersistenceMapper {
@@ -30,6 +31,12 @@ public interface PersistenceMapper {
     /* __PRODUCT__ */
 
     //domain to entity
+    @Mapping(source = "productId", target = "productId")
+    @Mapping(source = "productName", target = "productName")
+    @Mapping(source = "productDescription", target = "productDescription")
+    @Mapping(source = "productPrice.amount", target = "priceAmount")
+    @Mapping(source = "productPrice.currency", target = "priceCurrency")
+    @Mapping(source = "productAvailable", target = "available")
     ProductEntity toProductEntity(Product product);
 
     //entity to domain model
