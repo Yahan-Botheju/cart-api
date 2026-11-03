@@ -1,14 +1,13 @@
 package lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMappers;
 
-import lk.clean.architecture.cart.api._domain.models.Cart;
-import lk.clean.architecture.cart.api._domain.models.CartItem;
-import lk.clean.architecture.cart.api._domain.models.Money;
-import lk.clean.architecture.cart.api._domain.models.Product;
+import lk.clean.architecture.cart.api._domain.models.*;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartItemEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.ProductEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PersistenceMapper {
@@ -16,6 +15,8 @@ public interface PersistenceMapper {
     /* __CART__ */
 
     //domain model to entity
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     CartEntity toCartEntity(Cart cart);
 
     //entity to domain model
@@ -29,6 +30,14 @@ public interface PersistenceMapper {
     @Mapping(source = "cartItem.quantity", target = "quantity")
     @Mapping(target = "cart", ignore = true)
     CartItemEntity toCartItemEntity(CartItem cartItem);
+
+    //snapshot to entity
+    @Mapping(target = "cartItemId", ignore = true)
+    @Mapping(target = "productId", source = "productId")
+    @Mapping(target = "quantity", source = "quantity")
+    @Mapping(target = "cart", ignore = true)
+    CartItemEntity toCartItemEntity(CartItemSnapshot cartItemSnapshot);
+
 
     //entity to domain model
     CartItem toDomainModel(CartItemEntity cartItemEntity);
@@ -62,5 +71,16 @@ public interface PersistenceMapper {
         );
     }
 
+    //cart to domain model
+    default Cart toDomainModel(CartEntity cartEntity, List<CartItem> cartItems){
+        if(cartEntity == null){
+            return null;
+        }
+        return Cart.reconstruct(
+                cartEntity.getCartId(),
+                cartEntity.getCurrency(),
+                cartItems
+        );
+    }
 
 }
