@@ -69,5 +69,16 @@ public interface PersistenceMapper {
         );
     }
 
+    //cart to domain model
+    default Cart toDomainModel(CartEntity cartEntity, List<CartItem> cartItems){
+        if(cartEntity == null){
+            return null;
+        }
+        return Cart.reconstruct(
+                cartEntity.getCartId(),
+                cartEntity.getCurrency(),
+                cartItems
+        );
+    }
 
 }
