@@ -3,6 +3,7 @@ package lk.clean.architecture.cart.api.infrastructure.persistence;
 import lk.clean.architecture.cart.api._domain.models.*;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api._domain.repositories.ProductRepository;
+import lk.clean.architecture.cart.api.application.exception.ProductNotFoundException;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.jpa.CartJpaRepository;
 import lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMappers.PersistenceMapper;
@@ -45,7 +46,7 @@ public class CartRepositoryImpl implements CartRepository {
                 .map(cartItemEntity -> {
                     //find product
                     Product Products = productRepository.findById(cartItemEntity.getProductId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+                            .orElseThrow(() -> new ProductNotFoundException("Product not found"));
                     //create domain model and create list
                     return new  CartItem(Products, cartItemEntity.getQuantity());
                 }).toList();
@@ -65,7 +66,7 @@ public class CartRepositoryImpl implements CartRepository {
         List<CartItem> cartItems = savedCartEntity.getCartItems().stream()
                 .map(cartItemEntity -> {
                     Product product = productRepository.findById(cartItemEntity.getProductId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+                            .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
                     return new  CartItem(product, cartItemEntity.getQuantity());
                 }).toList();
