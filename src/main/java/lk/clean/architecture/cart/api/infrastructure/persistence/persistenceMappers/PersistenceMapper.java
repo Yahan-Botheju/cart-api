@@ -15,6 +15,8 @@ public interface PersistenceMapper {
     /* __CART__ */
 
     //domain model to entity
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     CartEntity toCartEntity(Cart cart);
 
     //entity to domain model
