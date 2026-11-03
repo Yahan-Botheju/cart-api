@@ -55,8 +55,21 @@ public class CartRepositoryImpl implements CartRepository {
         return Optional.of(cart);
     }
 
+    //save cart
     @Override
     public Cart save(Cart cart) {
-        return null;
+
+        CartEntity cartEntity = persistenceMapper.toCartEntity(cart);
+        CartEntity savedCartEntity = cartJpaRepository.save(cartEntity);
+
+        List<CartItem> cartItems = savedCartEntity.getCartItems().stream()
+                .map(cartItemEntity -> {
+                    Product product = productRepository.findById(cartItemEntity.getProductId())
+                            .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+                    return new  CartItem(product, cartItemEntity.getQuantity());
+                }).toList();
+
+        return persistenceMapper.toDomainModel(savedCartEntity, cartItems);
     }
 }
