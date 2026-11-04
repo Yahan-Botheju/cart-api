@@ -35,4 +35,10 @@ public class UseCaseBeanConfigs {
     public RemoveItemFromCartUseCase removeItemFromCartUseCase(CartRepository cartRepository) {
         return new RemoveItemFromCartUseCaseImpl(cartRepository);
     }
+
+    //clear cart
+    @Bean
+    public ClearCartUseCase clearCartUseCase(CartRepository cartRepository) {
+        return new ClearCartUseCaseImpl(cartRepository);
+    }
 }
