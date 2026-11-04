@@ -51,7 +51,7 @@ public class CartRepositoryImpl implements CartRepository {
                     return new  CartItem(Products, cartItemEntity.getQuantity());
                 }).toList();
         //turn to domain model
-        Cart cart = persistenceMapper.toDomainModel(getCartItem, cartItems);
+        Cart cart = persistenceMapper.toCartDomainModel(getCartItem, cartItems);
 
         return Optional.of(cart);
     }
@@ -71,6 +71,6 @@ public class CartRepositoryImpl implements CartRepository {
                     return new  CartItem(product, cartItemEntity.getQuantity());
                 }).toList();
 
-        return persistenceMapper.toDomainModel(savedCartEntity, cartItems);
+        return persistenceMapper.toCartDomainModel(savedCartEntity, cartItems);
     }
 }
