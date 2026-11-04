@@ -54,7 +54,7 @@ public interface PersistenceMapper {
     ProductEntity toProductEntity(Product product);
 
     //entity to domain model
-    default Product toDomainModel(ProductEntity productEntity){
+    default Product toProductDomainModel(ProductEntity productEntity){
         if(productEntity == null){
             return null;
         }
@@ -72,7 +72,7 @@ public interface PersistenceMapper {
     }
 
     //cart to domain model
-    default Cart toDomainModel(CartEntity cartEntity, List<CartItem> cartItems){
+    default Cart toCartDomainModel(CartEntity cartEntity, List<CartItem> cartItems){
         if(cartEntity == null){
             return null;
         }
