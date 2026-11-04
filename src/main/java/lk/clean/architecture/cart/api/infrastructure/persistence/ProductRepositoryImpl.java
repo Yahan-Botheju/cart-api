@@ -2,6 +2,7 @@ package lk.clean.architecture.cart.api.infrastructure.persistence;
 
 import lk.clean.architecture.cart.api._domain.models.Product;
 import lk.clean.architecture.cart.api._domain.repositories.ProductRepository;
+import lk.clean.architecture.cart.api.infrastructure.persistence.entities.ProductEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.jpa.ProductJpaRepository;
 import lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMappers.PersistenceMapper;
 
@@ -21,7 +22,12 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Optional<Product> findById(UUID productId) {
+        Optional<ProductEntity>  productEntity = productJpaRepository.findById(productId);
+        if(productEntity.isEmpty()) {
+            return Optional.empty();
+        }
+        Product product = persistenceMapper.toProductDomainModel(productEntity.get());
 
-        return Optional.empty();
+        return Optional.of(product);
     }
 }
