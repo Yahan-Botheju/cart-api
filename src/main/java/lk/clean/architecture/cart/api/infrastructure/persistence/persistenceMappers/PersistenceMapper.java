@@ -19,8 +19,17 @@ public interface PersistenceMapper {
     @Mapping(target = "updatedAt", ignore = true)
     CartEntity toCartEntity(Cart cart);
 
-    //entity to domain model
-    Cart toDomainModel(CartEntity cartEntity);
+    //cart to domain model
+    default Cart toCartDomainModel(CartEntity cartEntity, List<CartItem> cartItems){
+        if(cartEntity == null){
+            return null;
+        }
+        return Cart.reconstruct(
+                cartEntity.getCartId(),
+                cartEntity.getCurrency(),
+                cartItems
+        );
+    }
 
     /* __CART_ITEM__ */
 
@@ -38,10 +47,6 @@ public interface PersistenceMapper {
     @Mapping(target = "cart", ignore = true)
     CartItemEntity toCartItemEntity(CartItemSnapshot cartItemSnapshot);
 
-
-    //entity to domain model
-    CartItem toDomainModel(CartItemEntity cartItemEntity);
-
     /* __PRODUCT__ */
 
     //domain to entity
@@ -54,7 +59,7 @@ public interface PersistenceMapper {
     ProductEntity toProductEntity(Product product);
 
     //entity to domain model
-    default Product toDomainModel(ProductEntity productEntity){
+    default Product toProductDomainModel(ProductEntity productEntity){
         if(productEntity == null){
             return null;
         }
@@ -71,16 +76,6 @@ public interface PersistenceMapper {
         );
     }
 
-    //cart to domain model
-    default Cart toDomainModel(CartEntity cartEntity, List<CartItem> cartItems){
-        if(cartEntity == null){
-            return null;
-        }
-        return Cart.reconstruct(
-                cartEntity.getCartId(),
-                cartEntity.getCurrency(),
-                cartItems
-        );
-    }
+
 
 }
