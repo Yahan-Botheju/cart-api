@@ -2,10 +2,7 @@ package lk.clean.architecture.cart.api.infrastructure.persistence.configs;
 
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api._domain.repositories.ProductRepository;
-import lk.clean.architecture.cart.api.application.usecase.AddItemToCartUseCase;
-import lk.clean.architecture.cart.api.application.usecase.AddItemToCartUseCaseImpl;
-import lk.clean.architecture.cart.api.application.usecase.CreateCartUseCase;
-import lk.clean.architecture.cart.api.application.usecase.CreateCartUseCaseImpl;
+import lk.clean.architecture.cart.api.application.usecase.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,4 +24,9 @@ public class UseCaseBeanConfigs {
         return new CreateCartUseCaseImpl(cartRepository);
     }
 
+    //update cart
+    @Bean
+    public UpdateCartItemQuantityUseCase updateCartItemQuantityUseCase(CartRepository  cartRepository) {
+        return new UpdateCartItemQuantityUseCaseImpl(cartRepository);
+    }
 }
