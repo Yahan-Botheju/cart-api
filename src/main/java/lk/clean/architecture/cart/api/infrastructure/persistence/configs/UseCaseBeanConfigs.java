@@ -41,4 +41,10 @@ public class UseCaseBeanConfigs {
     public ClearCartUseCase clearCartUseCase(CartRepository cartRepository) {
         return new ClearCartUseCaseImpl(cartRepository);
     }
+
+    //get cart
+    @Bean
+    public GetCartUseCase getCartUseCase(CartRepository cartRepository) {
+        return new GetCartUseCaseImpl(cartRepository);
+    }
 }
