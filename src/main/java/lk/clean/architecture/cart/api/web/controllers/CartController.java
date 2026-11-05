@@ -1,18 +1,21 @@
 package lk.clean.architecture.cart.api.web.controllers;
 
 import jakarta.validation.Valid;
+import lk.clean.architecture.cart.api.application.records.commands.AddItemToCartCommand;
 import lk.clean.architecture.cart.api.application.records.commands.CreateCartCommand;
+import lk.clean.architecture.cart.api.application.records.results.AddItemToCartResult;
 import lk.clean.architecture.cart.api.application.records.results.CreateCartResult;
 import lk.clean.architecture.cart.api.application.usecase.*;
+import lk.clean.architecture.cart.api.web.DTOs.request.AddItemToCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.request.CreateCartRequestDTO;
+import lk.clean.architecture.cart.api.web.DTOs.response.AddItemToCartResponseDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.CreateCartResponseDTO;
 import lk.clean.architecture.cart.api.web.webMappers.CartWebMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/carts")
@@ -55,5 +58,18 @@ public class CartController {
         CreateCartResponseDTO toCreateResponse = cartWebMapper.toCreateCartResponseDTO(toCreateResult);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(toCreateResponse);
+    }
+
+    //add item to cart
+    @PostMapping("/{cartId}/items")
+    public ResponseEntity<AddItemToCartResponseDTO> addItemToCart(
+            @PathVariable UUID cartId,
+            @Valid @RequestBody AddItemToCartRequestDTO addItemToCartRequestDTO
+    ){
+        AddItemToCartCommand toAddItemToCartCommand = cartWebMapper.toAddItemToCartCommand(cartId, addItemToCartRequestDTO);
+        AddItemToCartResult toAddItemToCartResult = addItemToCartUseCase.addItemToCart(toAddItemToCartCommand);
+        AddItemToCartResponseDTO toAaddItemToCartResponseDTO =  cartWebMapper.toAddItemToCartResponseDTO(toAddItemToCartResult);
+
+        return ResponseEntity.status(HttpStatus.OK).body(toAaddItemToCartResponseDTO);
     }
 }
