@@ -9,6 +9,7 @@ import lk.clean.architecture.cart.api.infrastructure.persistence.jpa.CartJpaRepo
 import lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMappers.PersistenceMapper;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -61,6 +62,12 @@ public class CartRepositoryImpl implements CartRepository {
     public Cart save(Cart cart) {
 
         CartEntity cartEntity = persistenceMapper.toCartEntity(cart);
+
+        //set logs
+        LocalDateTime createdAt = LocalDateTime.now();
+        cartEntity.setCreatedAt(createdAt);
+        cartEntity.setUpdatedAt(createdAt);
+
         CartEntity savedCartEntity = cartJpaRepository.save(cartEntity);
 
         List<CartItem> cartItems = savedCartEntity.getCartItems().stream()
