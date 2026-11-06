@@ -4,15 +4,19 @@ import jakarta.validation.Valid;
 import lk.clean.architecture.cart.api.application.records.commands.AddItemToCartCommand;
 import lk.clean.architecture.cart.api.application.records.commands.CreateCartCommand;
 import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
+import lk.clean.architecture.cart.api.application.records.commands.UpdateCartItemQuantityCommand;
 import lk.clean.architecture.cart.api.application.records.results.AddItemToCartResult;
 import lk.clean.architecture.cart.api.application.records.results.CreateCartResult;
 import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
+import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
 import lk.clean.architecture.cart.api.application.usecase.*;
 import lk.clean.architecture.cart.api.web.DTOs.request.AddItemToCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.request.CreateCartRequestDTO;
+import lk.clean.architecture.cart.api.web.DTOs.request.UpdateCartItemQuantityRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.AddItemToCartResponseDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.CreateCartResponseDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.GetCartResponseDTO;
+import lk.clean.architecture.cart.api.web.DTOs.response.UpdateCartItemQuantityResponseDTO;
 import lk.clean.architecture.cart.api.web.webMappers.CartWebMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,6 +92,23 @@ public class CartController {
         AddItemToCartResponseDTO toAaddItemToCartResponseDTO =  cartWebMapper.toAddItemToCartResponseDTO(toAddItemToCartResult);
 
         return ResponseEntity.status(HttpStatus.OK).body(toAaddItemToCartResponseDTO);
+    }
+
+    //update cart-item-quantity
+    @PatchMapping("/{cartId}/items/{productId}")
+    public ResponseEntity<UpdateCartItemQuantityResponseDTO> updateCartItemQuantity(
+            @PathVariable UUID cartId,
+            @PathVariable UUID productId,
+            @Valid @RequestBody UpdateCartItemQuantityRequestDTO updateCartItemQuantityRequestDTO
+    ){
+        UpdateCartItemQuantityCommand toUpdateCartItemQuantityCommand = cartWebMapper
+                .toUpdateCartItemQuantityCommand(cartId, productId, updateCartItemQuantityRequestDTO);
+        UpdateCartItemQuantityResult toUpdateCartItemQuantityResult = updateCartItemQuantityUseCase
+                .updateCartItemQuantity(toUpdateCartItemQuantityCommand);
+        UpdateCartItemQuantityResponseDTO responseDTO = cartWebMapper
+                .toUpdateCartItemQuantityResponseDTO(toUpdateCartItemQuantityResult);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
 }
