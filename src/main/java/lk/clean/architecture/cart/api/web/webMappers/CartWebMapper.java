@@ -1,20 +1,11 @@
 package lk.clean.architecture.cart.api.web.webMappers;
 
-import lk.clean.architecture.cart.api.application.records.commands.AddItemToCartCommand;
-import lk.clean.architecture.cart.api.application.records.commands.CreateCartCommand;
-import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
-import lk.clean.architecture.cart.api.application.records.commands.UpdateCartItemQuantityCommand;
-import lk.clean.architecture.cart.api.application.records.results.AddItemToCartResult;
-import lk.clean.architecture.cart.api.application.records.results.CreateCartResult;
-import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
-import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
+import lk.clean.architecture.cart.api.application.records.commands.*;
+import lk.clean.architecture.cart.api.application.records.results.*;
 import lk.clean.architecture.cart.api.web.DTOs.request.AddItemToCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.request.CreateCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.request.UpdateCartItemQuantityRequestDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.AddItemToCartResponseDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.CreateCartResponseDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.GetCartResponseDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.UpdateCartItemQuantityResponseDTO;
+import lk.clean.architecture.cart.api.web.DTOs.response.*;
 import org.mapstruct.Mapper;
 
 import java.util.UUID;
@@ -30,6 +21,7 @@ public interface CartWebMapper {
     //to response
     CreateCartResponseDTO toCreateCartResponseDTO(CreateCartResult createCartResult);
 
+
     /* __ADD_ITEM_TO_CART__ */
 
     //to command
@@ -38,6 +30,7 @@ public interface CartWebMapper {
     //to response
     AddItemToCartResponseDTO toAddItemToCartResponseDTO(AddItemToCartResult addItemToCartResult);
 
+
     /* __GET_CART__ */
 
     //to command
@@ -45,6 +38,7 @@ public interface CartWebMapper {
 
     //to response
     GetCartResponseDTO toGetCartResponseDTO(GetCartResult getCartResult);
+
 
     /* __UPDATE_CART_ITEM_QUANTITY__ */
 
@@ -57,5 +51,14 @@ public interface CartWebMapper {
 
     //to response
     UpdateCartItemQuantityResponseDTO toUpdateCartItemQuantityResponseDTO(UpdateCartItemQuantityResult updateCartItemQuantityResult);
+
+
+    /* __REMOVE_ITEM_FROM_CART__ */
+
+    //to command
+    RemoveItemFromCartCommand toRemoveItemFromCartCommand(UUID cartId, UUID productId);
+
+    //to response
+    RemoveItemFromCartResponseDTO  toRemoveItemFromCartResponseDTO(RemoveItemFromCartResult removeItemFromCartResult);
 
 }
