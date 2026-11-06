@@ -61,4 +61,12 @@ public interface CartWebMapper {
     //to response
     RemoveItemFromCartResponseDTO  toRemoveItemFromCartResponseDTO(RemoveItemFromCartResult removeItemFromCartResult);
 
+    /* __CLEAR_CART__ */
+
+    //to command
+    ClearCartCommand toClearCartCommand(UUID cartId);
+
+    //to response
+    ClearCartResponseDTO toClearCartResponseDTO(ClearCartResult clearCartResult);
+
 }
