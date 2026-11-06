@@ -3,13 +3,16 @@ package lk.clean.architecture.cart.api.web.controllers;
 import jakarta.validation.Valid;
 import lk.clean.architecture.cart.api.application.records.commands.AddItemToCartCommand;
 import lk.clean.architecture.cart.api.application.records.commands.CreateCartCommand;
+import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.AddItemToCartResult;
 import lk.clean.architecture.cart.api.application.records.results.CreateCartResult;
+import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
 import lk.clean.architecture.cart.api.application.usecase.*;
 import lk.clean.architecture.cart.api.web.DTOs.request.AddItemToCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.request.CreateCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.AddItemToCartResponseDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.CreateCartResponseDTO;
+import lk.clean.architecture.cart.api.web.DTOs.response.GetCartResponseDTO;
 import lk.clean.architecture.cart.api.web.webMappers.CartWebMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +51,20 @@ public class CartController {
         this.cartWebMapper = cartWebMapper;
     }
 
+
+    //get cart
+    @GetMapping("/{cartId}")
+    public ResponseEntity<GetCartResponseDTO> getCart(
+            @PathVariable UUID cartId
+    ){
+        GetCartCommand toGetCartCommand = cartWebMapper.toGetCartCommand(cartId);
+        GetCartResult toGetCartResult = getCartUseCase.getCart(toGetCartCommand);
+        GetCartResponseDTO toGetCartResponseDTO = cartWebMapper.toGetCartResponseDTO(toGetCartResult);
+
+        return ResponseEntity.ok(toGetCartResponseDTO);
+    }
+
+
     //create cart endpoint
     @PostMapping
     public ResponseEntity<CreateCartResponseDTO> createCart(
@@ -72,4 +89,5 @@ public class CartController {
 
         return ResponseEntity.status(HttpStatus.OK).body(toAaddItemToCartResponseDTO);
     }
+
 }
