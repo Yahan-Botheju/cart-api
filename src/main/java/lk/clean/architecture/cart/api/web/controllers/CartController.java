@@ -117,4 +117,17 @@ public class CartController {
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
+
+    //clear-cart
+    @DeleteMapping("/{cartId}/items")
+    public ResponseEntity<ClearCartResponseDTO> clearCart(
+            @PathVariable UUID cartId
+    ){
+        ClearCartCommand toClearCartCommand = cartWebMapper.toClearCartCommand(cartId);
+        ClearCartResult toClearCartResult = clearCartUseCase.clearCart(toClearCartCommand);
+        ClearCartResponseDTO responseDTO = cartWebMapper
+                .toClearCartResponseDTO(toClearCartResult);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+    }
 }
