@@ -42,10 +42,10 @@ public class GetCartUseCaseImplTest {
         assertEquals(cart.getCartId(), getCartResult.cartId(), "Carts Ids should be the same");
         assertEquals("LKR", getCartResult.currency(), "Currencies should be LKR");
         assertTrue(result.isPresent(), "Carts should exist");
-        assertEquals(1, getCartResult.cartItemSnapshots().size(), "CartItem count should be 1");
+        assertEquals(1, getCartResult.cartItemSnapshotResults().size(), "CartItem count should be 1");
         assertEquals(new Money(new BigDecimal("200"), "LKR"), getCartResult.total(), "Cart total should be 200");
         assertFalse(getCartResult.isCartEmpty(), "Cart result should not be empty");
-        assertEquals(2, getCartResult.cartItemSnapshots().get(0).quantity(), "CartItem quantity should be 2");
+        assertEquals(2, getCartResult.cartItemSnapshotResults().get(0).quantity(), "CartItem quantity should be 2");
     }
 
     //test exception is  thrown when cart is not found

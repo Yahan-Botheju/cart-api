@@ -1,15 +1,13 @@
 package lk.clean.architecture.cart.api.web.controllers;
 
 import jakarta.validation.Valid;
-import lk.clean.architecture.cart.api.application.records.commands.AddItemToCartCommand;
-import lk.clean.architecture.cart.api.application.records.commands.CreateCartCommand;
-import lk.clean.architecture.cart.api.application.records.results.AddItemToCartResult;
-import lk.clean.architecture.cart.api.application.records.results.CreateCartResult;
+import lk.clean.architecture.cart.api.application.records.commands.*;
+import lk.clean.architecture.cart.api.application.records.results.*;
 import lk.clean.architecture.cart.api.application.usecase.*;
 import lk.clean.architecture.cart.api.web.DTOs.request.AddItemToCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.request.CreateCartRequestDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.AddItemToCartResponseDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.CreateCartResponseDTO;
+import lk.clean.architecture.cart.api.web.DTOs.request.UpdateCartItemQuantityRequestDTO;
+import lk.clean.architecture.cart.api.web.DTOs.response.*;
 import lk.clean.architecture.cart.api.web.webMappers.CartWebMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +46,21 @@ public class CartController {
         this.cartWebMapper = cartWebMapper;
     }
 
-    //create cart endpoint
+
+    //view-cart
+    @GetMapping("/{cartId}")
+    public ResponseEntity<GetCartResponseDTO> getCart(
+            @PathVariable UUID cartId
+    ){
+        GetCartCommand toGetCartCommand = cartWebMapper.toGetCartCommand(cartId);
+        GetCartResult toGetCartResult = getCartUseCase.getCart(toGetCartCommand);
+        GetCartResponseDTO toGetCartResponseDTO = cartWebMapper.toGetCartResponseDTO(toGetCartResult);
+
+        return ResponseEntity.ok(toGetCartResponseDTO);
+    }
+
+
+    //create-cart-endpoint
     @PostMapping
     public ResponseEntity<CreateCartResponseDTO> createCart(
             @Valid @RequestBody CreateCartRequestDTO createCartRequestDTO
@@ -60,7 +72,7 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toCreateResponse);
     }
 
-    //add item to cart
+    //add-item-to-cart
     @PostMapping("/{cartId}/items")
     public ResponseEntity<AddItemToCartResponseDTO> addItemToCart(
             @PathVariable UUID cartId,
@@ -71,5 +83,51 @@ public class CartController {
         AddItemToCartResponseDTO toAaddItemToCartResponseDTO =  cartWebMapper.toAddItemToCartResponseDTO(toAddItemToCartResult);
 
         return ResponseEntity.status(HttpStatus.OK).body(toAaddItemToCartResponseDTO);
+    }
+
+    //update cart-item-quantity
+    @PatchMapping("/{cartId}/items/{productId}")
+    public ResponseEntity<UpdateCartItemQuantityResponseDTO> updateCartItemQuantity(
+            @PathVariable UUID cartId,
+            @PathVariable UUID productId,
+            @Valid @RequestBody UpdateCartItemQuantityRequestDTO updateCartItemQuantityRequestDTO
+    ){
+        UpdateCartItemQuantityCommand toUpdateCartItemQuantityCommand = cartWebMapper
+                .toUpdateCartItemQuantityCommand(cartId, productId, updateCartItemQuantityRequestDTO);
+        UpdateCartItemQuantityResult toUpdateCartItemQuantityResult = updateCartItemQuantityUseCase
+                .updateCartItemQuantity(toUpdateCartItemQuantityCommand);
+        UpdateCartItemQuantityResponseDTO responseDTO = cartWebMapper
+                .toUpdateCartItemQuantityResponseDTO(toUpdateCartItemQuantityResult);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+    }
+
+    //remove-item-from-cart
+    @DeleteMapping("/{cartId}/items/{productId}")
+    public ResponseEntity<RemoveItemFromCartResponseDTO> removeItemFromCart(
+            @PathVariable UUID cartId,
+            @PathVariable UUID productId
+    ){
+        RemoveItemFromCartCommand toRemoveItemFromCartCommand = cartWebMapper
+                .toRemoveItemFromCartCommand(cartId, productId);
+        RemoveItemFromCartResult toRemoveItemFromCartResult = removeItemFromCartUseCase
+                .removeItemFromCart(toRemoveItemFromCartCommand);
+        RemoveItemFromCartResponseDTO responseDTO =  cartWebMapper
+                .toRemoveItemFromCartResponseDTO(toRemoveItemFromCartResult);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+    }
+
+    //clear-cart
+    @DeleteMapping("/{cartId}/items")
+    public ResponseEntity<ClearCartResponseDTO> clearCart(
+            @PathVariable UUID cartId
+    ){
+        ClearCartCommand toClearCartCommand = cartWebMapper.toClearCartCommand(cartId);
+        ClearCartResult toClearCartResult = clearCartUseCase.clearCart(toClearCartCommand);
+        ClearCartResponseDTO responseDTO = cartWebMapper
+                .toClearCartResponseDTO(toClearCartResult);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 }

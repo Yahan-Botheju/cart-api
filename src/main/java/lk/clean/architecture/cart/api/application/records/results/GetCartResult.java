@@ -9,7 +9,7 @@ import java.util.UUID;
 public record GetCartResult(
         UUID cartId,
         String currency,
-        List<CartItemSnapshot> cartItemSnapshots,
+        List<CartItemSnapshotResult> cartItemSnapshotResults,
         Money total,
         boolean isCartEmpty
 ) {
@@ -22,10 +22,10 @@ public record GetCartResult(
             throw new IllegalArgumentException("currency cannot be null");
         }
 
-        if (cartItemSnapshots == null) {
+        if (cartItemSnapshotResults == null) {
             throw new IllegalArgumentException("Cart items cannot be null");
         }
-        cartItemSnapshots = List.copyOf(cartItemSnapshots);
+        cartItemSnapshotResults = List.copyOf(cartItemSnapshotResults);
 
         if (total == null) {
             throw new IllegalArgumentException("Total cannot be null");
