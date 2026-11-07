@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.application.records.results;
+package lk.clean.architecture.cart.api.application.records.results.separation_records;
 
 import lk.clean.architecture.cart.api._domain.models.Money;
 
@@ -9,8 +9,8 @@ public record CartItemSnapshotResult(
         String productName,
         String productDescription,
         int quantity,
-        Money unitPrice,
+        MoneyResult unitPrice,
         boolean isAvailable,
-        Money subTotal
+        MoneyResult subTotal
 ) {
 }

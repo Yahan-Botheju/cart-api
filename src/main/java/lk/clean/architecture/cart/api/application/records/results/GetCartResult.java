@@ -1,7 +1,7 @@
 package lk.clean.architecture.cart.api.application.records.results;
 
-import lk.clean.architecture.cart.api._domain.models.CartItemSnapshot;
-import lk.clean.architecture.cart.api._domain.models.Money;
+import lk.clean.architecture.cart.api.application.records.results.separation_records.CartItemSnapshotResult;
+import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,7 +10,7 @@ public record GetCartResult(
         UUID cartId,
         String currency,
         List<CartItemSnapshotResult> cartItemSnapshotResults,
-        Money total,
+        MoneyResult calculateTotal,
         boolean isCartEmpty
 ) {
     public GetCartResult{
@@ -27,7 +27,7 @@ public record GetCartResult(
         }
         cartItemSnapshotResults = List.copyOf(cartItemSnapshotResults);
 
-        if (total == null) {
+        if (calculateTotal == null) {
             throw new IllegalArgumentException("Total cannot be null");
         }
     }

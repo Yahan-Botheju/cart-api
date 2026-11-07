@@ -4,6 +4,7 @@ import lk.clean.architecture.cart.api._domain.models.*;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
 import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
+import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
 import lk.clean.architecture.cart.api.application.usecase.GetCartUseCaseImpl;
 import lk.clean.architecture.cart.api.domain.repository.CartRepositoryTest;
 import org.junit.jupiter.api.Test;
@@ -37,13 +38,25 @@ public class GetCartUseCaseImplTest {
         GetCartCommand getCartCommand = new GetCartCommand(cart.getCartId());
         GetCartResult  getCartResult = getCartUseCaseImpl.getCart(getCartCommand);
 
+        CartItemSnapshot cartItemSnapshot = getCartResult.cartItemSnapshotResults().stream()
+                .map(item -> new CartItemSnapshot(
+                        item.productId(),
+                        item.productName(),
+                        item.productDescription(),
+                        item.quantity(),
+                        new Money(item.unitPrice().amount(), item.unitPrice().currency()),
+                        item.isAvailable(),
+                        new Money(item.subTotal().amount(), item.subTotal().currency())
+                )).findFirst().orElseThrow(() -> new IllegalArgumentException("Item not found"));
+
+
         Optional<Cart> result = cartRepositoryTest.findCartById(cart.getCartId());
 
         assertEquals(cart.getCartId(), getCartResult.cartId(), "Carts Ids should be the same");
         assertEquals("LKR", getCartResult.currency(), "Currencies should be LKR");
         assertTrue(result.isPresent(), "Carts should exist");
         assertEquals(1, getCartResult.cartItemSnapshotResults().size(), "CartItem count should be 1");
-        assertEquals(new Money(new BigDecimal("200"), "LKR"), getCartResult.total(), "Cart total should be 200");
+        assertEquals(new Money(new BigDecimal("200"), "LKR"), cartItemSnapshot.subTotal(), "Cart total should be 200");
         assertFalse(getCartResult.isCartEmpty(), "Cart result should not be empty");
         assertEquals(2, getCartResult.cartItemSnapshotResults().get(0).quantity(), "CartItem quantity should be 2");
     }

@@ -7,6 +7,7 @@ import lk.clean.architecture.cart.api.application.exception.CartNotFoundExceptio
 import lk.clean.architecture.cart.api.application.exception.ProductNotFoundException;
 import lk.clean.architecture.cart.api.application.records.commands.UpdateCartItemQuantityCommand;
 import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
+import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class UpdateCartItemQuantityUseCaseImpl implements UpdateCartItemQuantity
                 savedCart.getCartId(),
                 results.productId(),
                 results.quantity(),
-                results.subTotal()
+                new MoneyResult(results.subTotal().amount(), results.subTotal().currency())
         );
     }
 }

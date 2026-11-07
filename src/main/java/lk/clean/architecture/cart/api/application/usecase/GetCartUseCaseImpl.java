@@ -4,8 +4,9 @@ import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
 import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
-import lk.clean.architecture.cart.api.application.records.results.CartItemSnapshotResult;
+import lk.clean.architecture.cart.api.application.records.results.separation_records.CartItemSnapshotResult;
 import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
+import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
 
 import java.util.List;
 
@@ -31,16 +32,16 @@ public class GetCartUseCaseImpl implements GetCartUseCase {
                         item.productName(),
                         item.productDescription(),
                         item.quantity(),
-                        item.unitPrice(),
+                        new MoneyResult(item.unitPrice().amount(), item.unitPrice().currency()),
                         item.isAvailable(),
-                        item.subTotal()
+                        new MoneyResult(item.subTotal().amount(), item.subTotal().currency())
                 )).toList();
 
         return new GetCartResult(
                 cart.getCartId(),
                 cart.getCurrency(),
                 cartItemSnapshotResults,
-                cart.calculateTotal(),
+                new MoneyResult(cart.calculateTotal().amount(), cart.getCurrency()),
                 cart.isCartEmpty()
         );
     }
