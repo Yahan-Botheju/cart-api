@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.web.DTOs.response;
+package lk.clean.architecture.cart.api.web.DTOs.response.separation_records;
 
 import lombok.Getter;
 import lombok.Setter;
