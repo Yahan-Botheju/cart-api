@@ -1,7 +1,7 @@
 package lk.clean.architecture.cart.api.application.records.results;
 
-import lk.clean.architecture.cart.api._domain.models.CartItemSnapshot;
-import lk.clean.architecture.cart.api._domain.models.Money;
+import lk.clean.architecture.cart.api.application.records.results.separation_records.CartItemSnapshotResult;
+import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
 
 import java.util.List;
 import java.util.UUID;
