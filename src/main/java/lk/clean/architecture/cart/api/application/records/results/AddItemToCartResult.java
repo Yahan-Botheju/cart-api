@@ -8,7 +8,7 @@ public record AddItemToCartResult(
         UUID cartId,
         UUID productId,
         int quantity,
-        Money subtotal
+        MoneyResult subtotal
 ) {
 
     public AddItemToCartResult{

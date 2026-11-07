@@ -7,6 +7,7 @@ import lk.clean.architecture.cart.api.application.exception.CartNotFoundExceptio
 import lk.clean.architecture.cart.api.application.exception.ProductNotFoundException;
 import lk.clean.architecture.cart.api.application.records.commands.AddItemToCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.AddItemToCartResult;
+import lk.clean.architecture.cart.api.application.records.results.MoneyResult;
 
 
 public class AddItemToCartUseCaseImpl implements AddItemToCartUseCase {
@@ -42,11 +43,12 @@ public class AddItemToCartUseCaseImpl implements AddItemToCartUseCase {
                 .findFirst()
                 .orElseThrow(() -> new ProductNotFoundException("Product not found!!"));
 
+
         return new AddItemToCartResult(
                 savedCart.getCartId(),
                 results.productId(),
                 results.quantity(),
-                results.subTotal()
+                new MoneyResult(results.subTotal().amount(), results.subTotal().currency())
         );
     }
 }
