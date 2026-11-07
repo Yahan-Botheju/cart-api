@@ -9,8 +9,8 @@ public record CartItemSnapshotResult(
         String productName,
         String productDescription,
         int quantity,
-        Money unitPrice,
+        MoneyResult unitPrice,
         boolean isAvailable,
-        Money subTotal
+        MoneyResult subTotal
 ) {
 }

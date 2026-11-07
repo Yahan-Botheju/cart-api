@@ -32,9 +32,9 @@ public class GetCartUseCaseImpl implements GetCartUseCase {
                         item.productName(),
                         item.productDescription(),
                         item.quantity(),
-                        item.unitPrice(),
+                        new MoneyResult(item.unitPrice().amount(), item.unitPrice().currency()),
                         item.isAvailable(),
-                        item.subTotal()
+                        new MoneyResult(item.subTotal().amount(), item.subTotal().currency())
                 )).toList();
 
         return new GetCartResult(
