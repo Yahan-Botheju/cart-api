@@ -6,6 +6,7 @@ import lk.clean.architecture.cart.api.application.exception.CartNotFoundExceptio
 import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.CartItemSnapshotResult;
 import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
+import lk.clean.architecture.cart.api.application.records.results.MoneyResult;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class GetCartUseCaseImpl implements GetCartUseCase {
                 cart.getCartId(),
                 cart.getCurrency(),
                 cartItemSnapshotResults,
-                cart.calculateTotal(),
+                new MoneyResult(cart.calculateTotal().amount(), cart.getCurrency()),
                 cart.isCartEmpty()
         );
     }

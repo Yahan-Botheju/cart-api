@@ -10,7 +10,7 @@ public record GetCartResult(
         UUID cartId,
         String currency,
         List<CartItemSnapshotResult> cartItemSnapshotResults,
-        Money total,
+        MoneyResult calculateTotal,
         boolean isCartEmpty
 ) {
     public GetCartResult{
@@ -27,7 +27,7 @@ public record GetCartResult(
         }
         cartItemSnapshotResults = List.copyOf(cartItemSnapshotResults);
 
-        if (total == null) {
+        if (calculateTotal == null) {
             throw new IllegalArgumentException("Total cannot be null");
         }
     }
