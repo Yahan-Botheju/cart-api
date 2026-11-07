@@ -1,6 +1,6 @@
 package lk.clean.architecture.cart.api.web.DTOs.response;
 
-import lk.clean.architecture.cart.api._domain.models.Money;
+import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.MoneyResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +12,6 @@ public class UpdateCartItemQuantityResponseDTO {
     private UUID cartId;
     private UUID productId;
     private int quantity;
-    private Money subtotal;
+    private MoneyResponseDTO subtotal;
 
 }

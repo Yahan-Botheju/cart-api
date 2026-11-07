@@ -1,7 +1,7 @@
 package lk.clean.architecture.cart.api.web.DTOs.response;
 
-import lk.clean.architecture.cart.api._domain.models.Money;
-import lk.clean.architecture.cart.api.application.records.results.separation_records.CartItemSnapshotResult;
+import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.CartItemSnapshotDTO;
+import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.MoneyResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ import java.util.UUID;
 public class GetCartResponseDTO {
     private UUID cartId;
     private String currency;
-    private List<CartItemSnapshotResult> cartItemSnapshotResults;
-    private Money total;
+    private List<CartItemSnapshotDTO> cartItemSnapshotDTOS;
+    private MoneyResponseDTO total;
     private boolean isCartEmpty;
 }
