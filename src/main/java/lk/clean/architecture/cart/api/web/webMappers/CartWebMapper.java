@@ -10,7 +10,7 @@ import org.mapstruct.Mapper;
 
 import java.util.UUID;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = MoneyMapper.class)
 public interface CartWebMapper {
 
     /* __CREATE_CART__ */
