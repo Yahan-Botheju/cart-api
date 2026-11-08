@@ -8,9 +8,6 @@ import lk.clean.architecture.cart.api.application.exception.ProductNotFoundExcep
 import lk.clean.architecture.cart.api.application.records.commands.UpdateCartItemQuantityCommand;
 import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
 import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-
-import java.util.Optional;
 
 
 public class UpdateCartItemQuantityUseCaseImpl implements UpdateCartItemQuantityUseCase {

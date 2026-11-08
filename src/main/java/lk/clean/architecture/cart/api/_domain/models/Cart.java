@@ -1,7 +1,6 @@
 package lk.clean.architecture.cart.api._domain.models;
 
 import java.math.BigDecimal;
-import java.text.Collator;
 import java.util.*;
 
 public class Cart {

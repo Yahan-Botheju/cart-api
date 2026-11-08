@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.domain.application.usecase;
+package lk.clean.architecture.cart.api.application.usecase;
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.models.CartItem;
@@ -7,7 +7,6 @@ import lk.clean.architecture.cart.api._domain.models.Product;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
 import lk.clean.architecture.cart.api.application.records.commands.RemoveItemFromCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.RemoveItemFromCartResult;
-import lk.clean.architecture.cart.api.application.usecase.RemoveItemFromCartUseCaseImpl;
 import lk.clean.architecture.cart.api.domain.repository.CartRepositoryTest;
 import org.junit.jupiter.api.Test;
 

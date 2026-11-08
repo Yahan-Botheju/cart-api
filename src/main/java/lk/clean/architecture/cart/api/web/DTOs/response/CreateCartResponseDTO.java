@@ -2,8 +2,6 @@ package lk.clean.architecture.cart.api.web.DTOs.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.UUID;
 
