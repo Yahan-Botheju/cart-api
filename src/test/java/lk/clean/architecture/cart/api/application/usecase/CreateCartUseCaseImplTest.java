@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.domain.application.usecase;
+package lk.clean.architecture.cart.api.application.usecase;
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
