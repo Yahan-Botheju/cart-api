@@ -1,21 +1,12 @@
 package lk.clean.architecture.cart.api.web.controllers;
 
-import lk.clean.architecture.cart.api.application.records.commands.AddItemToCartCommand;
-import lk.clean.architecture.cart.api.application.records.commands.CreateCartCommand;
-import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
-import lk.clean.architecture.cart.api.application.records.commands.UpdateCartItemQuantityCommand;
-import lk.clean.architecture.cart.api.application.records.results.AddItemToCartResult;
-import lk.clean.architecture.cart.api.application.records.results.CreateCartResult;
-import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
-import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
+import lk.clean.architecture.cart.api.application.records.commands.*;
+import lk.clean.architecture.cart.api.application.records.results.*;
 import lk.clean.architecture.cart.api.application.usecase.*;
 import lk.clean.architecture.cart.api.web.DTOs.request.AddItemToCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.request.CreateCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.request.UpdateCartItemQuantityRequestDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.AddItemToCartResponseDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.CreateCartResponseDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.GetCartResponseDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.UpdateCartItemQuantityResponseDTO;
+import lk.clean.architecture.cart.api.web.DTOs.response.*;
 import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.CartItemSnapshotDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.MoneyResponseDTO;
 import lk.clean.architecture.cart.api.web.webMappers.CartWebMapper;
@@ -26,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -38,7 +28,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CartController.class)
@@ -218,7 +208,34 @@ public class CartControllerTest {
                 .andExpect(jsonPath("$.total.currency").value("LKR"));
     }
 
+    //test remove-item-from-cart
+    @Test
+    void shouldRemoveItemFromCartSuccessfully() throws Exception {
 
+        UUID cartId = UUID.randomUUID();
+        UUID productId = UUID.randomUUID();
+
+        RemoveItemFromCartCommand mockCommand = mock(RemoveItemFromCartCommand.class);
+        RemoveItemFromCartResult mockResult = mock(RemoveItemFromCartResult.class);
+
+        RemoveItemFromCartResponseDTO responseDTO = new RemoveItemFromCartResponseDTO();
+        responseDTO.setCartId(cartId);
+        responseDTO.setRemovedProductId(productId);
+        responseDTO.setCartEmpty(false);
+
+        when(cartWebMapper.toRemoveItemFromCartCommand(eq(cartId), eq(productId))).thenReturn(mockCommand);
+        when(removeItemFromCartUseCase.removeItemFromCart(mockCommand)).thenReturn(mockResult);
+        when(cartWebMapper.toRemoveItemFromCartResponseDTO(mockResult)).thenReturn(responseDTO);
+
+
+        mockMvc.perform(delete("/api/v1/carts/{cartId}/items/{productId}", cartId, productId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                //expectations
+                .andExpect(jsonPath("$.cartId").value(cartId.toString()))
+                .andExpect(jsonPath("$.removedProductId").value(productId.toString()))
+                .andExpect(jsonPath("$.cartEmpty").value(false));
+    }
 
 
 
