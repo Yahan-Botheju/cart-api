@@ -3,15 +3,19 @@ package lk.clean.architecture.cart.api.web.controllers;
 import lk.clean.architecture.cart.api.application.records.commands.AddItemToCartCommand;
 import lk.clean.architecture.cart.api.application.records.commands.CreateCartCommand;
 import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
+import lk.clean.architecture.cart.api.application.records.commands.UpdateCartItemQuantityCommand;
 import lk.clean.architecture.cart.api.application.records.results.AddItemToCartResult;
 import lk.clean.architecture.cart.api.application.records.results.CreateCartResult;
 import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
+import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
 import lk.clean.architecture.cart.api.application.usecase.*;
 import lk.clean.architecture.cart.api.web.DTOs.request.AddItemToCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.request.CreateCartRequestDTO;
+import lk.clean.architecture.cart.api.web.DTOs.request.UpdateCartItemQuantityRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.AddItemToCartResponseDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.CreateCartResponseDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.GetCartResponseDTO;
+import lk.clean.architecture.cart.api.web.DTOs.response.UpdateCartItemQuantityResponseDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.CartItemSnapshotDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.MoneyResponseDTO;
 import lk.clean.architecture.cart.api.web.webMappers.CartWebMapper;
@@ -32,6 +36,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -137,4 +142,88 @@ public class CartControllerTest {
                 .andExpect(jsonPath("$.subtotal.amount").value(500.00))
                 .andExpect(jsonPath("$.subtotal.currency").value("LKR"));
     }
+
+
+    @Test
+    void shouldUpdateCartItemQuantitySuccessfully() throws Exception {
+        //create given inputs
+        UUID cartId = UUID.randomUUID();
+        UUID productId = UUID.randomUUID();
+        int newQuantity = 3;
+
+        UpdateCartItemQuantityRequestDTO requestDTO = new UpdateCartItemQuantityRequestDTO();
+        requestDTO.setQuantity(newQuantity);
+
+        UpdateCartItemQuantityCommand mockCommand = mock(UpdateCartItemQuantityCommand.class);
+        UpdateCartItemQuantityResult mockResult = mock(UpdateCartItemQuantityResult.class);
+
+        //set values to responseDTO
+        UpdateCartItemQuantityResponseDTO responseDTO = new UpdateCartItemQuantityResponseDTO();
+        responseDTO.setCartId(cartId);
+        responseDTO.setProductId(productId);
+        responseDTO.setQuantity(newQuantity);
+
+        //Mocking Mapper and UseCases
+        when(cartWebMapper.toUpdateCartItemQuantityCommand(eq(cartId), eq(productId), any(UpdateCartItemQuantityRequestDTO.class)))
+                .thenReturn(mockCommand);
+        when(updateCartItemQuantityUseCase.updateCartItemQuantity(mockCommand)).thenReturn(mockResult);
+        when(cartWebMapper.toUpdateCartItemQuantityResponseDTO(mockResult)).thenReturn(responseDTO);
+
+        //When & Then
+        mockMvc.perform(patch("/api/v1/carts/{cartId}/items/{productId}", cartId, productId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDTO)))
+                .andExpect(status().isOk())
+                //expectations
+                .andExpect(jsonPath("$.cartId").value(cartId.toString()))
+                .andExpect(jsonPath("$.productId").value(productId.toString()))
+                .andExpect(jsonPath("$.quantity").value(newQuantity));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
