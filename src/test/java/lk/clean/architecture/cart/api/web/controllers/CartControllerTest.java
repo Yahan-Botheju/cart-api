@@ -96,7 +96,7 @@ public class CartControllerTest {
         //create given inputs
         UUID cartId = UUID.randomUUID();
         UUID productId = UUID.randomUUID();
-        int  quantity = 2;
+        int quantity = 2;
         MoneyResponseDTO subtotal = new MoneyResponseDTO();
         subtotal.setCurrency("LKR");
         subtotal.setAmount(new BigDecimal("500.00"));
@@ -118,13 +118,13 @@ public class CartControllerTest {
         responseDTO.setSubtotal(subtotal);
 
         //make connections between layers
-        when(cartWebMapper.toAddItemToCartCommand(eq(cartId),any(AddItemToCartRequestDTO.class))).thenReturn(mockCommand);
+        when(cartWebMapper.toAddItemToCartCommand(eq(cartId), any(AddItemToCartRequestDTO.class))).thenReturn(mockCommand);
         when(addItemToCartUseCase.addItemToCart(mockCommand)).thenReturn(mockResult);
         when(cartWebMapper.toAddItemToCartResponseDTO(mockResult)).thenReturn(responseDTO);
 
         mockMvc.perform(post("/api/v1/carts/{cartId}/items", cartId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(mockRequestDTO)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(mockRequestDTO)))
                 .andExpect(status().is2xxSuccessful())
                 //expectations
                 .andExpect(jsonPath("$.cartId").value(cartId.toString()))
@@ -237,46 +237,32 @@ public class CartControllerTest {
                 .andExpect(jsonPath("$.cartEmpty").value(false));
     }
 
+    //test clear-cart
+    @Test
+    void shouldClearCartSuccessfully() throws Exception {
+
+        UUID cartId = UUID.randomUUID();
+
+        ClearCartCommand mockCommand = mock(ClearCartCommand.class);
+        ClearCartResult mockResult = mock(ClearCartResult.class);
+
+        ClearCartResponseDTO responseDTO = new ClearCartResponseDTO();
+        responseDTO.setCartId(cartId);
+        responseDTO.setCartEmpty(true);
 
 
+        when(cartWebMapper.toClearCartCommand(eq(cartId))).thenReturn(mockCommand);
+        when(clearCartUseCase.clearCart(mockCommand)).thenReturn(mockResult);
+        when(cartWebMapper.toClearCartResponseDTO(mockResult)).thenReturn(responseDTO);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        mockMvc.perform(delete("/api/v1/carts/{cartId}/items", cartId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                //expectations
+                .andExpect(jsonPath("$.cartId").value(cartId.toString()))
+                .andExpect(jsonPath("$.cartEmpty").value(true));
+    }
 
 
 }
