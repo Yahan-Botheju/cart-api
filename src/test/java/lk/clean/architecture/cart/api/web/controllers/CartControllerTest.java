@@ -26,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -143,7 +144,7 @@ public class CartControllerTest {
                 .andExpect(jsonPath("$.subtotal.currency").value("LKR"));
     }
 
-
+    //test update-cart-item-quantity
     @Test
     void shouldUpdateCartItemQuantitySuccessfully() throws Exception {
         //create given inputs
@@ -180,7 +181,42 @@ public class CartControllerTest {
                 .andExpect(jsonPath("$.quantity").value(newQuantity));
     }
 
+    //test get-cart
+    @Test
+    void shouldGetCartSuccessfully() throws Exception {
 
+        UUID cartId = UUID.randomUUID();
+        String currency = "LKR";
+
+        GetCartCommand mockCommand = mock(GetCartCommand.class);
+        GetCartResult mockResult = mock(GetCartResult.class);
+
+        MoneyResponseDTO moneyResponseDTO = new MoneyResponseDTO();
+        moneyResponseDTO.setAmount(new BigDecimal("1500.00"));
+        moneyResponseDTO.setCurrency(currency);
+
+        GetCartResponseDTO responseDTO = new GetCartResponseDTO();
+        responseDTO.setCartId(cartId);
+        responseDTO.setCurrency(currency);
+        responseDTO.setCartItemSnapshotDTOS(List.of());
+        responseDTO.setTotal(moneyResponseDTO);
+        responseDTO.setCartEmpty(true);
+
+        when(cartWebMapper.toGetCartCommand(eq(cartId))).thenReturn(mockCommand);
+        when(getCartUseCase.getCart(mockCommand)).thenReturn(mockResult);
+        when(cartWebMapper.toGetCartResponseDTO(mockResult)).thenReturn(responseDTO);
+
+
+        mockMvc.perform(get("/api/v1/carts/{cartId}", cartId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                //expectations
+                .andExpect(jsonPath("$.cartId").value(cartId.toString()))
+                .andExpect(jsonPath("$.currency").value(currency))
+                .andExpect(jsonPath("$.cartEmpty").value(true))
+                .andExpect(jsonPath("$.total.amount").value(1500.00))
+                .andExpect(jsonPath("$.total.currency").value("LKR"));
+    }
 
 
 
