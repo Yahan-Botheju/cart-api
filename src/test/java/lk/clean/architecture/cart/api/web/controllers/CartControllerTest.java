@@ -7,7 +7,6 @@ import lk.clean.architecture.cart.api.web.DTOs.request.AddItemToCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.request.CreateCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.request.UpdateCartItemQuantityRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.*;
-import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.CartItemSnapshotDTO;
 import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.MoneyResponseDTO;
 import lk.clean.architecture.cart.api.web.webMappers.CartWebMapper;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
