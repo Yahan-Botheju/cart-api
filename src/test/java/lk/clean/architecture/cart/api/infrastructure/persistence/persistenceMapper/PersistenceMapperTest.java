@@ -5,6 +5,7 @@ import lk.clean.architecture.cart.api._domain.models.CartItem;
 import lk.clean.architecture.cart.api._domain.models.Money;
 import lk.clean.architecture.cart.api._domain.models.Product;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartEntity;
+import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartItemEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMappers.PersistenceMapper;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -36,11 +37,18 @@ public class PersistenceMapperTest {
         PersistenceMapper persistenceMapper = Mappers.getMapper(PersistenceMapper.class);
         //turn to entity
         CartEntity mockEntity = persistenceMapper.toCartEntity(mockCart);
+
+        CartItemEntity mockFirstItem = mockEntity.getCartItems().get(0);
+        CartItemEntity mockSecondItem = mockEntity.getCartItems().get(1);
+
         //expectations
         assertEquals(mockEntity.getCartId(), mockCart.getCartId(), "Cart IDs should be same");
         assertEquals("LKR", mockEntity.getCurrency(),  "Currency should be LKR");
         assertNull(mockEntity.getCreatedAt(), "Created at should be null");
         assertNull(mockEntity.getUpdatedAt(), "Updated at should be null");
         assertEquals(mockCart.getCartItems().size(), mockEntity.getCartItems().size(), "CartItems should be same");
+
+        assertEquals(product1.getProductId(), mockFirstItem.getProductId(), "Product 1 ID and MockFirstItem ID should be same");
+        assertEquals(product2.getProductId(), mockSecondItem.getProductId(), "Product 2 ID and MockSecondItem ID should be same");
     }
 }
