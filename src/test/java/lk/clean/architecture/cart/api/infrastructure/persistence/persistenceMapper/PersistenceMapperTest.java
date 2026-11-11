@@ -91,6 +91,17 @@ public class PersistenceMapperTest {
 
         assertNotNull(mockCartDomainModel);
     }
+
+    //check empty entity mapping
+    @Test
+    void shouldReturnNullWhenCartEntityIsNull() {
+
+        PersistenceMapper persistenceMapper = Mappers.getMapper(PersistenceMapper.class);
+        //empty data mapping
+        Cart mockCart = persistenceMapper.toCartDomainModel(null, List.of());
+        //expectations
+        assertNull(mockCart);
+    }
 }
 
 
