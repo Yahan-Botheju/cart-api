@@ -150,6 +150,28 @@ public class PersistenceMapperTest {
 
 
     }
+
+    //test cart-item-domain-model to Cart-item-entity mapping
+    @Test
+    void shouldMapCartItemDomainModelToCartItemEntitySuccessfully() {
+
+        //mock products
+        Product product = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR"));
+        //create cartItem
+        CartItem cartItem = new CartItem(product, 3);
+        //initiate mapper
+        PersistenceMapper persistenceMapper = Mappers.getMapper(PersistenceMapper.class);
+        //domain model to entity
+        CartItemEntity mockCartItemEntity = persistenceMapper.toCartItemEntity(cartItem);
+        //expectations
+        assertEquals(product.getProductId(), mockCartItemEntity.getProductId(), "Product IDs should be same");
+        assertEquals(3, mockCartItemEntity.getQuantity(), "Quantity should be 3");
+        assertNull(mockCartItemEntity.getCartItemId(), "CartItem ID should be null");
+        assertNull(mockCartItemEntity.getCart(), "Cart reference should be null due to mapper ignorance");
+    }
 }
 
 
