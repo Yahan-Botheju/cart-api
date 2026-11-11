@@ -1,0 +1,92 @@
+package lk.clean.architecture.cart.api.infrastructure.persistence;
+
+import lk.clean.architecture.cart.api._domain.models.Cart;
+import lk.clean.architecture.cart.api._domain.models.CartItem;
+import lk.clean.architecture.cart.api._domain.models.Money;
+import lk.clean.architecture.cart.api._domain.models.Product;
+import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
+import lk.clean.architecture.cart.api._domain.repositories.ProductRepository;
+import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartEntity;
+import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartItemEntity;
+import lk.clean.architecture.cart.api.infrastructure.persistence.jpa.CartJpaRepository;
+import lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMappers.PersistenceMapper;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@ExtendWith(MockitoExtension.class)
+public class CartRepositoryImplTest {
+
+    @Mock
+    private CartJpaRepository cartJpaRepository;
+
+    @Mock
+    private ProductRepository productRepository;
+
+    @Mock
+    private PersistenceMapper persistenceMapper;
+
+    @InjectMocks
+    private CartRepositoryImpl cartRepositoryImpl;
+
+    //test find cart by id
+    @Test
+    void shouldFindCartByIdSuccessfully() {
+        //Create cart and mock products
+        Cart cart = new Cart("LKR");
+
+        Product product1 = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100.00"), "LKR"));
+
+        Product product2 = new Product(
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal("50.00"), "LKR"));
+
+        //add products to cart
+        cart.addItem(new CartItem(product1, 2));
+        cart.addItem(new CartItem(product2, 3));
+
+        //prepare mock entities and objects
+        CartEntity cartEntity = new CartEntity();
+
+        //setup Mock behaviors
+        when(cartJpaRepository.findById(cart.getCartId())).thenReturn(Optional.of(cartEntity));
+        when(persistenceMapper.toCartDomainModel(any(CartEntity.class), anyList())).thenReturn(cart);
+
+        //execute the method under test
+        Optional<Cart> result = cartRepositoryImpl.findCartById(cart.getCartId());
+
+        //expectations
+        assertTrue(result.isPresent(), "Cart should be present");
+
+        Cart resultCart = result.get();
+
+        assertEquals(cart.getCartId(), resultCart.getCartId(), "Cart ID should be the same");
+        assertEquals("LKR", resultCart.getCurrency(), "Currency should be LKR");
+        assertEquals(2, resultCart.getCartItems().size(), "Cart should contain 2 items");
+        assertEquals(product1.getProductId(), resultCart.getCartItems().get(0).productId());
+        assertEquals(2, resultCart.getCartItems().get(0).quantity());
+        assertEquals(product2.getProductId(), resultCart.getCartItems().get(1).productId());
+        assertEquals(3, resultCart.getCartItems().get(1).quantity());
+
+        //verifications
+        verify(cartJpaRepository).findById(cart.getCartId());
+    }
+}
