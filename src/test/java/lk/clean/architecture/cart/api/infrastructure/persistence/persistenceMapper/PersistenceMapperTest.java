@@ -172,6 +172,30 @@ public class PersistenceMapperTest {
         assertNull(mockCartItemEntity.getCartItemId(), "CartItem ID should be null");
         assertNull(mockCartItemEntity.getCart(), "Cart reference should be null due to mapper ignorance");
     }
+
+    //test cart-item-snapshot to cart-item-entity
+    @Test
+    void shouldMapCartItemSnapshotToCartItemEntitySuccessfully() {
+        //create cartItemSnapshot obj
+        CartItemSnapshot cartItemSnapshot = new CartItemSnapshot(
+                UUID.randomUUID(),
+                "Test-Product-01",
+                "Test-Description-01",
+                3,
+                new Money(new BigDecimal("100.00"), "LKR"),
+                true,
+                new Money(new BigDecimal("300.00"), "LKR")
+        );
+        //initiate mapper
+        PersistenceMapper persistenceMapper = Mappers.getMapper(PersistenceMapper.class);
+        //mapping
+        CartItemEntity mockCartItemEntity = persistenceMapper.toCartItemEntity(cartItemSnapshot);
+        //expectations
+        assertEquals(cartItemSnapshot.productId(), mockCartItemEntity.getProductId(), "Product IDs should be same");
+        assertEquals(cartItemSnapshot.quantity(), mockCartItemEntity.getQuantity(), "Quantity should be 3");
+        assertNull(mockCartItemEntity.getCartItemId(), "CartItem ID should not be null");
+        assertNull(mockCartItemEntity.getCart(), "Cart reference should be null due to mapper ignorance");
+    }
 }
 
 
