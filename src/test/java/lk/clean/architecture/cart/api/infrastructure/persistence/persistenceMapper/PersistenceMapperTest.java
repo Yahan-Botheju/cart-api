@@ -3,6 +3,7 @@ package lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMap
 import lk.clean.architecture.cart.api._domain.models.*;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartItemEntity;
+import lk.clean.architecture.cart.api.infrastructure.persistence.entities.ProductEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMappers.PersistenceMapper;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -101,6 +102,27 @@ public class PersistenceMapperTest {
         Cart mockCart = persistenceMapper.toCartDomainModel(null, List.of());
         //expectations
         assertNull(mockCart);
+    }
+
+    //test product-domain-model to product-entity mapping
+    @Test
+    void shouldMapProductDomainModelToProductEntitySuccessfully() {
+        //mock product
+        Product product = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("150.00"), "LKR"));
+        //mapper initiate
+        PersistenceMapper persistenceMapper = Mappers.getMapper(PersistenceMapper.class);
+        //map to product-entity
+        ProductEntity mockProductEntity = persistenceMapper.toProductEntity(product);
+        //expectations
+        assertEquals(product.getProductId(), mockProductEntity.getProductId(), "Product IDs should be same");
+        assertEquals(product.getProductName(), mockProductEntity.getProductName(), "Product names should be same");
+        assertEquals(product.getProductDescription(), mockProductEntity.getProductDescription(), "Product descriptions should be same");
+        assertEquals(product.getProductPrice().amount(), mockProductEntity.getPriceAmount(), "Product price amount should be same" );
+        assertEquals(product.getProductPrice().currency(), mockProductEntity.getPriceCurrency(), "Product price currency should be same");
+        assertTrue(mockProductEntity.isAvailable());
     }
 }
 
