@@ -124,6 +124,32 @@ public class PersistenceMapperTest {
         assertEquals(product.getProductPrice().currency(), mockProductEntity.getPriceCurrency(), "Product price currency should be same");
         assertTrue(mockProductEntity.isAvailable());
     }
+
+    //test product-entity to product-domain-model
+    @Test
+    void shouldMapProductEntityToProductDomainModelSuccessfully() {
+        //mock product-entity
+        ProductEntity mockProductEntity = new ProductEntity();
+        mockProductEntity.setProductId(UUID.randomUUID());
+        mockProductEntity.setProductName("Test-Product-01");
+        mockProductEntity.setProductDescription("Test-Description-01");
+        mockProductEntity.setPriceAmount(new BigDecimal("150.00"));
+        mockProductEntity.setPriceCurrency("LKR");
+        mockProductEntity.setAvailable(true);
+        //initiate mapper
+        PersistenceMapper persistenceMapper = Mappers.getMapper(PersistenceMapper.class);
+        //map product-entity to product-domain-model
+        Product product = persistenceMapper.toProductDomainModel(mockProductEntity);
+        //expectations
+        assertEquals(mockProductEntity.getProductId(), product.getProductId(), "Product IDs should be same");
+        assertEquals(mockProductEntity.getProductName(), product.getProductName(), "Product names should be same");
+        assertEquals(mockProductEntity.getProductDescription(), product.getProductDescription(), "Product descriptions should be same");
+        assertEquals(mockProductEntity.getPriceAmount(), product.getProductPrice().amount(), "Product price amount should be same");
+        assertEquals(mockProductEntity.getPriceCurrency(), product.getProductPrice().currency(), "Product price currency should be same as LKR");
+        assertTrue(mockProductEntity.isAvailable());
+
+
+    }
 }
 
 
