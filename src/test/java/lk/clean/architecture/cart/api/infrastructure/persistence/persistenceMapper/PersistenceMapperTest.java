@@ -1,9 +1,6 @@
 package lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMapper;
 
-import lk.clean.architecture.cart.api._domain.models.Cart;
-import lk.clean.architecture.cart.api._domain.models.CartItem;
-import lk.clean.architecture.cart.api._domain.models.Money;
-import lk.clean.architecture.cart.api._domain.models.Product;
+import lk.clean.architecture.cart.api._domain.models.*;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartItemEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMappers.PersistenceMapper;
@@ -12,6 +9,9 @@ import org.mapstruct.factory.Mappers;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
 public class PersistenceMapperTest {
 
@@ -51,4 +51,80 @@ public class PersistenceMapperTest {
         assertEquals(product1.getProductId(), mockFirstItem.getProductId(), "Product 1 ID and MockFirstItem ID should be same");
         assertEquals(product2.getProductId(), mockSecondItem.getProductId(), "Product 2 ID and MockSecondItem ID should be same");
     }
+
+    //test cart-entity map to domain-model
+    @Test
+    void shouldMapCartEntityToCartDomainModelSuccessfully() {
+        //create mock entity
+        CartEntity mockEntity = new CartEntity();
+        mockEntity.setCartId(UUID.randomUUID());
+        mockEntity.setCurrency("LKR");
+        mockEntity.setCreatedAt(LocalDateTime.now());
+        mockEntity.setUpdatedAt(LocalDateTime.now());
+
+        //create mock cartItems
+        CartItem mockCartItem1 = new CartItem(new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100"), "LKR")), 2
+        );
+        CartItem mockCartItem2 = new CartItem(new Product(
+                "Test-Product-02",
+                "Test-Description-02",
+                new Money(new BigDecimal("50"), "LKR")), 3
+        );
+        //inject mapper
+        PersistenceMapper persistenceMapper = Mappers.getMapper(PersistenceMapper.class);
+        //set values to mapper
+        Cart mockCartDomainModel = persistenceMapper.toCartDomainModel(mockEntity, List.of(mockCartItem1, mockCartItem2));
+        //get items details
+        CartItemSnapshot item1 = mockCartDomainModel.getCartItems().get(0);
+        CartItemSnapshot item2 = mockCartDomainModel.getCartItems().get(1);
+        //expectations
+        assertEquals(mockEntity.getCartId(), mockCartDomainModel.getCartId(), "Cart IDs should be same");
+        assertEquals(mockEntity.getCurrency(), mockCartDomainModel.getCurrency(), "Currency should be LKR");
+        assertEquals(2, mockCartDomainModel.getCartItems().size(), "CartItems count should be 2");
+        assertEquals(mockCartItem1.getProduct().getProductId(), item1.productId(), "Entity 1 product ID and Domain Model 1 product ID should be same");
+        assertEquals(mockCartItem1.getQuantity(), item1.quantity(), "Quantity should be same");
+        assertEquals(mockCartItem2.getProduct().getProductId(), item2.productId(), "Entity 2 product ID Domain Model 2 product ID should be same");
+        assertEquals(mockCartItem2.getQuantity(), item2.quantity(), "Quantity should be same");
+
+        assertNotNull(mockCartDomainModel);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
