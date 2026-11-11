@@ -196,6 +196,17 @@ public class PersistenceMapperTest {
         assertNull(mockCartItemEntity.getCartItemId(), "CartItem ID should not be null");
         assertNull(mockCartItemEntity.getCart(), "Cart reference should be null due to mapper ignorance");
     }
+
+    //test null return when product entity is null
+    @Test
+    void shouldReturnNullWhenProductEntityIsNull() {
+        //initiate mapper
+        PersistenceMapper persistenceMapper = Mappers.getMapper(PersistenceMapper.class);
+        //set null product entity
+        Product product = persistenceMapper.toProductDomainModel(null);
+        //expectation
+        assertNull(product, "Should return null when product entity is null");
+    }
 }
 
 
