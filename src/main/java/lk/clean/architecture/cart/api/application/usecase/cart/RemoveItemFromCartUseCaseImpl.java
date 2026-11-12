@@ -3,8 +3,8 @@ package lk.clean.architecture.cart.api.application.usecase.cart;
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
-import lk.clean.architecture.cart.api.application.records.commands.RemoveItemFromCartCommand;
-import lk.clean.architecture.cart.api.application.records.results.RemoveItemFromCartResult;
+import lk.clean.architecture.cart.api.application.records.cart.commands.RemoveItemFromCartCommand;
+import lk.clean.architecture.cart.api.application.records.cart.results.RemoveItemFromCartResult;
 
 
 public class RemoveItemFromCartUseCaseImpl implements RemoveItemFromCartUseCase {

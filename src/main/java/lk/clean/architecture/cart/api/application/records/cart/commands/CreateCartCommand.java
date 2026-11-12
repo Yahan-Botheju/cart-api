@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.application.records.commands;
+package lk.clean.architecture.cart.api.application.records.cart.commands;
 
 public record CreateCartCommand(String currency) {
 

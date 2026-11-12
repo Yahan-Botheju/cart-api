@@ -1,7 +1,7 @@
 package lk.clean.architecture.cart.api.application.usecase.cart;
 
-import lk.clean.architecture.cart.api.application.records.commands.RemoveItemFromCartCommand;
-import lk.clean.architecture.cart.api.application.records.results.RemoveItemFromCartResult;
+import lk.clean.architecture.cart.api.application.records.cart.commands.RemoveItemFromCartCommand;
+import lk.clean.architecture.cart.api.application.records.cart.results.RemoveItemFromCartResult;
 
 
 public interface RemoveItemFromCartUseCase {

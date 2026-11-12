@@ -5,9 +5,9 @@ import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api._domain.repositories.ProductRepository;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
 import lk.clean.architecture.cart.api.application.exception.ProductNotFoundException;
-import lk.clean.architecture.cart.api.application.records.commands.AddItemToCartCommand;
-import lk.clean.architecture.cart.api.application.records.results.AddItemToCartResult;
-import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
+import lk.clean.architecture.cart.api.application.records.cart.commands.AddItemToCartCommand;
+import lk.clean.architecture.cart.api.application.records.cart.results.AddItemToCartResult;
+import lk.clean.architecture.cart.api.application.records.cart.results.separation_records.MoneyResult;
 
 
 public class AddItemToCartUseCaseImpl implements AddItemToCartUseCase {

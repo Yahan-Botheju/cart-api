@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.application.records.results;
+package lk.clean.architecture.cart.api.application.records.cart.results;
 
 import java.util.UUID;
 

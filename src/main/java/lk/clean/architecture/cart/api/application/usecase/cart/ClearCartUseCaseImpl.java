@@ -3,8 +3,8 @@ package lk.clean.architecture.cart.api.application.usecase.cart;
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
-import lk.clean.architecture.cart.api.application.records.commands.ClearCartCommand;
-import lk.clean.architecture.cart.api.application.records.results.ClearCartResult;
+import lk.clean.architecture.cart.api.application.records.cart.commands.ClearCartCommand;
+import lk.clean.architecture.cart.api.application.records.cart.results.ClearCartResult;
 
 public class ClearCartUseCaseImpl implements ClearCartUseCase {
 

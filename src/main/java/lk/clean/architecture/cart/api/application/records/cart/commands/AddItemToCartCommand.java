@@ -1,16 +1,14 @@
-package lk.clean.architecture.cart.api.application.records.results;
-
-import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
+package lk.clean.architecture.cart.api.application.records.cart.commands;
 
 import java.util.UUID;
 
-public record UpdateCartItemQuantityResult(
+public record AddItemToCartCommand(
         UUID cartId,
         UUID productId,
-        int quantity,
-        MoneyResult subtotal
+        int quantity
 ) {
-    public UpdateCartItemQuantityResult {
+
+    public AddItemToCartCommand{
 
         if (cartId == null) {
             throw new IllegalArgumentException("cartId cannot be null");
@@ -22,10 +20,6 @@ public record UpdateCartItemQuantityResult(
 
         if (quantity <= 0) {
             throw new IllegalArgumentException("quantity cannot be negative");
-        }
-
-        if (subtotal == null) {
-            throw new IllegalArgumentException("subtotal cannot be null");
         }
     }
 }

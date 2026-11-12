@@ -1,7 +1,7 @@
 package lk.clean.architecture.cart.api.application.usecase.cart;
 
-import lk.clean.architecture.cart.api.application.records.commands.UpdateCartItemQuantityCommand;
-import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
+import lk.clean.architecture.cart.api.application.records.cart.commands.UpdateCartItemQuantityCommand;
+import lk.clean.architecture.cart.api.application.records.cart.results.UpdateCartItemQuantityResult;
 
 
 public interface UpdateCartItemQuantityUseCase {

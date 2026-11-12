@@ -1,6 +1,6 @@
 package lk.clean.architecture.cart.api.web.DTOs.cart.response.separation_records;
 
-import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
+import lk.clean.architecture.cart.api.application.records.cart.results.separation_records.MoneyResult;
 import lombok.Getter;
 import lombok.Setter;
 

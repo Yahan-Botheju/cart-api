@@ -2,9 +2,9 @@ package lk.clean.architecture.cart.api.application.usecase;
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
-import lk.clean.architecture.cart.api.application.records.commands.ClearCartCommand;
-import lk.clean.architecture.cart.api.application.records.commands.CreateCartCommand;
-import lk.clean.architecture.cart.api.application.records.results.CreateCartResult;
+import lk.clean.architecture.cart.api.application.records.cart.commands.ClearCartCommand;
+import lk.clean.architecture.cart.api.application.records.cart.commands.CreateCartCommand;
+import lk.clean.architecture.cart.api.application.records.cart.results.CreateCartResult;
 import lk.clean.architecture.cart.api.application.usecase.cart.ClearCartUseCase;
 import lk.clean.architecture.cart.api.application.usecase.cart.ClearCartUseCaseImpl;
 import lk.clean.architecture.cart.api.application.usecase.cart.CreateCartUseCase;

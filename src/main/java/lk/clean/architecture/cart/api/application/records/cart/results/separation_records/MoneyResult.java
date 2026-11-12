@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.application.records.results.separation_records;
+package lk.clean.architecture.cart.api.application.records.cart.results.separation_records;
 
 import java.math.BigDecimal;
 

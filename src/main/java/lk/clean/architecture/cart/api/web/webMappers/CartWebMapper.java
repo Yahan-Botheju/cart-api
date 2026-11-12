@@ -1,7 +1,7 @@
 package lk.clean.architecture.cart.api.web.webMappers;
 
-import lk.clean.architecture.cart.api.application.records.commands.*;
-import lk.clean.architecture.cart.api.application.records.results.*;
+import lk.clean.architecture.cart.api.application.records.cart.commands.*;
+import lk.clean.architecture.cart.api.application.records.cart.results.*;
 import lk.clean.architecture.cart.api.web.DTOs.cart.request.AddItemToCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.cart.request.CreateCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.cart.request.UpdateCartItemQuantityRequestDTO;
@@ -34,7 +34,7 @@ public interface CartWebMapper {
     /* __GET_CART__ */
 
     //to command
-    GetCartCommand  toGetCartCommand(UUID cartId);
+    GetCartCommand toGetCartCommand(UUID cartId);
 
     //to response
     GetCartResponseDTO toGetCartResponseDTO(GetCartResult getCartResult);

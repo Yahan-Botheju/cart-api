@@ -1,7 +1,7 @@
 package lk.clean.architecture.cart.api.application.usecase.cart;
 
-import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
-import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
+import lk.clean.architecture.cart.api.application.records.cart.commands.GetCartCommand;
+import lk.clean.architecture.cart.api.application.records.cart.results.GetCartResult;
 
 
 public interface GetCartUseCase {

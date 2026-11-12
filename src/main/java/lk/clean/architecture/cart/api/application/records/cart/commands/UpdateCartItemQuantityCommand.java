@@ -1,24 +1,22 @@
-package lk.clean.architecture.cart.api.application.records.commands;
+package lk.clean.architecture.cart.api.application.records.cart.commands;
 
 import java.util.UUID;
 
-public record AddItemToCartCommand(
+public record UpdateCartItemQuantityCommand(
         UUID cartId,
         UUID productId,
         int quantity
 ) {
+    public UpdateCartItemQuantityCommand{
 
-    public AddItemToCartCommand{
-
-        if (cartId == null) {
+        if (cartId == null){
             throw new IllegalArgumentException("cartId cannot be null");
         }
 
-        if (productId == null) {
+        if (productId == null){
             throw new IllegalArgumentException("productId cannot be null");
         }
-
-        if (quantity <= 0) {
+        if (quantity <= 0){
             throw new IllegalArgumentException("quantity cannot be negative");
         }
     }

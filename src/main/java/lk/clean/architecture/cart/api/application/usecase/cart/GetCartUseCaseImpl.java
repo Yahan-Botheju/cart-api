@@ -3,10 +3,10 @@ package lk.clean.architecture.cart.api.application.usecase.cart;
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
-import lk.clean.architecture.cart.api.application.records.commands.GetCartCommand;
-import lk.clean.architecture.cart.api.application.records.results.separation_records.CartItemSnapshotResult;
-import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
-import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
+import lk.clean.architecture.cart.api.application.records.cart.commands.GetCartCommand;
+import lk.clean.architecture.cart.api.application.records.cart.results.separation_records.CartItemSnapshotResult;
+import lk.clean.architecture.cart.api.application.records.cart.results.GetCartResult;
+import lk.clean.architecture.cart.api.application.records.cart.results.separation_records.MoneyResult;
 
 import java.util.List;
 

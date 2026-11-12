@@ -1,7 +1,7 @@
 package lk.clean.architecture.cart.api.web.controllers;
 
-import lk.clean.architecture.cart.api.application.records.commands.*;
-import lk.clean.architecture.cart.api.application.records.results.*;
+import lk.clean.architecture.cart.api.application.records.cart.commands.*;
+import lk.clean.architecture.cart.api.application.records.cart.results.*;
 import lk.clean.architecture.cart.api.application.usecase.cart.*;
 import lk.clean.architecture.cart.api.web.DTOs.cart.request.AddItemToCartRequestDTO;
 import lk.clean.architecture.cart.api.web.DTOs.cart.request.CreateCartRequestDTO;

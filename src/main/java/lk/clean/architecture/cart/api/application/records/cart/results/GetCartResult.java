@@ -1,7 +1,7 @@
-package lk.clean.architecture.cart.api.application.records.results;
+package lk.clean.architecture.cart.api.application.records.cart.results;
 
-import lk.clean.architecture.cart.api.application.records.results.separation_records.CartItemSnapshotResult;
-import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
+import lk.clean.architecture.cart.api.application.records.cart.results.separation_records.CartItemSnapshotResult;
+import lk.clean.architecture.cart.api.application.records.cart.results.separation_records.MoneyResult;
 
 import java.util.List;
 import java.util.UUID;
