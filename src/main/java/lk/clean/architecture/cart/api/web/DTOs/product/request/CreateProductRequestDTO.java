@@ -15,5 +15,5 @@ public class CreateProductRequestDTO {
     private String productDescription;
 
     @NotNull(message = "Money cannot be empty")
-    private PriceRequestDTO priceRequestDTO;
+    private MoneyRequestDTO priceRequestDTO;
 }

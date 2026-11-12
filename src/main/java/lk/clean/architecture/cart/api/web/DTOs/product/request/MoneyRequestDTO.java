@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class PriceRequestDTO {
+public class MoneyRequestDTO {
     @NotNull(message = "Amount cannot be null")
     @Positive(message = "Amount must be greater than zero")
     private BigDecimal amount;
