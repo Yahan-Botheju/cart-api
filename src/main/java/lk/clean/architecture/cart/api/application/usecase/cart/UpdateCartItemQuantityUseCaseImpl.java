@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.application.usecase;
+package lk.clean.architecture.cart.api.application.usecase.cart;
 
 import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.models.CartItemSnapshot;

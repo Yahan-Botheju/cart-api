@@ -7,6 +7,7 @@ import lk.clean.architecture.cart.api._domain.models.Product;
 import lk.clean.architecture.cart.api.application.exception.CartNotFoundException;
 import lk.clean.architecture.cart.api.application.records.commands.UpdateCartItemQuantityCommand;
 import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
+import lk.clean.architecture.cart.api.application.usecase.cart.UpdateCartItemQuantityUseCaseImpl;
 import lk.clean.architecture.cart.api.domain.repository.CartRepositoryTest;
 import org.junit.jupiter.api.Test;
 

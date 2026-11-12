@@ -5,6 +5,10 @@ import lk.clean.architecture.cart.api.application.exception.CartNotFoundExceptio
 import lk.clean.architecture.cart.api.application.records.commands.ClearCartCommand;
 import lk.clean.architecture.cart.api.application.records.commands.CreateCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.CreateCartResult;
+import lk.clean.architecture.cart.api.application.usecase.cart.ClearCartUseCase;
+import lk.clean.architecture.cart.api.application.usecase.cart.ClearCartUseCaseImpl;
+import lk.clean.architecture.cart.api.application.usecase.cart.CreateCartUseCase;
+import lk.clean.architecture.cart.api.application.usecase.cart.CreateCartUseCaseImpl;
 import lk.clean.architecture.cart.api.domain.repository.CartRepositoryTest;
 import org.junit.jupiter.api.Test;
 

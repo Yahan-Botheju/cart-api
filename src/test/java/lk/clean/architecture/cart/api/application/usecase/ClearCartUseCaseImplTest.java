@@ -6,6 +6,7 @@ import lk.clean.architecture.cart.api._domain.models.Money;
 import lk.clean.architecture.cart.api._domain.models.Product;
 import lk.clean.architecture.cart.api.application.records.commands.ClearCartCommand;
 import lk.clean.architecture.cart.api.application.records.results.ClearCartResult;
+import lk.clean.architecture.cart.api.application.usecase.cart.ClearCartUseCaseImpl;
 import lk.clean.architecture.cart.api.domain.repository.CartRepositoryTest;
 import org.junit.jupiter.api.Test;
 
