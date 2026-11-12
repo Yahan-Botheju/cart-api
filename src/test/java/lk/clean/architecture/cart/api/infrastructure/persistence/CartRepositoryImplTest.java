@@ -4,7 +4,6 @@ import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.models.CartItem;
 import lk.clean.architecture.cart.api._domain.models.Money;
 import lk.clean.architecture.cart.api._domain.models.Product;
-import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api._domain.repositories.ProductRepository;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartItemEntity;
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -23,10 +21,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 public class CartRepositoryImplTest {
@@ -89,4 +85,90 @@ public class CartRepositoryImplTest {
         //verifications
         verify(cartJpaRepository).findById(cart.getCartId());
     }
+
+    //test cart-save successfully
+    @Test
+    void shouldSaveCartSuccessfully() {
+        //create cart
+        Cart cart = new Cart("LKR");
+
+        Product product1 = new Product(
+                "Test-Product-01",
+                "Test-Description-01",
+                new Money(new BigDecimal("100.00"), "LKR"));
+
+        cart.addItem(new CartItem(product1, 2));
+
+        //create entity
+        CartEntity cartEntity = new CartEntity();
+        CartEntity savedCartEntity = new CartEntity();
+
+        //add values to entity
+        CartItemEntity cartItemEntity = new CartItemEntity();
+        cartItemEntity.setProductId(product1.getProductId());
+        cartItemEntity.setQuantity(2);
+        savedCartEntity.setCartItems(List.of(cartItemEntity));
+
+        //initiate mock behaviors
+        when(persistenceMapper.toCartEntity(cart)).thenReturn(cartEntity);
+        when(cartJpaRepository.save(cartEntity)).thenReturn(savedCartEntity);
+        when(productRepository.findById(product1.getProductId())).thenReturn(Optional.of(product1));
+        when(persistenceMapper.toCartDomainModel(eq(savedCartEntity), anyList())).thenReturn(cart);
+
+
+        Cart savedCart = cartRepositoryImpl.save(cart);
+
+        //expectations
+        assertNotNull(savedCart, "Saved cart should not be null");
+        assertEquals("LKR", savedCart.getCurrency(), "Currency should match");
+        assertEquals(1, savedCart.getCartItems().size(), "Cart should contain 1 item");
+        assertEquals(product1.getProductId(), savedCart.getCartItems().get(0).productId());
+        assertEquals(2, savedCart.getCartItems().get(0).quantity());
+
+        //verifications
+        verify(persistenceMapper).toCartEntity(cart);
+        verify(cartJpaRepository).save(cartEntity);
+        verify(productRepository).findById(product1.getProductId());
+        verify(persistenceMapper).toCartDomainModel(eq(savedCartEntity), anyList());
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
