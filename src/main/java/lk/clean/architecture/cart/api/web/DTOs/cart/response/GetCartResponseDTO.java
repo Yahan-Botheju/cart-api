@@ -1,7 +1,7 @@
-package lk.clean.architecture.cart.api.web.DTOs.response;
+package lk.clean.architecture.cart.api.web.DTOs.cart.response;
 
-import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.CartItemSnapshotDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.MoneyResponseDTO;
+import lk.clean.architecture.cart.api.web.DTOs.cart.response.separation_records.CartItemSnapshotDTO;
+import lk.clean.architecture.cart.api.web.DTOs.cart.response.separation_records.MoneyResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 

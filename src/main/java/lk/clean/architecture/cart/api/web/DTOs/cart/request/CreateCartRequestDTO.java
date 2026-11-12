@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.web.DTOs.request;
+package lk.clean.architecture.cart.api.web.DTOs.cart.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

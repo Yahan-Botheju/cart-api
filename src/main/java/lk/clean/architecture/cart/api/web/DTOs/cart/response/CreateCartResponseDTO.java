@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.web.DTOs.response;
+package lk.clean.architecture.cart.api.web.DTOs.cart.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

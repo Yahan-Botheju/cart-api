@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.web.DTOs.request;
+package lk.clean.architecture.cart.api.web.DTOs.cart.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

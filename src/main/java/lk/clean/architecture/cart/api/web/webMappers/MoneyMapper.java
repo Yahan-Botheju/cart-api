@@ -5,11 +5,11 @@ import lk.clean.architecture.cart.api.application.records.results.GetCartResult;
 import lk.clean.architecture.cart.api.application.records.results.UpdateCartItemQuantityResult;
 import lk.clean.architecture.cart.api.application.records.results.separation_records.CartItemSnapshotResult;
 import lk.clean.architecture.cart.api.application.records.results.separation_records.MoneyResult;
-import lk.clean.architecture.cart.api.web.DTOs.response.AddItemToCartResponseDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.GetCartResponseDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.UpdateCartItemQuantityResponseDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.CartItemSnapshotDTO;
-import lk.clean.architecture.cart.api.web.DTOs.response.separation_records.MoneyResponseDTO;
+import lk.clean.architecture.cart.api.web.DTOs.cart.response.AddItemToCartResponseDTO;
+import lk.clean.architecture.cart.api.web.DTOs.cart.response.GetCartResponseDTO;
+import lk.clean.architecture.cart.api.web.DTOs.cart.response.UpdateCartItemQuantityResponseDTO;
+import lk.clean.architecture.cart.api.web.DTOs.cart.response.separation_records.CartItemSnapshotDTO;
+import lk.clean.architecture.cart.api.web.DTOs.cart.response.separation_records.MoneyResponseDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
