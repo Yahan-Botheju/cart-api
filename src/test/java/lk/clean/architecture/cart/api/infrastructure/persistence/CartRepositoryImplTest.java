@@ -4,10 +4,8 @@ import lk.clean.architecture.cart.api._domain.models.Cart;
 import lk.clean.architecture.cart.api._domain.models.CartItem;
 import lk.clean.architecture.cart.api._domain.models.Money;
 import lk.clean.architecture.cart.api._domain.models.Product;
-import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api._domain.repositories.ProductRepository;
 import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartEntity;
-import lk.clean.architecture.cart.api.infrastructure.persistence.entities.CartItemEntity;
 import lk.clean.architecture.cart.api.infrastructure.persistence.jpa.CartJpaRepository;
 import lk.clean.architecture.cart.api.infrastructure.persistence.persistenceMappers.PersistenceMapper;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -23,10 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 public class CartRepositoryImplTest {
