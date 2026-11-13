@@ -3,11 +3,15 @@ package lk.clean.architecture.cart.api.infrastructure.persistence.configs;
 import lk.clean.architecture.cart.api._domain.repositories.CartRepository;
 import lk.clean.architecture.cart.api._domain.repositories.ProductRepository;
 import lk.clean.architecture.cart.api.application.usecase.cart.*;
+import lk.clean.architecture.cart.api.application.usecase.product.CreateProductUseCase;
+import lk.clean.architecture.cart.api.application.usecase.product.CreateProductUseCaseImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class UseCaseBeanConfigs {
+
+    /* __CART__ */
 
     //add to cart usecase
     @Bean
@@ -46,5 +50,13 @@ public class UseCaseBeanConfigs {
     @Bean
     public GetCartUseCase getCartUseCase(CartRepository cartRepository) {
         return new GetCartUseCaseImpl(cartRepository);
+    }
+
+    /* __PRODUCTS__ */
+
+    //create-product
+    @Bean
+    public CreateProductUseCase  createProductUseCase(ProductRepository productRepository) {
+        return new CreateProductUseCaseImpl(productRepository);
     }
 }

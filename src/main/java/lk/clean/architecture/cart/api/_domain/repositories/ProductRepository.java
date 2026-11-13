@@ -9,4 +9,7 @@ public interface ProductRepository {
 
     //get product by id
     Optional<Product> findById(UUID productId);
+
+    //save product
+    Product save(Product product);
 }

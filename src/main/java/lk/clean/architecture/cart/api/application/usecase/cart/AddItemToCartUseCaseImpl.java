@@ -7,7 +7,7 @@ import lk.clean.architecture.cart.api.application.exception.CartNotFoundExceptio
 import lk.clean.architecture.cart.api.application.exception.ProductNotFoundException;
 import lk.clean.architecture.cart.api.application.records.cart.commands.AddItemToCartCommand;
 import lk.clean.architecture.cart.api.application.records.cart.results.AddItemToCartResult;
-import lk.clean.architecture.cart.api.application.records.cart.results.separation_records.MoneyResult;
+import lk.clean.architecture.cart.api.application.records.separation_results.MoneyResult;
 
 
 public class AddItemToCartUseCaseImpl implements AddItemToCartUseCase {
