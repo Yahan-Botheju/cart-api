@@ -7,7 +7,7 @@ import lk.clean.architecture.cart.api.application.exception.CartNotFoundExceptio
 import lk.clean.architecture.cart.api.application.exception.ProductNotFoundException;
 import lk.clean.architecture.cart.api.application.records.cart.commands.UpdateCartItemQuantityCommand;
 import lk.clean.architecture.cart.api.application.records.cart.results.UpdateCartItemQuantityResult;
-import lk.clean.architecture.cart.api.application.records.cart.results.separation_records.MoneyResult;
+import lk.clean.architecture.cart.api.application.records.separation_results.MoneyResult;
 
 
 public class UpdateCartItemQuantityUseCaseImpl implements UpdateCartItemQuantityUseCase {
