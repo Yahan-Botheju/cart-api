@@ -20,6 +20,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         this.persistenceMapper = persistenceMapper;
     }
 
+    //get product by id
     @Override
     public Optional<Product> findById(UUID productId) {
         Optional<ProductEntity>  productEntity = productJpaRepository.findById(productId);
@@ -29,5 +30,15 @@ public class ProductRepositoryImpl implements ProductRepository {
         Product product = persistenceMapper.toProductDomainModel(productEntity.get());
 
         return Optional.of(product);
+    }
+
+    //save product
+    @Override
+    public Product save(Product product) {
+
+        ProductEntity productEntity = persistenceMapper.toProductEntity(product);
+        ProductEntity savedProductEntity = productJpaRepository.save(productEntity);
+
+        return persistenceMapper.toProductDomainModel(savedProductEntity);
     }
 }
