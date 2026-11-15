@@ -2,6 +2,7 @@ package lk.clean.architecture.cart.api.web.DTOs.product.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lk.clean.architecture.cart.api.web.DTOs.product.request.separation_records.MoneyRequestDTO;
 import lombok.Getter;
 import lombok.Setter;
 

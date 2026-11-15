@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.web.DTOs.product.request;
+package lk.clean.architecture.cart.api.web.DTOs.product.request.separation_records;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
