@@ -5,6 +5,8 @@ import lk.clean.architecture.cart.api._domain.repositories.ProductRepository;
 import lk.clean.architecture.cart.api.application.usecase.cart.*;
 import lk.clean.architecture.cart.api.application.usecase.product.CreateProductUseCase;
 import lk.clean.architecture.cart.api.application.usecase.product.CreateProductUseCaseImpl;
+import lk.clean.architecture.cart.api.application.usecase.product.UpdateProductUseCase;
+import lk.clean.architecture.cart.api.application.usecase.product.UpdateProductUseCaseImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -58,5 +60,11 @@ public class UseCaseBeanConfigs {
     @Bean
     public CreateProductUseCase  createProductUseCase(ProductRepository productRepository) {
         return new CreateProductUseCaseImpl(productRepository);
+    }
+
+    //update-product
+    @Bean
+    public UpdateProductUseCase updateProductUseCase(ProductRepository productRepository) {
+        return new UpdateProductUseCaseImpl(productRepository);
     }
 }

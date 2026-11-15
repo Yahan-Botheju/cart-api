@@ -3,14 +3,19 @@ package lk.clean.architecture.cart.api.application.records.product.commands;
 import lk.clean.architecture.cart.api._domain.models.Money;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public record UpdateProductCommand(
+        UUID productId,
         String productName,
         String productDescription,
         Money productPrice
 ) {
     public UpdateProductCommand {
 
+        if (productId == null) {
+            throw new IllegalArgumentException("productId cannot be null");
+        }
         if (productName == null || productName.trim().isBlank()) {
             throw new IllegalArgumentException("Product name cannot be empty!");
         }

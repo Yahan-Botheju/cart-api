@@ -1,4 +1,4 @@
-package lk.clean.architecture.cart.api.web.DTOs.product.request;
+package lk.clean.architecture.cart.api.web.DTOs.product.request.separation_records;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class MoneyRequestDTO {
+public class ProductMoneyRequestDTO {
     @NotNull(message = "Amount cannot be null")
     @Positive(message = "Amount must be greater than zero")
     private BigDecimal amount;

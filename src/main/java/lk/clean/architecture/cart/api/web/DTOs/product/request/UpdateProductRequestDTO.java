@@ -2,6 +2,7 @@ package lk.clean.architecture.cart.api.web.DTOs.product.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lk.clean.architecture.cart.api.web.DTOs.product.request.separation_records.ProductMoneyRequestDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,5 +16,5 @@ public class UpdateProductRequestDTO {
     private String productDescription;
 
     @NotNull(message = "Money cannot be empty")
-    private MoneyRequestDTO priceRequestDTO;
+    private ProductMoneyRequestDTO priceRequestDTO;
 }
