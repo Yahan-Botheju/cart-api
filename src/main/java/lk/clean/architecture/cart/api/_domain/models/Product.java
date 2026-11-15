@@ -85,5 +85,15 @@ public class Product {
         this.isProductAvailable = false;
     }
 
+    //update product
+    public void updateProduct(
+            String productName,
+            String productDescription,
+            Money productPrice
+    ){
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.productPrice = productPrice;
+    }
 
 }
