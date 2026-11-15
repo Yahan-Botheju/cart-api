@@ -13,7 +13,7 @@ import lk.clean.architecture.cart.api.web.DTOs.cart.response.separation_records.
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface MoneyMapper {
+public interface CartMoneyMapper {
 
     /* __MONEY_CLASSES__*/
 
