@@ -10,6 +10,8 @@ import lk.clean.architecture.cart.api.web.DTOs.product.response.CreateProductRes
 import lk.clean.architecture.cart.api.web.DTOs.product.response.UpdateProductResponseDTO;
 import org.mapstruct.Mapper;
 
+import java.util.UUID;
+
 @Mapper(componentModel = "spring")
 public interface ProductWebMapper {
 
@@ -24,7 +26,7 @@ public interface ProductWebMapper {
     /* __UPDATE_PRODUCT__ */
 
     //to command
-    UpdateProductCommand toUpdateProductCommand(UpdateProductRequestDTO updateProductRequestDTO);
+    UpdateProductCommand toUpdateProductCommand(UUID productId, UpdateProductRequestDTO updateProductRequestDTO);
 
     //to response
     UpdateProductResponseDTO toUpdateProductResponseDTO(UpdateProductResult updateProductResult);
